@@ -94,6 +94,11 @@ func StartGame(c *gin.Context) {
 	})
 
 	// Send notification to users in lobby of game
+	// Get every user that is in this game
+
+	var players []models.Player
+	conf.DB.Where("game_id = ?", game.ID).Find(&players)
+
 }
 
 func UpdateTurn(c *gin.Context) {
