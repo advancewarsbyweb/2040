@@ -13,7 +13,8 @@ var (
 	pingInterval = (pongWait * 9) / 10
 )
 
-type ClientList map[*Client]bool
+// Connected Clients by UserID
+type ClientList map[int]*Client
 
 type Client struct {
 	Connection *websocket.Conn

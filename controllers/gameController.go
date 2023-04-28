@@ -1,11 +1,14 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/awbw/2040/conf"
 	"github.com/awbw/2040/models"
 	"github.com/awbw/2040/utils"
+	"github.com/awbw/2040/ws"
+	"github.com/awbw/2040/ws/events"
 	"github.com/gin-gonic/gin"
 )
 
@@ -94,11 +97,21 @@ func StartGame(c *gin.Context) {
 	})
 
 	// Send notification to users in lobby of game
-	// Get every user that is in this game
 
-	var players []models.Player
-	conf.DB.Where("game_id = ?", game.ID).Find(&players)
+	var users []models.User
+	err := conf.DB.Model(&models.User{}).Preload("Player").Where("players_games_id = ?", game.ID).Find(&users).Error
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Could not find users to send notifications",
+		})
+	}
 
+	newNotification := events.NewNotification{
+		Message: fmt.Sprintf("Game %s has started!", game.Name),
+		Url:     fmt.Sprintf("/play/%d", game.ID),
+	}
+
+	ws.SendNotificationHandler(newNotification, users)
 }
 
 func UpdateTurn(c *gin.Context) {

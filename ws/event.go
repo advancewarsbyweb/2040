@@ -11,7 +11,13 @@ type Event struct {
 
 type EventHandler func(event Event, c *Client) error
 
+// Event names received from the client
 const (
-	EventSendMessage     = "sendMessage"
-	GameJoinNotification = "notification"
+	EventSendMessage = "send_message"
+	SendNotification = "send_notification"
+)
+
+// Event names sent back to the client
+const (
+	NewNotification = "new_notification"
 )

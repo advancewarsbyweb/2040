@@ -8,6 +8,7 @@ import (
 
 type Game struct {
 	gorm.Model
+	Name         string
 	StartDate    sql.NullTime
 	EndDate      sql.NullTime
 	CreatorID    int
