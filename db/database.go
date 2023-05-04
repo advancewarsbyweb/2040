@@ -1,20 +1,19 @@
-package conf
+package db
 
 import (
 	"log"
 	"os"
 
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
+	"github.com/jmoiron/sqlx"
 )
 
-var DB *gorm.DB
+var DB *sqlx.DB
 
 func ConnectDatabase() {
 	var err error
 	dsn := os.Getenv("DB_URL")
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
+	db, err := sqlx.Open("mysql", dsn)
 	if err != nil {
 		log.Fatal("Failed to connect to database")
 	}

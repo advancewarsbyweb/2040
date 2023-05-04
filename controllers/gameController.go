@@ -3,8 +3,10 @@ package controllers
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/awbw/2040/conf"
+	"github.com/awbw/2040/db"
 	"github.com/awbw/2040/models"
 	"github.com/awbw/2040/utils"
 	"github.com/awbw/2040/ws"
@@ -13,7 +15,13 @@ import (
 )
 
 func GetGame(c *gin.Context) {
-	game := utils.GetGame(c.Param("id"))
+	gameId, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Invalid Game ID provided",
+		})
+	}
+	game, err := db.GameRepo.FindGame(gameId)
 
 	c.JSON(http.StatusOK, gin.H{
 		"game": game,
@@ -28,16 +36,14 @@ func CreateGame(c *gin.Context) {
 
 	// Validation here
 
-	result := conf.DB.Create(&body)
+	_, err := db.GameRepo.CreateGame(body)
 
-	if result.Error != nil {
-		c.Status(http.StatusBadRequest)
-		return
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": err.Error(),
+		})
 	}
-
-	c.JSON(http.StatusOK, gin.H{
-		"game": result,
-	})
+	c.JSON(http.StatusOK, gin.H{})
 }
 
 // Update Game with all of the given properties body
