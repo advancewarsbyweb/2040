@@ -88,11 +88,22 @@ func (r GameRepository) UpdateGame(body models.Game, updatedFields []string) (mo
 	}
 
 	updateQuery := fmt.Sprintf("UPDATE awbw_games SET %s WHERE games_id = ?", strings.Join(updateStatements, ","))
-	_, err := DB.NamedExec(updateQuery, updatedFields)
+	_, err := DB.NamedExec(updateQuery, body)
 
 	if err != nil {
 		return body, errors.New("Could not update game")
 	}
 
 	return body, nil
+}
+
+func (r GameRepository) DeleteGame(id int) error {
+	deleteQuery := "UPDATE awbw_games SET deleted_at = NOW() WHERE games_id = ?"
+	_, err := DB.NamedExec(deleteQuery, id)
+
+	if err != nil {
+		return errors.New(fmt.Sprintf("Could not delete game with ID %d", id))
+	}
+
+	return nil
 }
