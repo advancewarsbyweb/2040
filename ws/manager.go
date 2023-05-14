@@ -22,7 +22,7 @@ var (
 type Manager struct {
 	Clients ClientList
 	sync.RWMutex
-	Handlers map[string]EventHandler
+	Handlers map[EventType]EventHandler
 }
 
 func init() {
@@ -32,7 +32,7 @@ func init() {
 func NewManager() *Manager {
 	m := &Manager{
 		Clients:  make(ClientList),
-		Handlers: make(map[string]EventHandler),
+		Handlers: make(map[EventType]EventHandler),
 	}
 	m.SetupEventHandlers()
 	return m
@@ -40,7 +40,7 @@ func NewManager() *Manager {
 
 // Add every event Handler to the Manager
 func (m *Manager) SetupEventHandlers() {
-	m.Handlers[SendNotification] = SendNotificationHandler
+	//m.Handlers[NotificationResponse] = NotificationHandler
 }
 
 // Make sure the event sent by the client is routed to the proper event handler
@@ -57,6 +57,8 @@ func (m *Manager) RouteEvent(e Event, c *Client) error {
 }
 
 func (m *Manager) ServeWS(w http.ResponseWriter, r *http.Request) {
+	// Here we validate the jwt
+
 	conn, err := websocketUpgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println(err)

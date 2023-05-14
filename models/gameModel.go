@@ -2,17 +2,15 @@ package models
 
 import (
 	"database/sql"
-
-	"gorm.io/gorm"
 )
 
 type Game struct {
-	gorm.Model
+	ID           int
 	Name         string
 	StartDate    sql.NullTime
 	EndDate      sql.NullTime
 	CreatorID    int
-	Creator      User `gorm:"foreignKey: CreatorID"`
+	Creator      *User `gorm:"foreignKey: CreatorID"`
 	Players      []Player
 	ActivityDate sql.NullTime
 	MapID        int
@@ -22,7 +20,7 @@ type Game struct {
 	WeatherCode  string
 	Private      bool
 	TurnID       int
-	Turn         Player `gorm:"foreignKey: TurnID"`
+	Turn         *Player `gorm:"foreignKey: TurnID"`
 	Day          int
 	Active       bool
 	Funds        int
@@ -36,4 +34,7 @@ type Game struct {
 	UnitLimit    int
 	League       bool
 	Team         bool
+	CreatedAt    sql.NullTime
+	UpdatedAt    sql.NullTime
+	DeletedAt    sql.NullTime
 }

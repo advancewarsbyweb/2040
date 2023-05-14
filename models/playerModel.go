@@ -1,9 +1,7 @@
 package models
 
-import "gorm.io/gorm"
-
 type Player struct {
-	gorm.Model
+	ID     int
 	GameID int
 	Game   *Game `gorm:"foreignKey: GameID"`
 	UserID int

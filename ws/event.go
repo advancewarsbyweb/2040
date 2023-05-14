@@ -2,22 +2,27 @@ package ws
 
 import (
 	"encoding/json"
+
+	"github.com/awbw/2040/models"
 )
 
 type Event struct {
-	Type    string          `json:"type"`
+	Type    EventType       `json:"type"`
 	Payload json.RawMessage `json:"payload"`
 }
 
-type EventHandler func(event Event, c *Client) error
+type EventHandler func(event Event, u []models.User) error
+
+type EventType string
 
 // Event names received from the client
 const (
-	EventSendMessage = "send_message"
-	SendNotification = "send_notification"
+	MoveRequest         EventType = "move_request"
+	NotificationRequest EventType = "notification_request"
 )
 
 // Event names sent back to the client
 const (
-	NewNotification = "new_notification"
+	MoveResponse         EventType = "move_response"
+	NotificationResponse EventType = "notification_response"
 )

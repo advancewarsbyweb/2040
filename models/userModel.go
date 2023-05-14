@@ -1,9 +1,12 @@
 package models
 
-import "gorm.io/gorm"
+import "database/sql"
 
 type User struct {
-	gorm.Model
-	Email    string
-	Password string
+	ID        int
+	Email     string
+	Password  string
+	CreatedAt sql.NullTime
+	UpdatedAt sql.NullTime
+	DeletedAt sql.NullTime
 }

@@ -20,18 +20,18 @@ func init() {
 	GameRepo = NewGameRepo()
 }
 
-func (r GameRepository) FindGame(id int) (models.Game, error) {
+func (r GameRepository) FindGame(id int) (*models.Game, error) {
 	var gameModel models.Game
 	findQuery := "SELECT * FROM awbw_games WHERE games_id = ?"
 	err := DB.Get(&gameModel, findQuery, id)
 
 	if err != nil {
-		return models.Game{}, errors.New("Failed to find game with given ID")
+		return nil, errors.New("Failed to find game with given ID")
 	}
-	return gameModel, nil
+	return &gameModel, nil
 }
 
-func (r GameRepository) CreateGame(body models.Game) (models.Game, error) {
+func (r GameRepository) CreateGame(body models.Game) (*models.Game, error) {
 	columns := []string{
 		"games_name",
 		"games_start_date",
@@ -73,14 +73,14 @@ func (r GameRepository) CreateGame(body models.Game) (models.Game, error) {
 	_, err := DB.NamedExec(createQuery, body)
 
 	if err != nil {
-		return body, errors.New("Could not create new game")
+		return nil, errors.New("Could not create new game")
 	}
 
-	return body, nil
+	return &body, nil
 }
 
 // This function assumes that the given fields can be updated
-func (r GameRepository) UpdateGame(body models.Game, updatedFields []string) (models.Game, error) {
+func (r GameRepository) UpdateGame(body models.Game, updatedFields []string) (*models.Game, error) {
 	var updateStatements []string
 
 	for _, column := range updatedFields {
@@ -91,10 +91,10 @@ func (r GameRepository) UpdateGame(body models.Game, updatedFields []string) (mo
 	_, err := DB.NamedExec(updateQuery, body)
 
 	if err != nil {
-		return body, errors.New("Could not update game")
+		return nil, errors.New("Could not update game")
 	}
 
-	return body, nil
+	return &body, nil
 }
 
 func (r GameRepository) DeleteGame(id int) error {

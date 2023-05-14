@@ -25,6 +25,7 @@ func GetGame(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"game": game,
 	})
+
 }
 
 func CreateGame(c *gin.Context) {
@@ -110,12 +111,12 @@ func StartGame(c *gin.Context) {
 		})
 	}
 
-	newNotification := events.NewNotification{
+	newNotification := events.NotificationResponse{
 		Message: fmt.Sprintf("Game %s has started!", gameModel.Name),
 		Url:     fmt.Sprintf("/play/%d", gameModel.ID),
 	}
 
-	ws.SendNotificationHandler(newNotification, users)
+	ws.NotificationHandler(newNotification, users)
 }
 
 func JoinGame(c *gin.Context) {
