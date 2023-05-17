@@ -65,7 +65,11 @@ func VerifyTokenUser(claims jwt.MapClaims) (*models.User, error) {
 	return &user, nil
 }
 
-func RequireAuth(tokenString string) (*models.User, error) {
+func RequireAuth(c *gin.Context) (*models.User, error) {
+	tokenString, err := GetTokenCookie(c)
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("Could not get the authorization cookie"))
+	}
 
 	token, err := VerifyTokenString(tokenString)
 	if err != nil {
@@ -89,6 +93,6 @@ func RequireAuth(tokenString string) (*models.User, error) {
 
 		return loggedUser, nil
 	} else {
-		return errors.New("An error happened during the authentication")
+		return nil, errors.New("An error happened during the authentication")
 	}
 }

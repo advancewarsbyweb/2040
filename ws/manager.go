@@ -2,10 +2,12 @@ package ws
 
 import (
 	"errors"
+	"fmt"
 	"log"
-	"net/http"
 	"sync"
 
+	"github.com/awbw/2040/utils/auth"
+	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 )
 
@@ -56,18 +58,22 @@ func (m *Manager) RouteEvent(e Event, c *Client) error {
 	}
 }
 
-func (m *Manager) ServeWS(w http.ResponseWriter, r *http.Request) {
+func (m *Manager) ServeWS(c *gin.Context) {
 	// Here we validate the jwt
+	loggedUser, err := auth.RequireAuth(c)
+	if err != nil {
+		log.Println(fmt.Sprintf("Could not authorize user: %s", err.Error()))
+		return
+	}
 
-	conn, err := websocketUpgrader.Upgrade(w, r, nil)
+	conn, err := websocketUpgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		log.Println(err)
 		return
 	}
 
-	client := NewClient(conn, m)
+	client := NewClient(conn, m, loggedUser.ID)
 	m.AddClient(client)
-
 }
 
 func (m *Manager) AddClient(client *Client) {
@@ -76,15 +82,15 @@ func (m *Manager) AddClient(client *Client) {
 
 	// Get the UserID
 
-	m.Clients[0] = client
+	m.Clients[client.UserID] = client
 }
 
 func (m *Manager) RemoveClient(client *Client) {
 	m.Lock()
 	defer m.Unlock()
 
-	if _, ok := m.Clients[0]; ok {
+	if _, ok := m.Clients[client.UserID]; ok {
 		client.Connection.Close()
-		delete(m.Clients, 0)
+		delete(m.Clients, client.UserID)
 	}
 }

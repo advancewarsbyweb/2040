@@ -1,8 +1,6 @@
 package middleware
 
 import (
-	"errors"
-	"fmt"
 	"net/http"
 
 	"github.com/awbw/2040/utils/auth"
@@ -10,12 +8,7 @@ import (
 )
 
 func RequireAuth(c *gin.Context) {
-	tokenString, err := auth.GetTokenCookie(c)
-	if err != nil {
-		c.AbortWithError(http.StatusUnauthorized, errors.New(fmt.Sprintf("Could not get authorization cookie: %s", err.Error())))
-	}
-
-	loggedUser, err := auth.RequireAuth(tokenString)
+	loggedUser, err := auth.RequireAuth(c)
 
 	if err != nil {
 		c.AbortWithError(http.StatusUnauthorized, err)

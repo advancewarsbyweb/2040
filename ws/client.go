@@ -17,12 +17,13 @@ var (
 type ClientList map[int]*Client
 
 type Client struct {
+	UserID     int
 	Connection *websocket.Conn
 	Manager    *Manager
 	Egress     chan Event
 }
 
-func NewClient(conn *websocket.Conn, manager *Manager) *Client {
+func NewClient(conn *websocket.Conn, manager *Manager, userId int) *Client {
 	return &Client{
 		Connection: conn,
 		Manager:    manager,
