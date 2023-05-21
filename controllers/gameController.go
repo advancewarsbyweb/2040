@@ -19,6 +19,7 @@ func GetGame(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Invalid Game ID provided",
 		})
+		return
 	}
 	game, err := db.GameRepo.FindGame(gameId)
 
@@ -41,6 +42,7 @@ func CreateGame(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": err.Error(),
 		})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{})
@@ -60,6 +62,7 @@ func UpdateGame(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": err.Error(),
 		})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{

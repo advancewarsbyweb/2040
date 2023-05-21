@@ -1,11 +1,14 @@
 package models
 
-import "gorm.io/gorm"
+import "database/sql"
 
 type Unit struct {
-	gorm.Model
-	PlayerID int
-	Player   Player `gorm:"foreignKey: PlayerID"`
-	GameID   int
-	Game     Game `gorm:"foreignKey: GameID"`
+	ID        int
+	PlayerID  int
+	Player    Player `gorm:"foreignKey: PlayerID"`
+	GameID    int
+	Game      Game `gorm:"foreignKey: GameID"`
+	CreatedAt sql.NullTime
+	UpdatedAt sql.NullTime
+	DeletedAt sql.NullTime
 }

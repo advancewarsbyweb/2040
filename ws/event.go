@@ -2,8 +2,6 @@ package ws
 
 import (
 	"encoding/json"
-
-	"github.com/awbw/2040/models"
 )
 
 type Event struct {
@@ -11,7 +9,7 @@ type Event struct {
 	Payload json.RawMessage `json:"payload"`
 }
 
-type EventHandler func(event Event, u []models.User) error
+type EventHandler func(event Event, c Client) error
 
 type EventType string
 

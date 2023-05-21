@@ -13,7 +13,7 @@ func MoveHandler(moveRequest events.MoveRequest, c *Client) error {
 	// Format response
 	// MoveResponse would be the response regardless of vision for individual players
 	// This would be saved in the database
-	moveResponse := events.MoveResponse{}
+	moveUnformated := events.MoveUnformated{}
 
 	// Here we format a new MoveResponse for individual users if they are connected to the game
 	playerModels, err := db.PlayerRepo.FindPlayersByGame(1)
