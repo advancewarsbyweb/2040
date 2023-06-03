@@ -4,6 +4,8 @@ import "github.com/awbw/2040/models"
 
 type Team string
 
+type TileType string
+
 type PathTile struct {
 	UnitVisible bool `json:"unit_visible"`
 	X           int  `json:"x"`

@@ -125,7 +125,7 @@ func StartGame(c *gin.Context) {
 func JoinGame(c *gin.Context) {
 	// RequireAuth middleware executed before
 
-	_, err := db.PlayerRepo.CreatePlayer(models.Player{})
+	//_, err := db.PlayerRepo.CreatePlayer(models.Player{})
 }
 
 func UpdateTurn(c *gin.Context) {
