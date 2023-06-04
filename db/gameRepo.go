@@ -20,18 +20,18 @@ func init() {
 	GameRepo = NewGameRepo()
 }
 
-func (r GameRepository) FindGame(id int) (*models.Game, error) {
-	var gameModel models.Game
+func (r *GameRepository) FindGame(id int) (*models.Game, error) {
+	gameModel := models.Game{}
 	findQuery := "SELECT * FROM awbw_games WHERE games_id = ?"
 	err := DB.Get(&gameModel, findQuery, id)
 
 	if err != nil {
-		return nil, errors.New("Failed to find game with given ID")
+		return nil, errors.New(fmt.Sprintf("Failed to find game with given ID: %s", err.Error()))
 	}
 	return &gameModel, nil
 }
 
-func (r GameRepository) CreateGame(body models.Game) (*models.Game, error) {
+func (r GameRepository) CreateGame(body models.Game) (int, error) {
 	columns := []string{
 		"games_name",
 		"games_start_date",
@@ -59,24 +59,25 @@ func (r GameRepository) CreateGame(body models.Game) (*models.Game, error) {
 		"games_team",
 	}
 	var (
-		insertCols strings.Builder
-		values     strings.Builder
+		insertCols []string
+		values     []string
 	)
 
 	// Format columns to insert with the values from the list above to make sure they always match
 	for _, col := range columns {
-		insertCols.WriteString(fmt.Sprintf("%s,", col))
-		values.WriteString(fmt.Sprintf(":%s,", col))
-
+		insertCols = append(insertCols, col)
+		values = append(values, fmt.Sprintf(":%s", col))
 	}
-	createQuery := fmt.Sprintf("INSERT INTO awbw_games (%s) VALUES (%s)", insertCols, values)
-	_, err := DB.NamedExec(createQuery, body)
+	createQuery := fmt.Sprintf("INSERT INTO awbw_games (%s) VALUES (%s)", strings.Join(insertCols, ","), strings.Join(values, ","))
+	res, err := DB.NamedExec(createQuery, body)
 
 	if err != nil {
-		return nil, errors.New("Could not create new game")
+		return -1, errors.New(fmt.Sprintf("Could not create new Game: %s", err.Error()))
 	}
 
-	return &body, nil
+	gameId, err := res.LastInsertId()
+
+	return int(gameId), nil
 }
 
 // This function assumes that the given fields can be updated

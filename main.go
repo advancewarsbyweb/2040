@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/awbw/2040/db"
 	"github.com/awbw/2040/routes"
 	"github.com/gin-gonic/gin"
@@ -9,7 +11,7 @@ import (
 
 func init() {
 	godotenv.Load()
-	db.ConnectDatabase()
+	db.ConnectDatabase(os.Getenv("DSN"))
 }
 
 func main() {

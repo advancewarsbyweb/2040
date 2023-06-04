@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  db:
+    image: mysql:5.5.47
+    container_name: awbw-db
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    networks:
+      - awbwnetwork
+
+networks:
+  awbwnetwork:
+    name: awbwnetwork
+
+volumes:
+  mysql_data: {}

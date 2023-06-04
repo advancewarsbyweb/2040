@@ -4,19 +4,20 @@ import (
 	"log"
 	"os"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 )
 
 var DB *sqlx.DB
 
-func ConnectDatabase() {
-	var err error
-	dsn := os.Getenv("DB_URL")
+func NewDatabase() {
+	DB = ConnectDatabase(os.Getenv("DSN"))
+}
 
+func ConnectDatabase(dsn string) *sqlx.DB {
 	db, err := sqlx.Open("mysql", dsn)
 	if err != nil {
-		log.Fatal("Failed to connect to database")
+		log.Fatalf("Failed to connect to database: %s", err.Error())
 	}
-
-	DB = db
+	return db
 }
