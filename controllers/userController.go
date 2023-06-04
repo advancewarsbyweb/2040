@@ -5,7 +5,6 @@ import (
 	"os"
 	"time"
 
-	"github.com/awbw/2040/conf"
 	"github.com/awbw/2040/models"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
@@ -35,8 +34,8 @@ func Signup(c *gin.Context) {
 		return
 	}
 
-	user := models.User{Email: body.Email, Password: string(hash)}
-	conf.DB.Create(&user)
+	_ = models.User{Email: body.Email, Password: string(hash)}
+	//db.DB.Create(&user)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -63,7 +62,7 @@ func Login(c *gin.Context) {
 	}
 
 	var user models.User
-	conf.DB.First(&user, "email = ?", body.Email)
+	//conf.DB.First(&user, "email = ?", body.Email)
 
 	if user.ID == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{

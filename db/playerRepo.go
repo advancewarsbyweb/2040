@@ -43,6 +43,6 @@ func (r PlayerRepository) FindPlayersByGame(gameId int) ([]models.Player, error)
 	return playerModels, nil
 }
 
-func (r PlayerRepository) CreatePlayer(body models.Player) (models.Player, error) {
-
+func (r PlayerRepository) CreatePlayer(body models.Player) (*models.Player, error) {
+	return nil, nil
 }

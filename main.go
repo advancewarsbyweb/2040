@@ -1,16 +1,15 @@
 package main
 
 import (
-	"github.com/awbw/2040/api/routes"
-	"github.com/awbw/2040/conf"
+	"github.com/awbw/2040/db"
+	"github.com/awbw/2040/routes"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
 
 func init() {
 	godotenv.Load()
-	conf.ConnectDatabase()
-	conf.ApplyMigrations()
+	db.ConnectDatabase()
 }
 
 func main() {

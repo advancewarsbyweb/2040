@@ -1,7 +1,7 @@
 package models
 
 import (
-	movementTypes "github.com/awbw/2040/types/movement"
+	movementtypes "github.com/awbw/2040/types/movements"
 	"gorm.io/gorm"
 )
 
@@ -9,7 +9,7 @@ type UnitType struct {
 	gorm.Model
 	Name           string                     `gorm:"column_name:units_name"`
 	MovementPoints int                        `gorm:"column_name:units_movement_points"`
-	MovementType   movementTypes.MovementType `gorm:"column_name:units_movement_type"`
+	MovementType   movementtypes.MovementType `gorm:"column_name:units_movement_type"`
 	Vision         int                        `gorm:"column_name:units_vision"`
 	Fuel           int                        `gorm:"column_name:units_fuel"`
 	FuelPerTurn    int                        `gorm:"column_name:units_fuel_per_turn"`
