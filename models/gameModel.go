@@ -26,14 +26,14 @@ type Game struct {
 	Funds        int
 	CaptureLimit int
 	DayLimit     int
-	Fog          bool
+	Fog          string
 	Comment      string
 	Type         string
-	Official     bool
+	Official     string
 	MinRating    int
 	UnitLimit    int
-	League       bool
-	Team         bool
+	League       string
+	Team         string
 	CreatedAt    sql.NullTime
 	UpdatedAt    sql.NullTime
 	DeletedAt    sql.NullTime
