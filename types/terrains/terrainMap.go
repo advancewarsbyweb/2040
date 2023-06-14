@@ -7,7 +7,7 @@ import (
 
 type TerrainMap map[int]map[int]models.Tile
 
-func NewTerrainMap(mapId int) *TerrainMap {
+func NewTerrainMap(mapId int) TerrainMap {
 	mapTiles, _ := MapTiles(mapId)
 	return CreateTerrainMap(mapTiles)
 }
@@ -20,8 +20,7 @@ func MapTiles(mapId int) (*[]models.Tile, error) {
 	return mapTiles, nil
 }
 
-func CreateTerrainMap(mapTiles *[]models.Tile) *TerrainMap {
-
+func CreateTerrainMap(mapTiles *[]models.Tile) TerrainMap {
 	terrainMap := make(TerrainMap)
 
 	for _, t := range *mapTiles {
@@ -31,5 +30,5 @@ func CreateTerrainMap(mapTiles *[]models.Tile) *TerrainMap {
 		terrainMap[t.X][t.Y] = t
 	}
 
-	return &terrainMap
+	return terrainMap
 }

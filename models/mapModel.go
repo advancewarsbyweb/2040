@@ -1,20 +1,16 @@
 package models
 
-import (
-	"time"
-
-	"gorm.io/gorm"
-)
+import "time"
 
 type Map struct {
-	gorm.Model
-	Name               string
-	Players            int
-	Type               string
-	CreatorID          int
-	Creator            User `gorm:"foreignKey: CreatorID"`
-	Published          bool
-	PublishedDate      time.Time
-	FirstPublishedDate time.Time
-	LastViewed         time.Time
+	ID                 int        `db:"maps_id"`
+	Name               string     `db:"maps_name"`
+	Players            int        `db:"maps_players"`
+	Type               string     `db:"maps_type"`
+	CreatorID          int        `db:"maps_users_id"`
+	Published          string     `db:"maps_published"`
+	PublishedDate      *time.Time `db:"maps_published_date"`
+	FirstPublishedDate *time.Time `db:"maps_first_published_date"`
+	AwnNumber          int        `db:"maps_awn_number"`
+	LastViewed         *time.Time `db:"maps_last_viewed"`
 }

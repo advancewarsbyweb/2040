@@ -26,7 +26,6 @@ func GetGame(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"game": game,
 	})
-
 }
 
 func CreateGame(c *gin.Context) {

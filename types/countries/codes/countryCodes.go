@@ -4,7 +4,9 @@ import countrynames "github.com/awbw/2040/types/countries/names"
 
 type CountryCode string
 
-var CountryCodes map[countrynames.CountryName]CountryCode
+type CountryCodes map[countrynames.CountryName]CountryCode
+
+var Codes CountryCodes
 
 const (
 	OrangeStar     CountryCode = "OS"
@@ -26,7 +28,7 @@ const (
 )
 
 func init() {
-	CountryCodes = map[countrynames.CountryName]CountryCode{
+	Codes = CountryCodes{
 		countrynames.OrangeStar:  OrangeStar,
 		countrynames.BlueMoon:    BlueMoon,
 		countrynames.GreenEarth:  GreenEarth,
