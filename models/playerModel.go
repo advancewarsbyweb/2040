@@ -1,30 +1,28 @@
 package models
 
-import (
-	"database/sql"
-)
+import "gopkg.in/guregu/null.v4"
 
 type Player struct {
-	ID           int
-	GameID       int
-	UserID       int
-	CountryID    int
-	CoID         int
-	Funds        int
-	OldInterface string
-	Eliminated   string
-	LastRead     sql.NullTime
-	TurnStart    sql.NullTime
-	TurnClock    int
-	PauseTimer   bool
-	CoPower      int
-	CoPowerOn    string
-	Order        int
-	AcceptDraw   string
-	CoMaxPower   int
-	CoMaxSpower  int
-	CoImage      string
-	Team         string //events.Team
-	AETCount     int
-	TurnFlag     bool
+	ID           int       `db:"players_id"`
+	GameID       int       `db:"players_games_id"`
+	UserID       int       `db:"players_users_id"`
+	CountryID    int       `db:"players_countries_id"`
+	CoID         int       `db:"players_co_id"`
+	Funds        int       `db:"players_funds"`
+	OldInterface string    `db:"players_old_interface"`
+	Eliminated   string    `db:"players_eliminated"`
+	LastRead     null.Time `db:"players_last_read"`
+	TurnStart    null.Time `db:"players_turn_start"`
+	TurnClock    int       `db:"players_turn_clock"`
+	PauseTimer   bool      `db:"players_pause_timer"`
+	CoPower      int       `db:"players_co_power"`
+	CoPowerOn    string    `db:"players_co_power_on"`
+	Order        int       `db:"players_order"`
+	AcceptDraw   string    `db:"players_accept_draw"`
+	CoMaxPower   int       `db:"players_max_power"`
+	CoMaxSpower  int       `db:"players_max_spower"`
+	CoImage      string    `db:"players_co_image"`
+	Team         string    `db:"players_team"`
+	AETCount     int       `db:"players_aet_count"`
+	TurnFlag     bool      `db:"players_turn_flag"`
 }

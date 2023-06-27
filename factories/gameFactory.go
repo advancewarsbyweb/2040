@@ -1,11 +1,11 @@
 package factories
 
 import (
-	"database/sql"
 	"time"
 
 	"github.com/awbw/2040/models"
 	"github.com/bxcodec/faker/v4"
+	"gopkg.in/guregu/null.v4"
 )
 
 type GameFactory struct{}
@@ -24,15 +24,15 @@ func (f *GameFactory) Create() models.Game {
 	return models.Game{
 		Name:          faker.Word(),
 		Password:      "",
-		StartDate:     sql.NullTime{Time: time.Now()},
-		EndDate:       sql.NullTime{},
+		StartDate:     null.TimeFrom(time.Now()),
+		EndDate:       null.Time{},
 		CreatorID:     1,
-		ActivityDate:  sql.NullTime{Time: time.Now()},
+		ActivityDate:  null.TimeFrom(time.Now()),
 		MapID:         1,
 		WeatherType:   "Clear",
 		WeatherCode:   "C",
-		WeatherStart:  sql.NullInt16{},
-		Private:       sql.NullString{String: "N"},
+		WeatherStart:  null.Int{},
+		Private:       "N",
 		TurnID:        0,
 		Day:           1,
 		Active:        "N",
@@ -49,8 +49,8 @@ func (f *GameFactory) Create() models.Game {
 		UnitLimit:     50,
 		League:        "N",
 		Team:          "N",
-		AETInterval:   sql.NullInt16{},
-		AETDate:       sql.NullTime{},
-		UsePowers:     sql.NullString{},
+		AETInterval:   null.Int{},
+		AETDate:       null.Int{},
+		UsePowers:     "Y",
 	}
 }
