@@ -6,5 +6,5 @@ type Unit struct {
 	GameID   int
 	X        int
 	Y        int
-	UnitType
+	BaseUnit
 }

@@ -19,4 +19,28 @@ const (
 	PurpleLighting CountryName = "Purple Lightning"
 	AcidRain       CountryName = "Acid Rain"
 	WhiteNova      CountryName = "White Nova"
+	Neutral        CountryName = "Neutral"
 )
+
+var CountryList []CountryName
+
+func init() {
+	CountryList = []CountryName{
+		OrangeStar,
+		BlueMoon,
+		GreenEarth,
+		YellowComet,
+		BlackHole,
+		RedFire,
+		GreySky,
+		BrownDesert,
+		AmberBlaze,
+		JadeSun,
+		CobaltIce,
+		PinkCosmos,
+		TealGalaxy,
+		PurpleLighting,
+		AcidRain,
+		WhiteNova,
+	}
+}

@@ -2,11 +2,12 @@ package models
 
 import (
 	movementtypes "github.com/awbw/2040/types/movements"
+	unitnames "github.com/awbw/2040/types/units/names"
 )
 
-type UnitType struct {
+type BaseUnit struct {
 	ID             int                        `db:"units_id"`
-	Name           string                     `db:"units_name"`
+	Name           unitnames.UnitName         `db:"units_name"`
 	MovementPoints int                        `db:"units_movement_points"`
 	MovementType   movementtypes.MovementType `db:"units_movement_type"`
 	Vision         int                        `db:"units_vision"`
