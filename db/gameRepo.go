@@ -6,6 +6,8 @@ import (
 	"strings"
 
 	"github.com/awbw/2040/models"
+	gamecolumns "github.com/awbw/2040/models/columnNames/game"
+	"github.com/awbw/2040/types"
 )
 
 type GameRepository struct{}
@@ -20,7 +22,7 @@ func init() {
 	GameRepo = NewGameRepo()
 }
 
-func (r *GameRepository) FindGame(id int) (*models.Game, error) {
+func (r *GameRepository) FindGame(id int) (*types.Game, error) {
 	gameModel := models.Game{}
 	findQuery := "SELECT * FROM awbw_games WHERE games_id = ?"
 	err := DB.Get(&gameModel, findQuery, id)
@@ -28,10 +30,11 @@ func (r *GameRepository) FindGame(id int) (*models.Game, error) {
 	if err != nil {
 		return nil, errors.New(fmt.Sprintf("Failed to find game with given ID: %s", err.Error()))
 	}
-	return &gameModel, nil
+	game := types.NewGame(gameModel)
+	return &game, nil
 }
 
-func (r GameRepository) CreateGame(body models.Game) (int, error) {
+func (r GameRepository) CreateGame(body types.Game) (int, error) {
 	columns := []string{
 		"games_name",
 		"games_start_date",
@@ -81,21 +84,21 @@ func (r GameRepository) CreateGame(body models.Game) (int, error) {
 }
 
 // This function assumes that the given fields can be updated
-func (r GameRepository) UpdateGame(body models.Game, updatedFields []string) (*models.Game, error) {
+func (r GameRepository) UpdateGame(id int, updatedFields map[string]interface{}) (map[string]interface{}, error) {
 	var updateStatements []string
 
-	for _, column := range updatedFields {
+	for column, _ := range updatedFields {
 		updateStatements = append(updateStatements, fmt.Sprintf("%s = :%s", column, column))
 	}
-
-	updateQuery := fmt.Sprintf("UPDATE awbw_games SET %s WHERE games_id = ?", strings.Join(updateStatements, ","))
-	_, err := DB.NamedExec(updateQuery, body)
+	updateQuery := fmt.Sprintf("UPDATE awbw_games SET %s WHERE %s = :%s", strings.Join(updateStatements, ","), gamecolumns.ID, gamecolumns.ID)
+	updatedFields[gamecolumns.ID] = id
+	_, err := DB.NamedExec(updateQuery, updatedFields)
 
 	if err != nil {
-		return nil, errors.New("Could not update game")
+		return nil, errors.New(fmt.Sprintf("Could not update game: %s", err.Error()))
 	}
 
-	return &body, nil
+	return updatedFields, nil
 }
 
 func (r GameRepository) DeleteGame(id int) error {

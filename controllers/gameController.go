@@ -4,16 +4,29 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/awbw/2040/db"
-	"github.com/awbw/2040/models"
+	"github.com/awbw/2040/types"
 	"github.com/awbw/2040/utils"
 	"github.com/awbw/2040/ws"
 	"github.com/awbw/2040/ws/events"
 	"github.com/gin-gonic/gin"
 )
 
-func GetGame(c *gin.Context) {
+type GameController struct{}
+
+var Game GameController
+
+func NewGameController() GameController {
+	return GameController{}
+}
+
+func init() {
+	Game = NewGameController()
+}
+
+func (gc *GameController) Get(c *gin.Context) {
 	gameId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -28,9 +41,9 @@ func GetGame(c *gin.Context) {
 	})
 }
 
-func CreateGame(c *gin.Context) {
+func (gc *GameController) Create(c *gin.Context) {
 
-	var body models.Game
+	var body types.Game
 
 	c.Bind(&body)
 
@@ -48,15 +61,15 @@ func CreateGame(c *gin.Context) {
 }
 
 // Update Game with all of the given properties body
-func UpdateGame(c *gin.Context) {
+func (gc *GameController) Update(c *gin.Context) {
 
 	var body struct {
-		Game          models.Game `json:"game,omitempty"`
-		UpdatedFields []string    `json:"updatedFields"`
+		ID            int                    `json:"id"`
+		UpdatedFields map[string]interface{} `json:"updatedFields"`
 	}
 	c.Bind(&body)
 
-	gameModel, err := db.GameRepo.UpdateGame(body.Game, body.UpdatedFields)
+	gameModel, err := db.GameRepo.UpdateGame(body.ID, body.UpdatedFields)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": err.Error(),
@@ -69,18 +82,18 @@ func UpdateGame(c *gin.Context) {
 	})
 }
 
-func DeleteGame(c *gin.Context) {
+func (gc *GameController) Delete(c *gin.Context) {
 
 	// Make sure request can delete given game
 
 	c.Status(http.StatusOK)
 }
 
-func StartGame(c *gin.Context) {
+func (gc *GameController) Start(c *gin.Context) {
 	gameId, err := strconv.Atoi(c.Param("id"))
 	gameModel, err := db.GameRepo.FindGame(gameId)
 
-	if !gameModel.StartDate.Valid {
+	if gameModel.StartDate.IsZero() {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Game is already started",
 		})
@@ -89,15 +102,15 @@ func StartGame(c *gin.Context) {
 
 	// This should be a middleware
 	user := utils.GetAuthenticatedUser(c)
-	if gameModel.Creator.ID != user.ID {
+	if gameModel.CreatorID != user.ID {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"message": "Only the creator can start the game",
 		})
 		return
 	}
 
-	updatedFields := []string{"games_start_date"}
-	_, err = db.GameRepo.UpdateGame(models.Game{StartDate: utils.NullTime()}, updatedFields)
+	updatedFields := map[string]interface{}{"games_start_date": time.Now()}
+	_, err = db.GameRepo.UpdateGame(gameId, updatedFields)
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Game started",
@@ -121,7 +134,7 @@ func StartGame(c *gin.Context) {
 	ws.NotificationHandler(newNotification, users)
 }
 
-func JoinGame(c *gin.Context) {
+func (gc *GameController) Join(c *gin.Context) {
 	// RequireAuth middleware executed before
 
 	//_, err := db.PlayerRepo.CreatePlayer(models.Player{})

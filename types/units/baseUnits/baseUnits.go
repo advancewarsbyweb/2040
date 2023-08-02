@@ -8,8 +8,8 @@ import (
 
 type BaseUnit models.BaseUnit
 
-func Infantry() BaseUnit {
-	return BaseUnit{
+func Infantry() models.BaseUnit {
+	return models.BaseUnit{
 		Name:           unitnames.Infantry,
 		MovementType:   movementtypes.F,
 		MovementPoints: 3,

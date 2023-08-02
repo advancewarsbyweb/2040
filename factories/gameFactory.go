@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/awbw/2040/models"
+	"github.com/awbw/2040/types"
 	"github.com/bxcodec/faker/v4"
 	"gopkg.in/guregu/null.v4"
 )
@@ -20,21 +21,21 @@ func init() {
 	Game = NewGameFactory()
 }
 
-func (f *GameFactory) Create() models.Game {
-	return models.Game{
+func (f *GameFactory) Create() types.Game {
+	return types.NewGame(models.Game{
 		Name:          faker.Word(),
 		Password:      "",
-		StartDate:     null.TimeFrom(time.Now()),
-		EndDate:       null.Time{},
 		CreatorID:     1,
-		ActivityDate:  null.TimeFrom(time.Now()),
 		MapID:         1,
 		WeatherType:   "Clear",
 		WeatherCode:   "C",
-		WeatherStart:  null.Int{},
-		Private:       "N",
 		TurnID:        0,
 		Day:           1,
+		StartDate:     null.TimeFrom(time.Now()),
+		EndDate:       null.Time{},
+		ActivityDate:  null.TimeFrom(time.Now()),
+		WeatherStart:  null.Int{},
+		Private:       null.String{},
 		Active:        "N",
 		Funds:         1000,
 		CaptureLimit:  1000,
@@ -51,6 +52,6 @@ func (f *GameFactory) Create() models.Game {
 		Team:          "N",
 		AETInterval:   null.Int{},
 		AETDate:       null.Int{},
-		UsePowers:     "Y",
-	}
+		UsePowers:     null.String{},
+	})
 }

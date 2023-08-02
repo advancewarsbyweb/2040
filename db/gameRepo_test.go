@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/awbw/2040/factories"
+	gamecolumns "github.com/awbw/2040/models/columnNames/game"
 )
 
 func init() {
@@ -30,4 +31,30 @@ func TestCreateGame(t *testing.T) {
 		return
 	}
 	t.Logf("Created Game %s", newGame.Name)
+}
+
+func TestUpdateGame(t *testing.T) {
+	g := factories.Game.Create()
+	gameId, _ := GameRepo.CreateGame(g)
+
+	newName := "Test Update Game"
+	newFunds := 5000
+	updatedFields := map[string]interface{}{
+		gamecolumns.Name:  newName,
+		gamecolumns.Funds: newFunds,
+	}
+	updatedFields, err := GameRepo.UpdateGame(gameId, updatedFields)
+	if err != nil {
+		t.Fatalf("Could not update Game (%d): %s", gameId, err.Error())
+	}
+
+	updatedGame, err := GameRepo.FindGame(gameId)
+	if err != nil {
+		t.Fatalf("Could not find Game (%d): %s", gameId, err.Error())
+	}
+
+	if updatedGame.Name != newName || updatedGame.Funds != newFunds {
+		t.Fatalf("Game not updated properly. Got (%s, %d), want (%s, %d)", updatedGame.Name, updatedGame.Funds, newName, newFunds)
+	}
+	t.Logf("Updated Game succesfully")
 }
