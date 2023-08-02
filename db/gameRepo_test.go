@@ -20,7 +20,6 @@ func TestCreateGame(t *testing.T) {
 	}
 
 	newGame, err := GameRepo.FindGame(gameId)
-
 	if err != nil {
 		t.Errorf("Could not find Game (%d): %s", gameId, err.Error())
 		return
@@ -57,4 +56,16 @@ func TestUpdateGame(t *testing.T) {
 		t.Fatalf("Game not updated properly. Got (%s, %d), want (%s, %d)", updatedGame.Name, updatedGame.Funds, newName, newFunds)
 	}
 	t.Logf("Updated Game succesfully")
+}
+
+func TestDeleteGame(t *testing.T) {
+	g := factories.Game.Create()
+	gameId, _ := GameRepo.CreateGame(g)
+
+	err := GameRepo.DeleteGame(gameId)
+	if err != nil {
+		t.Fatalf("Could not delete Game: %s", err.Error())
+	}
+
+	t.Logf("Deleted Game succesfully")
 }

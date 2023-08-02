@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/awbw/2040/db"
+	gamecolumns "github.com/awbw/2040/models/columnNames/game"
 	"github.com/awbw/2040/types"
 	"github.com/awbw/2040/utils"
 	"github.com/awbw/2040/ws"
@@ -69,7 +70,7 @@ func (gc *GameController) Update(c *gin.Context) {
 	}
 	c.Bind(&body)
 
-	gameModel, err := db.GameRepo.UpdateGame(body.ID, body.UpdatedFields)
+	g, err := db.GameRepo.UpdateGame(body.ID, body.UpdatedFields)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": err.Error(),
@@ -78,7 +79,7 @@ func (gc *GameController) Update(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"game": gameModel,
+		"game": g,
 	})
 }
 
@@ -109,7 +110,7 @@ func (gc *GameController) Start(c *gin.Context) {
 		return
 	}
 
-	updatedFields := map[string]interface{}{"games_start_date": time.Now()}
+	updatedFields := map[string]interface{}{gamecolumns.StartDate: time.Now()}
 	_, err = db.GameRepo.UpdateGame(gameId, updatedFields)
 
 	c.JSON(http.StatusOK, gin.H{

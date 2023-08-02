@@ -102,11 +102,15 @@ func (r GameRepository) UpdateGame(id int, updatedFields map[string]interface{})
 }
 
 func (r GameRepository) DeleteGame(id int) error {
-	deleteQuery := "UPDATE awbw_games SET deleted_at = NOW() WHERE games_id = ?"
-	_, err := DB.NamedExec(deleteQuery, id)
+	deleteQuery := fmt.Sprintf("DELETE FROM awbw_games WHERE %s = :%s", gamecolumns.ID, gamecolumns.ID)
+
+	params := map[string]interface{}{
+		gamecolumns.ID: id,
+	}
+	_, err := DB.NamedExec(deleteQuery, params)
 
 	if err != nil {
-		return errors.New(fmt.Sprintf("Could not delete game with ID %d", id))
+		return errors.New(fmt.Sprintf("Could not delete game with ID %d: %s", id, err.Error()))
 	}
 
 	return nil
