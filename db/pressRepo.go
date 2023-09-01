@@ -24,11 +24,11 @@ func init() {
 
 func (r *PressRepository) FindPress(id int) (*types.Press, error) {
 	var pressModel models.Press
-	findQuery := `SELECT awbw_press.*, GROUP_CONCAT(users_username) AS recipients FROM awbw_press, awbw_press_to, awbw_players, ofua_users 
+	findQuery := `SELECT awbw_press.*, GROUP_CONCAT(users_username) AS recipients FROM awbw_press, awbw_press_to, awbw_players, ofua_users
 		WHERE press_id = ?
 		AND press_to_press_id = press_id
 		AND press_to_players_id = players_id
-		AND users_id = players_users_id;`
+		AND users_id = players_users_id`
 	err := DB.Get(&pressModel, findQuery, id)
 	if err != nil {
 		return nil, errors.New(fmt.Sprintf("Failed to find press with given ID: %s", err.Error()))
@@ -39,11 +39,11 @@ func (r *PressRepository) FindPress(id int) (*types.Press, error) {
 
 func (r *PressRepository) FindRecipients(pressId int) ([]types.PressTo, error) {
 	var pressToModels []models.PressTo
-	findQuery := `SELECT awbw_press_to.* FROM awbw_press, awbw_press_to, awbw_players, ofua_users
-		WHERE press_id = ?
-		AND press_id = press_to_press_id
-		AND press_to_players_id = players_id
-		AND players_users_id = users_id`
+	findQuery := `SELECT pt.* FROM awbw_press AS p, awbw_press_to AS pt, awbw_players AS pl, ofua_users as u
+		WHERE p.press_id = ?
+		AND p.press_id = pt.press_to_press_id
+		AND pt.press_to_players_id = pl.players_id
+		AND pl.players_users_id = u.users_id`
 	err := DB.Select(&pressToModels, findQuery, pressId)
 	if err != nil {
 		return nil, errors.New(fmt.Sprintf("Failed to find press recipients with given Press ID (%d): %s", pressId, err.Error()))

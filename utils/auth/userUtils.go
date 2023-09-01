@@ -1,4 +1,4 @@
-package utils
+package auth
 
 import (
 	"github.com/awbw/2040/models"

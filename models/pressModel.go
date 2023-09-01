@@ -7,7 +7,7 @@ import (
 )
 
 type Press struct {
-	ID         int         `db:"press_id"`
+	ID         int         `db:"press_id,omitempty"`
 	Text       null.String `db:"press_text"`
 	PlayerID   int         `db:"press_players_id"`
 	Date       time.Time   `db:"press_date"`
