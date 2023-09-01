@@ -4,16 +4,15 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"strconv"
 	"time"
 
 	"github.com/awbw/2040/db"
-	"github.com/awbw/2040/models"
+	"github.com/awbw/2040/types"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func CreateTokenString(user models.User) (string, error) {
+func CreateTokenString(user types.User) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"id":  user.ID,
 		"exp": time.Now().Add(time.Hour * 24 * 30).Unix(),
@@ -47,25 +46,25 @@ func GetTokenClaims(token *jwt.Token) (jwt.MapClaims, bool) {
 }
 
 func VerifyTokenExp(claims jwt.MapClaims) bool {
-	isValid := float64(time.Now().Unix()) > claims["exp"].(float64)
+	isValid := float64(time.Now().Unix()) < claims["exp"].(float64)
 	return isValid
 }
 
-func VerifyTokenUser(claims jwt.MapClaims) (*models.User, error) {
-	userId, err := strconv.Atoi(claims["id"].(string))
-	if err != nil {
-		return nil, errors.New(fmt.Sprintf("Could not get the user id from claims: %s", err.Error()))
-	}
+func VerifyTokenUser(claims jwt.MapClaims) (*types.User, error) {
+	userId := int(claims["id"].(float64))
+	//if err != nil {
+	//	return nil, errors.New(fmt.Sprintf("Could not get the user id from claims: %s", err.Error()))
+	//}
 
 	user, err := db.UserRepo.FindUser(userId)
 	if err != nil {
 		return nil, errors.New(fmt.Sprintf("Could not find user from claims: %s", err.Error()))
 	}
 
-	return &user, nil
+	return user, nil
 }
 
-func RequireAuth(c *gin.Context) (*models.User, error) {
+func RequireAuth(c *gin.Context) (*types.User, error) {
 	tokenString, err := GetTokenCookie(c)
 	if err != nil {
 		return nil, errors.New(fmt.Sprintf("Could not get the authorization cookie"))

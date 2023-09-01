@@ -1,0 +1,27 @@
+package playercolumns
+
+const (
+	ID           = "players_id"
+	UserID       = "players_users_id"
+	GameID       = "players_games_id"
+	CountryID    = "players_countries_id"
+	CoID         = "players_co_id"
+	Funds        = "players_funds"
+	OldInterface = "players_old_interface"
+	UniqID       = "players_uniq_id"
+	Eliminated   = "players_eliminated"
+	LastRead     = "players_last_read"
+	TurnStart    = "players_turn_start"
+	TurnClock    = "players_turn_clock"
+	PauseTimer   = "players_pause_timer"
+	CoPower      = "players_co_power"
+	CoPowerOn    = "players_co_power_on"
+	Order        = "players_order"
+	AcceptDraw   = "players_accept_draw"
+	CoMaxPower   = "players_co_max_power"
+	CoMaxSPower  = "players_co_max_spower"
+	CoImage      = "players_co_image"
+	Team         = "players_team"
+	AETCount     = "players_aet_count"
+	TurnFlag     = "players_turn_flag"
+)

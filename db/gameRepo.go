@@ -61,17 +61,7 @@ func (r GameRepository) CreateGame(body types.Game) (int, error) {
 		"games_league",
 		"games_team",
 	}
-	var (
-		insertCols []string
-		values     []string
-	)
-
-	// Format columns to insert with the values from the list above to make sure they always match
-	for _, col := range columns {
-		insertCols = append(insertCols, col)
-		values = append(values, fmt.Sprintf(":%s", col))
-	}
-	createQuery := fmt.Sprintf("INSERT INTO awbw_games (%s) VALUES (%s)", strings.Join(insertCols, ","), strings.Join(values, ","))
+	createQuery := FormatCreateQuery("awbw_games", columns)
 	res, err := DB.NamedExec(createQuery, body)
 
 	if err != nil {

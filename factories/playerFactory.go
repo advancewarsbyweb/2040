@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/awbw/2040/models"
+	"github.com/awbw/2040/types"
 	"gopkg.in/guregu/null.v4"
 )
 
@@ -23,9 +24,9 @@ func init() {
 	Player = NewPlayerFactory()
 }
 
-func (f *PlayerFactory) Create() models.Player {
+func (f *PlayerFactory) Create() types.Player {
 	playerId := rand.Intn(100)
-	return models.Player{
+	return types.NewPlayer(models.Player{
 		ID:           playerId,
 		GameID:       Game.Create().ID,
 		UserID:       1,
@@ -33,6 +34,7 @@ func (f *PlayerFactory) Create() models.Player {
 		CoID:         1,
 		Funds:        rand.Intn(10) * 1000,
 		OldInterface: "N",
+		UniqID:       null.StringFrom("N"),
 		Eliminated:   "N",
 		LastRead:     null.TimeFrom(time.Now()),
 		TurnStart:    null.TimeFrom(time.Now()),
@@ -48,5 +50,5 @@ func (f *PlayerFactory) Create() models.Player {
 		Team:         strconv.Itoa(playerId),
 		AETCount:     0,
 		TurnFlag:     true,
-	}
+	})
 }

@@ -37,9 +37,7 @@ func (gc *GameController) Get(c *gin.Context) {
 	}
 	game, err := db.GameRepo.FindGame(gameId)
 
-	c.JSON(http.StatusOK, gin.H{
-		"game": game,
-	})
+	c.JSON(http.StatusOK, game)
 }
 
 func (gc *GameController) Create(c *gin.Context) {

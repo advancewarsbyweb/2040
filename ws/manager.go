@@ -59,7 +59,6 @@ func (m *Manager) RouteEvent(e Event, c *Client) error {
 }
 
 func (m *Manager) ServeWS(c *gin.Context) {
-	// Here we validate the jwt
 	loggedUser, err := auth.RequireAuth(c)
 	if err != nil {
 		log.Println(fmt.Sprintf("Could not authorize user: %s", err.Error()))

@@ -11,10 +11,6 @@ func init() {
 	godotenv.Load("../.env")
 }
 
-func NewTestDatabase() {
-	DB = ConnectDatabase(os.Getenv("TEST_DSN"))
-}
-
 func TestConnectDatabase(t *testing.T) {
 	db := ConnectDatabase(os.Getenv("TEST_DSN"))
 	defer func() {
