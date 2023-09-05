@@ -61,6 +61,23 @@ func (r *PlayerRepository) FindPlayer(id int) (*types.Player, error) {
 	return &p, nil
 }
 
+func (r *PlayerRepository) FindPlayerUser(id int) (*types.Player, error) {
+	var playerModel models.Player
+	playerQuery := fmt.Sprintf(`SELECT awbw_players.*, %s FROM awbw_players, ofua_users
+        WHERE players_id = ?
+        AND users_id = players_users_id`,
+		strings.Join(UserRepo.Columns, ","),
+	)
+
+	err := DB.Get(&playerModel, playerQuery, id)
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("Failed to find playerUser with given ID: %s", err.Error()))
+	}
+
+	p := types.NewPlayer(playerModel)
+	return &p, nil
+}
+
 func (r *PlayerRepository) FindPlayersByGame(gameId int) ([]types.Player, error) {
 
 	var playerModels []models.Player

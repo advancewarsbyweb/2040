@@ -7,7 +7,7 @@ import (
 type Game struct {
 	ID            int         `db:"games_id"`
 	Name          string      `db:"games_name"`
-	Password      string      `db:"games_password"`
+    Password      string      `db:"games_password" json:"-"`
 	StartDate     null.Time   `db:"games_start_date"`
 	EndDate       null.Time   `db:"games_end_date"`
 	CreatorID     int         `db:"games_creator"`
