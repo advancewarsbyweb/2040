@@ -48,7 +48,7 @@ func (gc *GameController) Create(c *gin.Context) {
 
 	// Validation here
 
-	_, err := db.GameRepo.CreateGame(body)
+	gameId, err := db.GameRepo.CreateGame(body)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": err.Error(),
@@ -56,7 +56,15 @@ func (gc *GameController) Create(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{})
+    game, err := db.GameRepo.FindGame(gameId)
+    if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"message": err.Error(),
+		})
+		return
+    }
+
+	c.JSON(http.StatusOK, game)
 }
 
 // Update Game with all of the given properties body
