@@ -11,7 +11,7 @@ func init() {
 }
 
 func TestCreateUser(t *testing.T) {
-	u := factories.User.Create()
+	u := factories.User.Create().Build()
 	userId, err := UserRepo.CreateUser(u)
 
 	if err != nil {

@@ -28,4 +28,5 @@ type Player struct {
 	AETCount     int         `db:"players_aet_count"`
 	TurnFlag     bool        `db:"players_turn_flag"`
 	User         *User       `db:""`
+	Game         *Game       `db:""`
 }

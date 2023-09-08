@@ -76,7 +76,7 @@ func (r *UserRepository) FindUser(id int) (*types.User, error) {
 	return &u, nil
 }
 
-func (r *UserRepository) FindUserByPlayerId(id int) (*types.User, error) {
+func (r *UserRepository) FindUserByPlayer(id int) (*types.User, error) {
 	var m models.User
 	query := `SELECT ofua_users.* from ofua_users, awbw_players
 		WHERE players_id = ?

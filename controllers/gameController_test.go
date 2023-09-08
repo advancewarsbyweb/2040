@@ -20,59 +20,57 @@ func init() {
 }
 
 func TestCreateGame(t *testing.T) {
-    g := factories.Game.Create()
+	g := factories.Game.Create().Build()
 
 	w := httptest.NewRecorder()
 	c, _ := gin.CreateTestContext(w)
 
-    // Test for Marshal function in the factories tests instead
-    jsonBody, err := json.Marshal(g)
-    if err != nil {
-        t.Fatalf(err.Error())
-    }
-    c.Request = &http.Request{
-        Method: "POST",
-        Body: io.NopCloser(bytes.NewBuffer(jsonBody)),
-        Header: http.Header{},
-    }
-    c.Request.Header.Set("Content-Type", "application/json")
+	jsonBody, _ := json.Marshal(g)
 
-    Game.Create(c)
-
-    if w.Result().StatusCode != http.StatusOK {
-        t.Fatalf("Wrong status code returned. Got (%d), want (%d)", w.Result().StatusCode, http.StatusOK)
-    }
-
-    var res types.Game
-    json.Unmarshal(w.Body.Bytes(), &res)
-
-    if g.Name != res.Name {
-        t.Fatalf("Game created does not have given name. Got (%s), want (%s)", res.Name, g.Name)
-    }
-}
-
-func TestGetGame(t *testing.T) {
-	g := factories.Game.Create()
-	gameId, _ := db.GameRepo.CreateGame(g)
-
-	w := httptest.NewRecorder()
-	c, _ := gin.CreateTestContext(w)
-	c.Params = []gin.Param{
-		{
-			Key:   "id",
-			Value: strconv.Itoa(gameId),
-		},
+	c.Request = &http.Request{
+		Method: "POST",
+		Body:   io.NopCloser(bytes.NewBuffer(jsonBody)),
+		Header: http.Header{},
 	}
-	Game.Get(c)
+	c.Request.Header.Set("Content-Type", "application/json")
 
-    if w.Result().StatusCode != http.StatusOK {
-        t.Fatalf("Wrong status code returned. Got (%d), want (%d)", w.Result().StatusCode, http.StatusOK)
-    }
+	Game.Create(c)
+
+	if w.Result().StatusCode != http.StatusOK {
+		t.Fatalf("Wrong status code returned. Got (%d), want (%d)", w.Result().StatusCode, http.StatusOK)
+	}
 
 	var res types.Game
 	json.Unmarshal(w.Body.Bytes(), &res)
 
-	if gameId != res.ID {
-		t.Fatalf("Wrong game returned from controller. Got (%d), want (%d)", res.ID, gameId)
+	if g.Name != res.Name {
+		t.Fatalf("Game created does not have given name. Got (%s), want (%s)", res.Name, g.Name)
+	}
+}
+
+func TestGetGame(t *testing.T) {
+	g := factories.Game.Create().BuildInsert()
+
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
+
+	c.Params = []gin.Param{
+		{
+			Key:   "id",
+			Value: strconv.Itoa(g.ID),
+		},
+	}
+
+	Game.Get(c)
+
+	if w.Result().StatusCode != http.StatusOK {
+		t.Fatalf("Wrong status code returned. Got (%d), want (%d)", w.Result().StatusCode, http.StatusOK)
+	}
+
+	var res types.Game
+	json.Unmarshal(w.Body.Bytes(), &res)
+
+	if g.ID != res.ID {
+		t.Fatalf("Wrong game returned from controller. Got (%d), want (%d)", res.ID, g.ID)
 	}
 }

@@ -3,13 +3,16 @@ package factories
 import (
 	"time"
 
+	"github.com/awbw/2040/db"
 	"github.com/awbw/2040/models"
 	"github.com/awbw/2040/types"
 	"github.com/bxcodec/faker/v4"
 	"gopkg.in/guregu/null.v4"
 )
 
-type UserFactory struct{}
+type UserFactory struct {
+	User types.User
+}
 
 var User UserFactory
 
@@ -21,8 +24,8 @@ func init() {
 	User = NewUserFactory()
 }
 
-func (f UserFactory) Create() types.User {
-	return types.NewUser(models.User{
+func (f *UserFactory) Create() *UserFactory {
+	f.User = types.NewUser(models.User{
 		Username:       faker.Word(),
 		FirstName:      faker.Word(),
 		LastName:       faker.Word(),
@@ -60,4 +63,15 @@ func (f UserFactory) Create() types.User {
 		DorFC:          null.String{},
 		GameAnimations: "Y",
 	})
+	return f
+}
+
+func (f *UserFactory) Build() types.User {
+	return f.User
+}
+
+func (f *UserFactory) BuildInsert() types.User {
+	uID, _ := db.UserRepo.CreateUser(f.User)
+	f.User.ID = uID
+	return f.User
 }

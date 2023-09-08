@@ -14,21 +14,13 @@ func init() {
 
 func TestCreatePress(t *testing.T) {
 
-	u1 := factories.User.Create()
-	u1ID, _ := UserRepo.CreateUser(u1)
-	p1 := factories.Player.Create()
-	p1.UserID = u1ID
+	g := factories.Game.Create().BuildAndInsert()
+	p1 := factories.Player.Create().CreateRelations().BuildAndInsert()
+	p2 := factories.Player.Create().CreateRelations().BuildAndInsert()
 
-	u2 := factories.User.Create()
-	u2ID, _ := UserRepo.CreateUser(u2)
-	p2 := factories.Player.Create()
-	p2.UserID = u2ID
+	recipients := []int{p1.ID, p2.ID}
 
-	p1ID, _ := PlayerRepo.CreatePlayer(p1)
-	p2ID, _ := PlayerRepo.CreatePlayer(p2)
-	recipients := []int{p1ID, p2ID}
-
-	p := factories.Press.Create()
+	p := factories.Press.Create().Build()
 	pressId, err := PressRepo.CreatePress(p, recipients)
 
 	if err != nil {

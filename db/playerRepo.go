@@ -48,6 +48,7 @@ func init() {
 	PlayerRepo = NewPlayerRepo()
 }
 
+// PlayerModel with null UserModel in it
 func (r *PlayerRepository) FindPlayer(id int) (*types.Player, error) {
 	var playerModel models.Player
 	playerQuery := "SELECT * FROM awbw_players WHERE players_id = ?"
@@ -61,6 +62,7 @@ func (r *PlayerRepository) FindPlayer(id int) (*types.Player, error) {
 	return &p, nil
 }
 
+// PlayerModel with non null UserModel in it
 func (r *PlayerRepository) FindPlayerUser(id int) (*types.Player, error) {
 	var playerModel models.Player
 	playerQuery := fmt.Sprintf(`SELECT awbw_players.*, %s FROM awbw_players, ofua_users
@@ -81,9 +83,9 @@ func (r *PlayerRepository) FindPlayerUser(id int) (*types.Player, error) {
 func (r *PlayerRepository) FindPlayersByGame(gameId int) ([]types.Player, error) {
 
 	var playerModels []models.Player
-	playersQuery := fmt.Sprintf("SELECT %s FROM awbw_players WHERE players_games_id = ?", strings.Join(PlayerRepo.Columns, ","))
+	query := "SELECT * FROM awbw_players WHERE players_games_id = ?"
 
-	err := DB.Select(&playerModels, playersQuery, gameId)
+	err := DB.Select(&playerModels, query, gameId)
 	if err != nil {
 		return nil, errors.New("Failed to find players with given game ID")
 	}

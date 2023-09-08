@@ -21,8 +21,8 @@ func init() {
 
 func (f *UnitFactory) Create(gameId int, playerId int) models.Unit {
 
-	gameModel := Game.Create()
-	playerModel := Player.Create()
+	gameModel := Game.Create().Build()
+	playerModel := Player.Create().Build()
 	playerModel.GameID = gameModel.ID
 
 	return models.Unit{

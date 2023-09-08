@@ -35,9 +35,9 @@ func VerifyTokenString(tokenString string) (*jwt.Token, error) {
 	return token, nil
 }
 
-func GetTokenCookie(c *gin.Context) (string, error) {
-	tokenString, err := c.Cookie("Authorization")
-	return tokenString, err
+func GetTokenHeader(c *gin.Context) string {
+	tokenString := c.Request.Header.Get("Authorization")
+	return tokenString
 }
 
 func GetTokenClaims(token *jwt.Token) (jwt.MapClaims, bool) {
@@ -65,10 +65,7 @@ func VerifyTokenUser(claims jwt.MapClaims) (*types.User, error) {
 }
 
 func RequireAuth(c *gin.Context) (*types.User, error) {
-	tokenString, err := GetTokenCookie(c)
-	if err != nil {
-		return nil, errors.New(fmt.Sprintf("Could not get the authorization cookie"))
-	}
+	tokenString := GetTokenHeader(c)
 
 	token, err := VerifyTokenString(tokenString)
 	if err != nil {
