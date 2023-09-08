@@ -27,7 +27,7 @@ func RequireTurn(c *gin.Context) {
 		return
 	}
 
-	if gameModel.Turn.ID != user.ID {
+	if gameModel.TurnID != user.ID {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"message": "Can not update turn, currently not the user's turn!",
 		})

@@ -5,7 +5,6 @@ import (
 
 	"github.com/awbw/2040/db"
 	"github.com/awbw/2040/types"
-	"github.com/awbw/2040/utils/auth"
 	"github.com/gin-gonic/gin"
 )
 
@@ -35,29 +34,14 @@ func (pc *PressController) Create(c *gin.Context) {
 
 	err := c.Bind(&body)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
-		return
+		c.AbortWithError(http.StatusInternalServerError, err)
 	}
 
-	// PlayerIsUser middleware
-	u := auth.GetAuthenticatedUser(c)
-
-	playerUser, err := db.PlayerRepo.FindPlayerUser(body.Press.PlayerID)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
-		return
-	}
-
-	if playerUser.UserID != u.ID {
-		c.JSON(http.StatusForbidden, gin.H{
-			"message": "User sending press does not match logged in User",
-		})
-		return
-	}
+	p, _ := c.Get("PlayerUser")
+	playerUser := p.(types.Player)
 	playersInGame, err := db.PlayerRepo.FindPlayersByGame(playerUser.GameID)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
-		return
+		c.AbortWithError(http.StatusInternalServerError, err)
 	}
 	pIDs := make(map[int]bool)
 	for _, p := range playersInGame {
@@ -66,23 +50,20 @@ func (pc *PressController) Create(c *gin.Context) {
 
 	for _, pID := range body.Recipients {
 		if _, validRecipient := pIDs[pID]; !validRecipient {
-			c.JSON(http.StatusBadRequest, gin.H{
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 				"message": "One or more recipient is invalid",
 			})
-			return
 		}
 	}
 
 	pressId, err := db.PressRepo.CreatePress(body.Press, body.Recipients)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
-		return
+		c.AbortWithError(http.StatusInternalServerError, err)
 	}
 
 	press, err := db.PressRepo.FindPress(pressId)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
-		return
+		c.AbortWithError(http.StatusInternalServerError, err)
 	}
 	c.JSON(http.StatusOK, press)
 }
