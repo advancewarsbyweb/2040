@@ -21,9 +21,11 @@ func init() {
 func TestCreatePress(t *testing.T) {
 
 	g := factories.Game.Create().BuildInsert()
+
 	p1 := factories.Player.Create().SetGame(&g).BuildInsert()
 	p2 := factories.Player.Create().SetGame(&g).BuildInsert()
 	p3 := factories.Player.Create().CreateRelations().SetGame(&g).BuildInsert()
+
 	press := factories.Press.Create().SetPlayer(&p3).Build()
 
 	data, _ := json.Marshal(map[string]interface{}{
