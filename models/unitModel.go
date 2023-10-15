@@ -13,5 +13,7 @@ type Unit struct {
 	Cargo1ID int
 	Cargo2ID int
 	Carried  string
+	Game     *Game   `db:""`
+	Player   *Player `db:""`
 	BaseUnit
 }

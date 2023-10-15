@@ -43,6 +43,7 @@ func (pc *PressController) Create(c *gin.Context) {
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 	}
+
 	pIDs := make(map[int]bool)
 	for _, p := range playersInGame {
 		pIDs[p.ID] = true

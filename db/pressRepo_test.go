@@ -14,9 +14,8 @@ func init() {
 
 func TestCreatePress(t *testing.T) {
 
-	g := factories.Game.Create().BuildAndInsert()
-	p1 := factories.Player.Create().CreateRelations().BuildAndInsert()
-	p2 := factories.Player.Create().CreateRelations().BuildAndInsert()
+	p1 := factories.Player.Create().CreateRelations().BuildInsert()
+	p2 := factories.Player.Create().CreateRelations().BuildInsert()
 
 	recipients := []int{p1.ID, p2.ID}
 
@@ -36,7 +35,7 @@ func TestCreatePress(t *testing.T) {
 		t.Fatalf("Subject of Press created does not match given Subject: got (%s), want (%s)", newPress.Subject, p.Subject)
 	}
 
-	want := strings.Join([]string{u1.Username, u2.Username}, ",")
+	want := strings.Join([]string{p1.User.Username, p2.User.Username}, ",")
 	if newPress.Recipients != want {
 		t.Fatalf("Recipients usernames list does not match: got (%s), want (%s)", newPress.Recipients, want)
 	}

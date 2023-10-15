@@ -8,21 +8,6 @@ import (
 
 type BaseUnit models.BaseUnit
 
-func Infantry() models.BaseUnit {
-	return models.BaseUnit{
-		Name:           unitnames.Infantry,
-		MovementType:   movementtypes.F,
-		MovementPoints: 3,
-		Vision:         2,
-		Fuel:           99,
-		FuelPerTurn:    0,
-		ShortRange:     1,
-		LongRange:      1,
-		Ammo:           -1,
-		Cost:           1000,
-	}
-}
-
 func Mech() models.BaseUnit {
 	return models.BaseUnit{
 		Name:           unitnames.Mech,

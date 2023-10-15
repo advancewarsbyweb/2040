@@ -4,10 +4,13 @@ import (
 	"math/rand"
 
 	"github.com/awbw/2040/models"
+	"github.com/awbw/2040/types"
 	baseunits "github.com/awbw/2040/types/units/baseUnits"
 )
 
-type UnitFactory struct{}
+type UnitFactory struct {
+	Unit types.Unit
+}
 
 var Unit UnitFactory
 
@@ -19,31 +22,56 @@ func init() {
 	Unit = NewUnitFactory()
 }
 
-func (f *UnitFactory) Create(gameId int, playerId int) models.Unit {
-
-	gameModel := Game.Create().Build()
-	playerModel := Player.Create().Build()
-	playerModel.GameID = gameModel.ID
-
-	return models.Unit{
+func (f *UnitFactory) Create() *UnitFactory {
+	u := types.NewUnit(models.Unit{
 		ID:       rand.Intn(100),
-		GameID:   gameId,
-		PlayerID: playerId,
+		GameID:   1,
+		PlayerID: 1,
 		X:        1,
 		Y:        1,
-	}
+	})
+	f.Unit = u
+	return f
 }
 
-func (f *UnitFactory) Infantry(gameId int, playerId int) models.Unit {
-	u := Unit.Create(gameId, playerId)
-	u.BaseUnit = baseunits.Infantry()
+func (f *UnitFactory) CreateRelations() *UnitFactory {
+	p := Player.Create().BuildInsert()
+	g := Game.Create().BuildInsert()
 
-	return u
+	f.Unit.GameID = g.ID
+	f.Unit.PlayerID = p.ID
+	f.Unit.Game = &g
+	f.Unit.Player = &p
+	return f
 }
 
-func (f *UnitFactory) Artillery(gameId, int, playerId int) models.Unit {
-	u := Unit.Create(gameId, playerId)
-	u.BaseUnit = baseunits.Artillery()
+func (f *UnitFactory) SetGame(g *types.Game) *UnitFactory {
+	f.Unit.GameID = g.ID
+	f.Unit.Game = g
+	return f
+}
 
-	return u
+func (f *UnitFactory) SetPlayer(p *types.Player) *UnitFactory {
+	f.Unit.PlayerID = p.ID
+	f.Unit.Player = p
+	return f
+}
+
+func (f *UnitFactory) Build() types.Unit {
+	return f.Unit
+}
+
+func (f *UnitFactory) BuildInsert() types.Unit {
+	// Add UnitRepo create function here
+	return f.Unit
+}
+
+func (f *UnitFactory) Infantry() *UnitFactory {
+	f.Unit.BaseUnit = baseunits.Infantry()
+	return f
+}
+
+func (f *UnitFactory) Artillery() *UnitFactory {
+	f.Unit.BaseUnit = baseunits.Artillery()
+	return f
 }

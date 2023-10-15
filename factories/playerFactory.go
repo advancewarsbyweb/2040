@@ -11,6 +11,10 @@ import (
 	"gopkg.in/guregu/null.v4"
 )
 
+type FactoryInterface interface {
+	CreatePlayer()
+}
+
 type PlayerFactory struct {
 	Player types.Player
 }
@@ -28,7 +32,7 @@ func init() {
 func (f *PlayerFactory) Create() *PlayerFactory {
 	playerId := rand.Intn(100)
 	playerType := types.NewPlayer(models.Player{
-		ID:           playerId,
+		ID:           1,
 		GameID:       rand.Intn(100),
 		UserID:       1,
 		CountryID:    1,
