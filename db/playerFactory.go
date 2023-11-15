@@ -1,19 +1,14 @@
-package factories
+package db
 
 import (
 	"math/rand"
 	"strconv"
 	"time"
 
-	"github.com/awbw/2040/db"
 	"github.com/awbw/2040/models"
 	"github.com/awbw/2040/types"
 	"gopkg.in/guregu/null.v4"
 )
-
-type FactoryInterface interface {
-	CreatePlayer()
-}
 
 type PlayerFactory struct {
 	Player types.Player
@@ -75,6 +70,13 @@ func (f *PlayerFactory) CreateRelations() *PlayerFactory {
 	return f
 }
 
+func (f *PlayerFactory) CreateUser() *PlayerFactory {
+	u := User.Create().BuildInsert()
+	f.Player.UserID = u.ID
+	f.Player.User = &u
+	return f
+}
+
 func (f *PlayerFactory) SetGame(g *types.Game) *PlayerFactory {
 	f.Player.GameID = g.ID
 	f.Player.Game = g
@@ -92,7 +94,7 @@ func (f *PlayerFactory) Build() types.Player {
 }
 
 func (f *PlayerFactory) BuildInsert() types.Player {
-	pID, _ := db.PlayerRepo.CreatePlayer(f.Player)
+	pID, _ := PlayerRepo.CreatePlayer(f.Player)
 	f.Player.ID = pID
 	return f.Player
 }

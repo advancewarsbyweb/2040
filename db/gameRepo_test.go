@@ -3,7 +3,6 @@ package db
 import (
 	"testing"
 
-	"github.com/awbw/2040/factories"
 	gamecolumns "github.com/awbw/2040/models/columnNames/game"
 )
 
@@ -12,7 +11,7 @@ func init() {
 }
 
 func TestCreateGame(t *testing.T) {
-	g := factories.Game.Create()
+	g := Game.Create().Build()
 	gameId, err := GameRepo.CreateGame(g)
 
 	if err != nil {
@@ -33,7 +32,7 @@ func TestCreateGame(t *testing.T) {
 }
 
 func TestUpdateGame(t *testing.T) {
-	g := factories.Game.Create()
+	g := Game.Create().Build()
 	gameId, _ := GameRepo.CreateGame(g)
 
 	newName := "Test Update Game"
@@ -59,7 +58,7 @@ func TestUpdateGame(t *testing.T) {
 }
 
 func TestDeleteGame(t *testing.T) {
-	g := factories.Game.Create()
+	g := Game.Create().Build()
 	gameId, _ := GameRepo.CreateGame(g)
 
 	err := GameRepo.DeleteGame(gameId)

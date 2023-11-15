@@ -1,9 +1,8 @@
-package factories
+package db
 
 import (
 	"time"
 
-	"github.com/awbw/2040/db"
 	"github.com/awbw/2040/models"
 	"github.com/awbw/2040/types"
 	"github.com/bxcodec/faker/v4"
@@ -52,7 +51,7 @@ func (f *PressFactory) Build() types.Press {
 }
 
 func (f *PressFactory) BuildAndInsert(sendToIds []int) types.Press {
-	pID, _ := db.PressRepo.CreatePress(f.Press, sendToIds)
+	pID, _ := PressRepo.CreatePress(f.Press, sendToIds)
 	f.Press.ID = pID
 	return f.Press
 }

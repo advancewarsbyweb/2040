@@ -6,7 +6,6 @@ import (
 )
 
 type BaseUnit struct {
-	ID             int                        `db:"units_id"`
 	Name           unitnames.UnitName         `db:"units_name"`
 	MovementPoints int                        `db:"units_movement_points"`
 	MovementType   movementtypes.MovementType `db:"units_movement_type"`

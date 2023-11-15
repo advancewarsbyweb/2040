@@ -2,25 +2,77 @@ package baseunits
 
 import (
 	"github.com/awbw/2040/models"
+	"github.com/awbw/2040/types"
 	movementtypes "github.com/awbw/2040/types/movements"
 	unitnames "github.com/awbw/2040/types/units/names"
 )
 
-type BaseUnit models.BaseUnit
+type Unit interface {
+	Move()
+	Fire(def Unit) error
+	Load()
 
-func Mech() models.BaseUnit {
-	return models.BaseUnit{
-		Name:           unitnames.Mech,
-		MovementType:   movementtypes.B,
-		MovementPoints: 2,
-		Vision:         2,
-		Fuel:           99,
-		FuelPerTurn:    0,
-		ShortRange:     1,
-		LongRange:      1,
-		Ammo:           3,
-		Cost:           3000,
-	}
+	// Getters / Setters
+	GetName() unitnames.UnitName
+	GetAmmo() int
+	SetAmmo(ammo int)
+	GetHp() float64
+	SetHp(hp float64)
+	GetX() int
+	GetY() int
+	SetPos(x int, y int)
+	GetMoved() int
+	SetMoved(moved int)
+}
+
+type unit types.Unit
+
+func (u *unit) Move() {
+
+}
+
+func (u *unit) Load() {
+}
+
+func (u *unit) GetName() unitnames.UnitName {
+	return u.Name
+}
+
+func (u *unit) GetAmmo() int {
+	return u.Ammo
+}
+
+func (u *unit) SetAmmo(ammo int) {
+	u.Ammo = ammo
+}
+
+func (u *unit) GetHp() float64 {
+	return u.HP
+}
+
+func (u *unit) SetHp(hp float64) {
+	u.HP = hp
+}
+
+func (u *unit) GetX() int {
+	return u.X
+}
+
+func (u *unit) GetY() int {
+	return u.Y
+}
+
+func (u *unit) SetPos(x int, y int) {
+	u.X = x
+	u.Y = y
+}
+
+func (u *unit) GetMoved() int {
+	return u.Moved
+}
+
+func (u *unit) SetMoved(moved int) {
+	u.Moved = moved
 }
 
 func Recon() models.BaseUnit {

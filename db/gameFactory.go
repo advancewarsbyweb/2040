@@ -1,9 +1,8 @@
-package factories
+package db
 
 import (
 	"time"
 
-	"github.com/awbw/2040/db"
 	"github.com/awbw/2040/models"
 	"github.com/awbw/2040/types"
 	"github.com/bxcodec/faker/v4"
@@ -65,7 +64,7 @@ func (f *GameFactory) Build() types.Game {
 }
 
 func (f *GameFactory) BuildInsert() types.Game {
-	gID, _ := db.GameRepo.CreateGame(f.Game)
+	gID, _ := GameRepo.CreateGame(f.Game)
 	f.Game.ID = gID
 	return f.Game
 }

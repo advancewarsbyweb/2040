@@ -24,7 +24,7 @@ func TestCreatePress(t *testing.T) {
 
 	p1 := factories.Player.Create().SetGame(&g).BuildInsert()
 	p2 := factories.Player.Create().SetGame(&g).BuildInsert()
-	p3 := factories.Player.Create().CreateRelations().SetGame(&g).BuildInsert()
+	p3 := factories.Player.Create().CreateUser().SetGame(&g).BuildInsert()
 
 	press := factories.Press.Create().SetPlayer(&p3).Build()
 

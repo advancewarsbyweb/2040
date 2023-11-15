@@ -8,6 +8,7 @@ type Unit struct {
 	models.Unit
 	Player *Player
 	Game   *Game
+	models.BaseUnit
 }
 
 func NewUnit(u models.Unit) Unit {
@@ -24,5 +25,6 @@ func NewUnit(u models.Unit) Unit {
 		g := NewGame(*u.Game)
 		ut.Game = &g
 	}
+
 	return ut
 }

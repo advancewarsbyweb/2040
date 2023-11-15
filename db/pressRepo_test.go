@@ -4,7 +4,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/awbw/2040/factories"
 	"golang.org/x/exp/slices"
 )
 
@@ -14,12 +13,12 @@ func init() {
 
 func TestCreatePress(t *testing.T) {
 
-	p1 := factories.Player.Create().CreateRelations().BuildInsert()
-	p2 := factories.Player.Create().CreateRelations().BuildInsert()
+	p1 := Player.Create().CreateRelations().BuildInsert()
+	p2 := Player.Create().CreateRelations().BuildInsert()
 
 	recipients := []int{p1.ID, p2.ID}
 
-	p := factories.Press.Create().Build()
+	p := Press.Create().Build()
 	pressId, err := PressRepo.CreatePress(p, recipients)
 
 	if err != nil {
@@ -45,24 +44,18 @@ func TestCreatePress(t *testing.T) {
 
 func TestFindRecipients(t *testing.T) {
 
-	u1ID, _ := UserRepo.CreateUser(factories.User.Create())
-	p1 := factories.Player.Create()
-	p1.UserID = u1ID
+	g := Game.Create().BuildInsert()
 
-	u2ID, _ := UserRepo.CreateUser(factories.User.Create())
-	p2 := factories.Player.Create()
-	p2.UserID = u2ID
+	p1 := Player.Create().CreateUser().SetGame(&g).BuildInsert()
+	p2 := Player.Create().CreateUser().SetGame(&g).BuildInsert()
 
-	p1ID, _ := PlayerRepo.CreatePlayer(p1)
-	p2ID, _ := PlayerRepo.CreatePlayer(p2)
-	recipients := []int{p1ID, p2ID}
+	recipients := []int{p1.ID, p2.ID}
 
-	p := factories.Press.Create()
+	p := Press.Create().Build()
 	pressId, err := PressRepo.CreatePress(p, recipients)
 
 	if err != nil {
 		t.Fatalf("Could not create Press: %s", err.Error())
-
 	}
 
 	newRecipients, err := PressRepo.FindRecipients(pressId)

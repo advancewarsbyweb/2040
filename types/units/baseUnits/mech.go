@@ -6,28 +6,28 @@ import (
 	unitnames "github.com/awbw/2040/types/units/names"
 )
 
-type infantry struct {
+type mech struct {
 	directUnit
 }
 
-func (u *infantry) Load() {
+func (u *mech) Load() {
 }
 
-func NewInfantry() Unit {
-	u := &infantry{
+func NewMech() BaseUnit {
+	u := &mech{
 		directUnit{
-			unit{
+			baseUnit{
 				BaseUnit: models.BaseUnit{
-					Name:           unitnames.Infantry,
-					MovementType:   movementtypes.F,
-					MovementPoints: 3,
+					Name:           unitnames.Mech,
+					MovementType:   movementtypes.B,
+					MovementPoints: 2,
 					Vision:         2,
 					Fuel:           99,
 					FuelPerTurn:    0,
 					ShortRange:     1,
 					LongRange:      1,
-					Ammo:           -1,
-					Cost:           1000,
+					Ammo:           3,
+					Cost:           3000,
 				},
 			},
 		},

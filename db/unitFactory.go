@@ -1,4 +1,4 @@
-package factories
+package db
 
 import (
 	"math/rand"
@@ -67,7 +67,7 @@ func (f *UnitFactory) BuildInsert() types.Unit {
 }
 
 func (f *UnitFactory) Infantry() *UnitFactory {
-	f.Unit.BaseUnit = baseunits.Infantry()
+	f.Unit.BaseUnit = baseunits.NewInfantry()
 	return f
 }
 

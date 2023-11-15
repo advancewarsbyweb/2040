@@ -5,8 +5,8 @@ import (
 )
 
 type Unit interface {
-    Move()
-    Fire()
+	Move()
+	Fire()
 }
 
 type unit struct {
@@ -14,9 +14,7 @@ type unit struct {
 }
 
 func NewUnit(u models.Unit) Unit {
-	return Unit{
+	return unit{
 		u,
 	}
 }
-
-

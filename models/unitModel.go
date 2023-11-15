@@ -15,5 +15,6 @@ type Unit struct {
 	Carried  string
 	Game     *Game   `db:""`
 	Player   *Player `db:""`
+	Co       *Co     `db:""`
 	BaseUnit
 }

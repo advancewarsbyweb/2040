@@ -2,8 +2,6 @@ package db
 
 import (
 	"testing"
-
-	"github.com/awbw/2040/factories"
 )
 
 func init() {
@@ -11,7 +9,8 @@ func init() {
 }
 
 func TestCreateUser(t *testing.T) {
-	u := factories.User.Create().Build()
+	u := User.Create().Build()
+
 	userId, err := UserRepo.CreateUser(u)
 
 	if err != nil {

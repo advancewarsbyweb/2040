@@ -1,9 +1,8 @@
-package factories
+package db
 
 import (
 	"time"
 
-	"github.com/awbw/2040/db"
 	"github.com/awbw/2040/models"
 	"github.com/awbw/2040/types"
 	"github.com/bxcodec/faker/v4"

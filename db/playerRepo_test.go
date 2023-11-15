@@ -2,8 +2,6 @@ package db
 
 import (
 	"testing"
-
-	"github.com/awbw/2040/factories"
 )
 
 func init() {
@@ -11,7 +9,7 @@ func init() {
 }
 
 func TestCreatePlayer(t *testing.T) {
-	p := factories.Player.Create()
+	p := Player.Create().Build()
 	playerId, err := PlayerRepo.CreatePlayer(p)
 
 	if err != nil {
@@ -29,19 +27,14 @@ func TestCreatePlayer(t *testing.T) {
 }
 
 func TestFindPlayerUser(t *testing.T) {
-	u := factories.User.Create()
-	uID, _ := UserRepo.CreateUser(u)
+	p := Player.Create().CreateUser().BuildInsert()
 
-	p := factories.Player.Create()
-	p.UserID = uID
-	playerId, _ := PlayerRepo.CreatePlayer(p)
-
-	r, err := PlayerRepo.FindPlayerUser(playerId)
+	r, err := PlayerRepo.FindPlayerUser(p.ID)
 	if err != nil {
-		t.Fatalf("Could not find PlayerUser (%d): %s", playerId, err.Error())
+		t.Fatalf("Could not find PlayerUser (%d): %s", p.ID, err.Error())
 	}
 
-	if r.User.ID != uID || r.ID != playerId {
-		t.Fatalf("IDs of player found do not match given User. Got (Player: %d, User: %d), want (Player: %d, User: %d)", r.ID, r.User.ID, playerId, uID)
+	if r.User.ID != p.User.ID || r.ID != p.ID {
+		t.Fatalf("IDs of player found do not match given User. Got (Player: %d, User: %d), want (Player: %d, User: %d)", r.ID, r.User.ID, p.ID, p.User.ID)
 	}
 }
