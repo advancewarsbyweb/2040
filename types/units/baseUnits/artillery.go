@@ -12,21 +12,6 @@ type artillery struct {
 
 func NewArtillery() BaseUnit {
 	return &artillery{
-		indirectUnit{
-			baseUnit{
-				models.BaseUnit{
-					Name:           unitnames.Artillery,
-					MovementType:   movementtypes.T,
-					MovementPoints: 5,
-					Vision:         1,
-					Fuel:           99,
-					FuelPerTurn:    0,
-					ShortRange:     2,
-					LongRange:      3,
-					Ammo:           6,
-					Cost:           6000,
-				},
-			},
-		},
+		indirectUnit{},
 	}
 }

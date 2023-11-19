@@ -1,8 +1,7 @@
 package cos
 
 import (
-	"github.com/awbw/2040/types"
-	baseunits "github.com/awbw/2040/types/units/baseUnits"
+	unittypes "github.com/awbw/2040/types/units/baseUnits"
 	"golang.org/x/exp/slices"
 )
 
@@ -10,25 +9,25 @@ type max struct {
 	co
 }
 
-func (co *max) DamageBoost(u *types.Unit) int {
-	if !slices.Contains(baseunits.DirectUnits, u.Name) {
-		if slices.Contains(baseunits.IndirectUnits, u.Name) {
+func (co *max) DamageBoost(u unittypes.Unit) int {
+	if !slices.Contains(unittypes.DirectUnits, u.GetName()) {
+		if slices.Contains(unittypes.IndirectUnits, u.GetName()) {
 			return -10
 		}
 		return 0
 	}
-	return PowerBoost(u.Player.CoPowerOn, 20, 40, 60)
+	return PowerBoost(u.GetPlayer().CoPowerOn, 20, 40, 60)
 }
 
-func (co *max) MovementBoost(u *types.Unit) int {
-	if !slices.Contains(baseunits.DirectUnits, u.Name) {
+func (co *max) MovementBoost(u unittypes.Unit) int {
+	if !slices.Contains(unittypes.DirectUnits, u.GetName()) {
 		return 0
 	}
-	return PowerBoost(u.Player.CoPowerOn, 0, 1, 2)
+	return PowerBoost(u.GetPlayer().CoPowerOn, 0, 1, 2)
 }
 
-func (co *max) RangeBoost(u *types.Unit) int {
-	if slices.Contains(baseunits.IndirectUnits, u.Name) {
+func (co *max) RangeBoost(u unittypes.Unit) int {
+	if slices.Contains(unittypes.IndirectUnits, u.GetName()) {
 		return -1
 	}
 	return 0
