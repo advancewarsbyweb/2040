@@ -9,7 +9,6 @@ import (
 	"testing"
 
 	"github.com/awbw/2040/db"
-	"github.com/awbw/2040/factories"
 	"github.com/awbw/2040/types"
 	"github.com/gin-gonic/gin"
 )
@@ -20,13 +19,13 @@ func init() {
 
 func TestCreatePress(t *testing.T) {
 
-	g := factories.Game.Create().BuildInsert()
+	g := db.Game.Create().BuildInsert()
 
-	p1 := factories.Player.Create().SetGame(&g).BuildInsert()
-	p2 := factories.Player.Create().SetGame(&g).BuildInsert()
-	p3 := factories.Player.Create().CreateUser().SetGame(&g).BuildInsert()
+	p1 := db.Player.Create().SetGame(&g).BuildInsert()
+	p2 := db.Player.Create().SetGame(&g).BuildInsert()
+	p3 := db.Player.Create().CreateUser().SetGame(&g).BuildInsert()
 
-	press := factories.Press.Create().SetPlayer(&p3).Build()
+	press := db.Press.Create().SetPlayer(&p3).Build()
 
 	data, _ := json.Marshal(map[string]interface{}{
 		"playerId":   press.PlayerID,

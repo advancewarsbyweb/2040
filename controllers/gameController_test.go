@@ -10,7 +10,6 @@ import (
 	"testing"
 
 	"github.com/awbw/2040/db"
-	"github.com/awbw/2040/factories"
 	"github.com/awbw/2040/types"
 	"github.com/gin-gonic/gin"
 )
@@ -20,7 +19,7 @@ func init() {
 }
 
 func TestCreateGame(t *testing.T) {
-	g := factories.Game.Create().Build()
+	g := db.Game.Create().Build()
 
 	w := httptest.NewRecorder()
 	c, _ := gin.CreateTestContext(w)
@@ -49,7 +48,7 @@ func TestCreateGame(t *testing.T) {
 }
 
 func TestGetGame(t *testing.T) {
-	g := factories.Game.Create().BuildInsert()
+	g := db.Game.Create().BuildInsert()
 
 	w := httptest.NewRecorder()
 	c, _ := gin.CreateTestContext(w)

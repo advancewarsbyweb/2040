@@ -9,7 +9,6 @@ import (
 	"testing"
 
 	"github.com/awbw/2040/db"
-	"github.com/awbw/2040/factories"
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,8 +17,8 @@ func init() {
 }
 
 func TestValidatePlayer(t *testing.T) {
-	u := factories.User.Create().BuildInsert()
-	p := factories.Player.Create().SetUser(&u).BuildInsert()
+	u := db.User.Create().BuildInsert()
+	p := db.Player.Create().SetUser(&u).BuildInsert()
 
 	data, _ := json.Marshal(map[string]interface{}{
 		"playerId": p.ID,

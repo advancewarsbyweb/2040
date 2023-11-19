@@ -1,4 +1,4 @@
-package baseunits
+package unittypes
 
 import (
 	"errors"
@@ -8,7 +8,7 @@ import (
 )
 
 type directUnit struct {
-	unit
+	baseUnit
 }
 
 var DirectUnits []unitnames.UnitName
@@ -29,15 +29,15 @@ func init() {
 	}
 }
 
-func (att *directUnit) Fire(def Unit) error {
-	distanceAway := int(math.Abs(float64(def.GetX())-float64(att.GetY())) + math.Abs(float64(def.GetX())-float64(att.GetY())))
-	if distanceAway > att.LongRange || distanceAway < att.ShortRange {
+func (u *directUnit) Fire(a Unit, d Unit) error {
+	distanceAway := int(math.Abs(float64(d.GetX())-float64(a.GetX())) + math.Abs(float64(d.GetY())-float64(a.GetY())))
+	if distanceAway > a.GetShortRange() || distanceAway < a.GetLongRange() {
 		return errors.New(DefenderOutsideOfRange)
 	}
-	ammo := att.GetAmmo()
+	ammo := a.GetAmmo()
 	if ammo >= 0 {
-		att.SetAmmo(ammo - 1)
-		return nil
+		a.SetAmmo(ammo - 1)
 	}
+	d.SetHp(9)
 	return nil
 }

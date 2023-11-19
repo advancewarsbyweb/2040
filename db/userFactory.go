@@ -70,7 +70,7 @@ func (f *UserFactory) Build() types.User {
 }
 
 func (f *UserFactory) BuildInsert() types.User {
-	uID, _ := db.UserRepo.CreateUser(f.User)
+	uID, _ := UserRepo.CreateUser(f.User)
 	f.User.ID = uID
 	return f.User
 }

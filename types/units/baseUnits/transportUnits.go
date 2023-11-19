@@ -1,4 +1,4 @@
-package baseunits
+package unittypes
 
 import unitnames "github.com/awbw/2040/types/units/names"
 

@@ -1,29 +1,47 @@
-package baseunits
+package unittypes
 
-import "testing"
+import (
+	"testing"
 
-func TestFireWithAmmo(t *testing.T) {
-	att := NewMech()
-	def := NewArtillery()
-	att.Fire(def)
-	if att.GetAmmo() != 2 {
-		t.Fatalf("Wrong ammo count. Got (%d), want (%d)", att.GetAmmo(), 2)
-	}
-}
-
-func TestFireWithoutAmmo(t *testing.T) {
-	att := NewMech()
-	def := NewArtillery()
-	att.SetAmmo(0)
-	att.Fire(def)
-	if att.GetAmmo() < 0 {
-		t.Fatalf("Wrong ammo count. Got (%d), want (%d)", att.GetAmmo(), 0)
-	}
-}
+	unitnames "github.com/awbw/2040/types/units/names"
+)
 
 func TestDirectFire(t *testing.T) {
-	att := NewMech()
-	def := NewInfantry()
-	att.SetPos(1, 1)
-	def.SetPos(2, 1)
+	a := CreateUnit(unitnames.Mech).SetPos(1, 1)
+	d := CreateUnit(unitnames.Artillery).SetPos(2, 2)
+	a.Fire(a, d)
+	if d.GetHp() != 10 {
+		t.Fatalf("Direct unit fired at defender out of range")
+	}
+}
+
+func TestDirectFireDamage(t *testing.T) {
+	a := CreateUnit(unitnames.Mech).SetPos(1, 1)
+	d := CreateUnit(unitnames.Artillery).SetPos(2, 2)
+	err := a.Fire(a, d)
+	if err == nil && d.GetHp() == 10 {
+		t.Fatalf("Direct unit fired but dealt no damage")
+	}
+}
+
+func TestFireWithAmmo(t *testing.T) {
+	a := CreateUnit(unitnames.Mech).SetPos(1, 1)
+	d := CreateUnit(unitnames.Artillery).SetPos(2, 1)
+	want := a.GetAmmo() - 1
+	err := a.Fire(a, d)
+	if err != nil {
+		t.Fatalf("Error happened: %s", err.Error())
+	}
+	if want != a.GetAmmo() {
+		t.Fatalf("Wrong ammo count. Got (%d), want (%d)", a.GetAmmo(), want)
+	}
+}
+
+func TestFireNoAmmo(t *testing.T) {
+	a := CreateUnit(unitnames.Mech).SetAmmo(0).SetPos(1, 1)
+	d := CreateUnit(unitnames.Artillery).SetPos(2, 1)
+	a.Fire(a, d)
+	if a.GetAmmo() < 0 {
+		t.Fatalf("Wrong ammo count. Got (%d), want (%d)", a.GetAmmo(), 0)
+	}
 }

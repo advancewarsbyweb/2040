@@ -1,4 +1,4 @@
-package baseunits
+package unittypes
 
 import "testing"
 

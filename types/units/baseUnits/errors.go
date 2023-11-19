@@ -1,7 +1,7 @@
-package baseunits
+package unittypes
 
 const (
-	AttackerHasNoAmmo      = "Attacker has no ammos"
-	AttackerAlreadyMoved   = "Attacker is an indirect unit and has already moved"
-	DefenderOutsideOfRange = "Defender is outside of Attacker's range"
+	AttackerHasNoAmmo      string = "Attacker has no ammos"
+	AttackerAlreadyMoved   string = "Attacker is an indirect unit and has already moved"
+	DefenderOutsideOfRange string = "Defender is outside of Attacker's range"
 )

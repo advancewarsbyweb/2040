@@ -1,26 +1,53 @@
-package baseunits
+package unittypes
 
 import (
 	"testing"
+
+	unitnames "github.com/awbw/2040/types/units/names"
 )
 
 func TestIndirectFire(t *testing.T) {
-	att := NewArtillery()
-	def := NewInfantry()
-	att.SetPos(1, 1)
-	def.SetPos(2, 3)
-	att.Fire(def)
-	if want := NewArtillery().GetAmmo() - 1; att.GetAmmo() != want {
-		t.Fatalf("Wrong ammo count. Got (%d), want (%d)", att.GetAmmo(), want)
+	a := CreateUnit(unitnames.Artillery).SetPos(1, 1)
+	d := CreateUnit(unitnames.Mech).SetPos(2, 1)
+	a.Fire(a, d)
+	if d.GetHp() != 10 {
+		t.Fatalf("Indirect unit fired and damaged defender while adjacent to it")
+	}
+}
+
+func TestIndirectFireDamage(t *testing.T) {
+	a := CreateUnit(unitnames.Artillery).SetPos(1, 1)
+	d := CreateUnit(unitnames.Mech).SetPos(2, 2)
+	err := a.Fire(a, d)
+	if err == nil && d.GetHp() == 10 {
+		t.Fatalf("Indirect unit fired but dealt no damage")
 	}
 }
 
 func TestIndirectFireHasMoved(t *testing.T) {
-	att := NewArtillery()
-	def := NewInfantry()
-	att.SetMoved(1)
-	err := att.Fire(def)
-	if err.Error() != AttackerAlreadyMoved {
-		t.Fatalf("Attacker fired despite having already moved")
+	a := CreateUnit(unitnames.Artillery).SetMoved(1).SetPos(1, 1)
+	d := CreateUnit(unitnames.Mech).SetPos(2, 2)
+	a.Fire(a, d)
+	if d.GetHp() < 10 {
+		t.Fatalf("Indirect unit fired after moving")
+	}
+}
+
+func TestIndirectFireWithAmmo(t *testing.T) {
+	a := CreateUnit(unitnames.Artillery).SetPos(1, 1)
+	d := CreateUnit(unitnames.Mech).SetPos(2, 2)
+	want := a.GetAmmo() - 1
+	a.Fire(a, d)
+	if a.GetAmmo() != want {
+		t.Fatalf("Wrong ammo count. Got (%d), want (%d)", a.GetAmmo(), want)
+	}
+}
+
+func TestIndirectFireNoAmmo(t *testing.T) {
+	a := CreateUnit(unitnames.Artillery).SetAmmo(0).SetPos(1, 1)
+	d := CreateUnit(unitnames.Mech).SetPos(2, 2)
+	err := a.Fire(a, d)
+	if err != nil && d.GetHp() < 10 {
+		t.Fatalf("Indirect unit fired with no ammo")
 	}
 }

@@ -1,4 +1,4 @@
-package baseunits
+package unittypes
 
 import (
 	"github.com/awbw/2040/models"
@@ -13,11 +13,11 @@ type infantry struct {
 func (u *infantry) Load() {
 }
 
-func NewInfantry() Unit {
-	u := &infantry{
+func NewInfantry() BaseUnit {
+	return &infantry{
 		directUnit{
-			unit{
-				BaseUnit: models.BaseUnit{
+			baseUnit{
+				models.BaseUnit{
 					Name:           unitnames.Infantry,
 					MovementType:   movementtypes.F,
 					MovementPoints: 3,
@@ -32,5 +32,4 @@ func NewInfantry() Unit {
 			},
 		},
 	}
-	return u
 }

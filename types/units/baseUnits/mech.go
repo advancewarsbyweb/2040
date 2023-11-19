@@ -1,4 +1,4 @@
-package baseunits
+package unittypes
 
 import (
 	"github.com/awbw/2040/models"
@@ -17,7 +17,7 @@ func NewMech() BaseUnit {
 	u := &mech{
 		directUnit{
 			baseUnit{
-				BaseUnit: models.BaseUnit{
+				models.BaseUnit{
 					Name:           unitnames.Mech,
 					MovementType:   movementtypes.B,
 					MovementPoints: 2,

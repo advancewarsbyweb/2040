@@ -17,16 +17,21 @@ func (co *max) DamageBoost(u *types.Unit) int {
 		}
 		return 0
 	}
-	switch u.Player.CoPowerOn {
-	case "N":
-		return 20
-	case "Y":
-		return 40
-	case "S":
-		return 60
-	default:
-		return 20
+	return PowerBoost(u.Player.CoPowerOn, 20, 40, 60)
+}
+
+func (co *max) MovementBoost(u *types.Unit) int {
+	if !slices.Contains(baseunits.DirectUnits, u.Name) {
+		return 0
 	}
+	return PowerBoost(u.Player.CoPowerOn, 0, 1, 2)
+}
+
+func (co *max) RangeBoost(u *types.Unit) int {
+	if slices.Contains(baseunits.IndirectUnits, u.Name) {
+		return -1
+	}
+	return 0
 }
 
 func NewMax() Co {

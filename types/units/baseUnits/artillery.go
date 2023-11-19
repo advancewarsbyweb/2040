@@ -1,4 +1,4 @@
-package baseunits
+package unittypes
 
 import (
 	"github.com/awbw/2040/models"
@@ -10,11 +10,11 @@ type artillery struct {
 	indirectUnit
 }
 
-func NewArtillery() Unit {
+func NewArtillery() BaseUnit {
 	return &artillery{
 		indirectUnit{
-			unit{
-				BaseUnit: models.BaseUnit{
+			baseUnit{
+				models.BaseUnit{
 					Name:           unitnames.Artillery,
 					MovementType:   movementtypes.T,
 					MovementPoints: 5,

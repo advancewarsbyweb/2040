@@ -1,15 +1,14 @@
-package baseunits
+package unittypes
 
 import (
 	"errors"
 	"math"
 
-	"github.com/awbw/2040/types"
 	unitnames "github.com/awbw/2040/types/units/names"
 )
 
 type indirectUnit struct {
-	unit
+	baseUnit
 }
 
 var IndirectUnits []unitnames.UnitName
@@ -25,17 +24,19 @@ func init() {
 	}
 }
 
-func (att *indirectUnit) Fire(def *types.Unit) error {
-	if att.Moved == 1 {
+func (u *indirectUnit) Fire(a Unit, d Unit) error {
+	if a.GetMoved() == 1 {
 		return errors.New(AttackerAlreadyMoved)
 	}
-	if att.Ammo == 0 {
+	ammo := a.GetAmmo()
+	if ammo == 0 {
 		return errors.New(AttackerHasNoAmmo)
 	}
-	distanceAway := int(math.Abs(float64(def.X)-float64(att.X)) + math.Abs(float64(def.Y)-float64(att.Y)))
-	if distanceAway > att.LongRange || distanceAway < att.ShortRange {
+	distanceAway := int(math.Abs(float64(d.GetX())-float64(a.GetX())) + math.Abs(float64(d.GetY())-float64(a.GetY())))
+	if distanceAway > a.GetLongRange() || distanceAway < a.GetShortRange() {
 		return errors.New(DefenderOutsideOfRange)
 	}
-	att.Ammo = att.Ammo - 1
+	a.SetAmmo(ammo - 1)
+	d.SetHp(9)
 	return nil
 }

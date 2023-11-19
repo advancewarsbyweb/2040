@@ -18,15 +18,7 @@ func (co *sami) DamageBoost(u *types.Unit) int {
 		}
 		return -10
 	}
-	switch u.Player.CoPowerOn {
-	case "N":
-		return 30
-	case "Y":
-		return 50
-	case "S":
-		return 70
-	}
-	return 0
+	return PowerBoost(u.Player.CoPowerOn, 30, 50, 70)
 }
 
 func (co *sami) MovementBoost(u *types.Unit) int {
@@ -36,15 +28,15 @@ func (co *sami) MovementBoost(u *types.Unit) int {
 	if u.Name != unitnames.Infantry && u.Name != unitnames.Mech {
 		return 0
 	}
-	switch u.Player.CoPowerOn {
-	case "N":
+	return PowerBoost(u.Player.CoPowerOn, 0, 1, 2)
+}
+
+func (co *sami) CaptureBoost(u *types.Unit) int {
+	if u.Name != unitnames.Infantry && u.Name != unitnames.Artillery {
 		return 0
-	case "Y":
-		return 1
-	case "S":
-		return 2
 	}
-	return 0
+	capt := int(u.HP * 1.5)
+	return PowerBoost(u.Player.CoPowerOn, capt, capt, 20)
 }
 
 func NewSami() Co {
