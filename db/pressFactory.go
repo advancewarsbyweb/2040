@@ -9,49 +9,49 @@ import (
 	"gopkg.in/guregu/null.v4"
 )
 
-type PressFactory struct {
-	Press types.Press
+type pressFactory struct {
+	Press models.Press
 }
 
-var Press PressFactory
+var Press pressFactory
 
-func NewPressFactory() PressFactory {
-	return PressFactory{}
+func NewPressFactory() pressFactory {
+	return pressFactory{}
 }
 
 func init() {
 	Press = NewPressFactory()
 }
 
-func (f *PressFactory) Create() *PressFactory {
-	f.Press = types.NewPress(models.Press{
+func (f *pressFactory) Create() *pressFactory {
+	f.Press = models.Press{
 		ID:       1,
 		Text:     null.StringFrom(faker.Sentence()),
 		PlayerID: -1,
 		Date:     time.Now(),
 		Subject:  null.StringFrom(faker.Word()),
 		Type:     "P",
-	})
+	}
 	return f
 }
 
-func (f *PressFactory) CreateRelations() *PressFactory {
-	p := Player.CreateRelations().BuildInsert()
+func (f *pressFactory) CreateRelations() *pressFactory {
+	p := PlayerFactory.CreateRelations().BuildInsert()
 	f.Press.PlayerID = p.ID
 	return f
 }
 
-func (f *PressFactory) SetPlayer(p *types.Player) *PressFactory {
+func (f *pressFactory) SetPlayer(p *models.Player) *pressFactory {
 	f.Press.PlayerID = p.ID
 	return f
 }
 
-func (f *PressFactory) Build() types.Press {
+func (f *pressFactory) Build() models.Press {
 	return f.Press
 }
 
-func (f *PressFactory) BuildAndInsert(sendToIds []int) types.Press {
-	pID, _ := PressRepo.CreatePress(f.Press, sendToIds)
+func (f *pressFactory) BuildAndInsert(sendToIds []int) models.Press {
+	pID, _ := PressRepo.CreatePress(types.NewPress(f.Press), sendToIds)
 	f.Press.ID = pID
 	return f.Press
 }

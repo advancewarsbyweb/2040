@@ -10,23 +10,23 @@ import (
 	"gopkg.in/guregu/null.v4"
 )
 
-type PlayerFactory struct {
-	Player types.Player
+type playerFactory struct {
+	Player models.Player
 }
 
-var Player PlayerFactory
+var PlayerFactory playerFactory
 
-func NewPlayerFactory() PlayerFactory {
-	return PlayerFactory{}
+func NewPlayerFactory() playerFactory {
+	return playerFactory{}
 }
 
 func init() {
-	Player = NewPlayerFactory()
+	PlayerFactory = NewPlayerFactory()
 }
 
-func (f *PlayerFactory) Create() *PlayerFactory {
+func (f *playerFactory) Create() *playerFactory {
 	playerId := rand.Intn(100)
-	playerType := types.NewPlayer(models.Player{
+	playerType := models.Player{
 		ID:           1,
 		GameID:       rand.Intn(100),
 		UserID:       1,
@@ -50,51 +50,46 @@ func (f *PlayerFactory) Create() *PlayerFactory {
 		Team:         strconv.Itoa(playerId),
 		AETCount:     0,
 		TurnFlag:     true,
-	})
+	}
 	f.Player = playerType
 	return f
 }
 
-func (f *PlayerFactory) CreateRelations() *PlayerFactory {
+func (f *playerFactory) CreateRelations() *playerFactory {
 
 	u := User.Create().BuildInsert()
 	g := Game.Create().BuildInsert()
 
-	p := Player.Create()
-	p.Player.GameID = g.ID
-	p.Player.UserID = u.ID
-
-	p.Player.User = &u
-	p.Player.Game = &g
+	p := PlayerFactory.Create().SetGame(&g).SetUser(&u)
 	f.Player = p.Player
 	return f
 }
 
-func (f *PlayerFactory) CreateUser() *PlayerFactory {
+func (f *playerFactory) CreateUser() *playerFactory {
 	u := User.Create().BuildInsert()
 	f.Player.UserID = u.ID
 	f.Player.User = &u
 	return f
 }
 
-func (f *PlayerFactory) SetGame(g *types.Game) *PlayerFactory {
+func (f *playerFactory) SetGame(g *models.Game) *playerFactory {
 	f.Player.GameID = g.ID
 	f.Player.Game = g
 	return f
 }
 
-func (f *PlayerFactory) SetUser(u *types.User) *PlayerFactory {
+func (f *playerFactory) SetUser(u *models.User) *playerFactory {
 	f.Player.UserID = u.ID
 	f.Player.User = u
 	return f
 }
 
-func (f *PlayerFactory) Build() types.Player {
+func (f *playerFactory) Build() models.Player {
 	return f.Player
 }
 
-func (f *PlayerFactory) BuildInsert() types.Player {
-	pID, _ := PlayerRepo.CreatePlayer(f.Player)
+func (f *playerFactory) BuildInsert() models.Player {
+	pID, _ := PlayerRepo.CreatePlayer(types.NewPlayer(f.Player))
 	f.Player.ID = pID
 	return f.Player
 }

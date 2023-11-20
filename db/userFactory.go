@@ -9,22 +9,22 @@ import (
 	"gopkg.in/guregu/null.v4"
 )
 
-type UserFactory struct {
-	User types.User
+type userFactory struct {
+	User models.User
 }
 
-var User UserFactory
+var User userFactory
 
-func NewUserFactory() UserFactory {
-	return UserFactory{}
+func NewUserFactory() userFactory {
+	return userFactory{}
 }
 
 func init() {
 	User = NewUserFactory()
 }
 
-func (f *UserFactory) Create() *UserFactory {
-	f.User = types.NewUser(models.User{
+func (f *userFactory) Create() *userFactory {
+	f.User = models.User{
 		Username:       faker.Word(),
 		FirstName:      faker.Word(),
 		LastName:       faker.Word(),
@@ -61,16 +61,16 @@ func (f *UserFactory) Create() *UserFactory {
 		MapCommittee:   0,
 		DorFC:          null.String{},
 		GameAnimations: "Y",
-	})
+	}
 	return f
 }
 
-func (f *UserFactory) Build() types.User {
+func (f *userFactory) Build() models.User {
 	return f.User
 }
 
-func (f *UserFactory) BuildInsert() types.User {
-	uID, _ := UserRepo.CreateUser(f.User)
+func (f *userFactory) BuildInsert() models.User {
+	uID, _ := UserRepo.CreateUser(types.NewUser(f.User))
 	f.User.ID = uID
 	return f.User
 }

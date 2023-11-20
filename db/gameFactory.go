@@ -9,22 +9,22 @@ import (
 	"gopkg.in/guregu/null.v4"
 )
 
-type GameFactory struct {
-	Game types.Game
+type gameFactory struct {
+	Game models.Game
 }
 
-var Game GameFactory
+var Game gameFactory
 
-func NewGameFactory() GameFactory {
-	return GameFactory{}
+func NewGameFactory() gameFactory {
+	return gameFactory{}
 }
 
 func init() {
 	Game = NewGameFactory()
 }
 
-func (f *GameFactory) Create() *GameFactory {
-	f.Game = types.NewGame(models.Game{
+func (f *gameFactory) Create() *gameFactory {
+	f.Game = models.Game{
 		Name:          faker.Word(),
 		Password:      "",
 		CreatorID:     1,
@@ -55,16 +55,16 @@ func (f *GameFactory) Create() *GameFactory {
 		AETInterval:   null.Int{},
 		AETDate:       null.Int{},
 		UsePowers:     null.String{},
-	})
+	}
 	return f
 }
 
-func (f *GameFactory) Build() types.Game {
+func (f *gameFactory) Build() models.Game {
 	return f.Game
 }
 
-func (f *GameFactory) BuildInsert() types.Game {
-	gID, _ := GameRepo.CreateGame(f.Game)
+func (f *gameFactory) BuildInsert() models.Game {
+	gID, _ := GameRepo.CreateGame(types.NewGame(f.Game))
 	f.Game.ID = gID
 	return f.Game
 }

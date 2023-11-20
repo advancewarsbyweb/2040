@@ -14,7 +14,7 @@ type BaseUnit interface {
 	Load()
 }
 
-// Type to implement methods on only
+// Type to implement methods on only only
 type baseUnit struct{}
 
 func init() {
@@ -22,6 +22,7 @@ func init() {
 		unitnames.Infantry:  NewInfantry,
 		unitnames.Mech:      NewMech,
 		unitnames.Artillery: NewArtillery,
+		unitnames.Tank:      NewTank,
 	}
 }
 

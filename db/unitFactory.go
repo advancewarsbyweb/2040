@@ -31,6 +31,7 @@ func init() {
 		unitnames.TCopter:   TCopter,
 		unitnames.APC:       APC,
 		unitnames.Artillery: Artillery,
+		unitnames.Tank:      Tank,
 	}
 	UnitFactory = NewUnitFactory()
 }
@@ -51,7 +52,7 @@ func (f *unitFactory) Create(name unitnames.UnitName) *unitFactory {
 }
 
 func (f *unitFactory) CreateRelations() *unitFactory {
-	p := Player.Create().BuildInsert()
+	p := PlayerFactory.Create().BuildInsert()
 	g := Game.Create().BuildInsert()
 
 	f.Unit.Game = &models.Game{}
@@ -174,5 +175,20 @@ func Artillery() models.BaseUnit {
 		LongRange:      3,
 		Ammo:           6,
 		Cost:           6000,
+	}
+}
+
+func Tank() models.BaseUnit {
+	return models.BaseUnit{
+		Name:           unitnames.Tank,
+		MovementType:   movementtypes.T,
+		MovementPoints: 6,
+		Vision:         3,
+		Fuel:           70,
+		FuelPerTurn:    0,
+		ShortRange:     1,
+		LongRange:      1,
+		Ammo:           9,
+		Cost:           7000,
 	}
 }
