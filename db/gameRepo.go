@@ -7,7 +7,6 @@ import (
 
 	"github.com/awbw/2040/models"
 	gamecolumns "github.com/awbw/2040/models/columnNames/game"
-	"github.com/awbw/2040/types"
 )
 
 type GameRepository struct{}
@@ -22,7 +21,7 @@ func init() {
 	GameRepo = NewGameRepo()
 }
 
-func (r *GameRepository) FindGame(id int) (*types.Game, error) {
+func (r *GameRepository) FindGame(id int) (*models.Game, error) {
 	gameModel := models.Game{}
 	findQuery := "SELECT * FROM awbw_games WHERE games_id = ?"
 	err := DB.Get(&gameModel, findQuery, id)
@@ -30,11 +29,10 @@ func (r *GameRepository) FindGame(id int) (*types.Game, error) {
 	if err != nil {
 		return nil, errors.New(fmt.Sprintf("Failed to find game with given ID: %s", err.Error()))
 	}
-	game := types.NewGame(gameModel)
-	return &game, nil
+	return &gameModel, nil
 }
 
-func (r GameRepository) CreateGame(body types.Game) (int, error) {
+func (r GameRepository) CreateGame(body models.Game) (int, error) {
 	columns := []string{
 		"games_name",
 		"games_start_date",
@@ -78,7 +76,7 @@ func (r GameRepository) UpdateGame(id int, updatedFields map[string]interface{})
 	var updateStatements []string
 
 	for column, _ := range updatedFields {
-		updateStatements = append(updateStatements, fmt.Sprintf("%s = :%s", column, column))
+		updateStatements = append(updateStatements, fmt.Sprintf("games_%s = :%s", column, column))
 	}
 	updateQuery := fmt.Sprintf("UPDATE awbw_games SET %s WHERE %s = :%s", strings.Join(updateStatements, ","), gamecolumns.ID, gamecolumns.ID)
 	updatedFields[gamecolumns.ID] = id

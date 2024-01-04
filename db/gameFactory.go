@@ -4,9 +4,7 @@ import (
 	"time"
 
 	"github.com/awbw/2040/models"
-	"github.com/awbw/2040/types"
 	"github.com/bxcodec/faker/v4"
-	"gopkg.in/guregu/null.v4"
 )
 
 type gameFactory struct {
@@ -33,11 +31,6 @@ func (f *gameFactory) Create() *gameFactory {
 		WeatherCode:   "C",
 		TurnID:        0,
 		Day:           1,
-		StartDate:     null.TimeFrom(time.Now()),
-		EndDate:       null.Time{},
-		ActivityDate:  null.TimeFrom(time.Now()),
-		WeatherStart:  null.Int{},
-		Private:       null.String{},
 		Active:        "N",
 		Funds:         1000,
 		CaptureLimit:  1000,
@@ -52,10 +45,16 @@ func (f *gameFactory) Create() *gameFactory {
 		UnitLimit:     50,
 		League:        "N",
 		Team:          "N",
-		AETInterval:   null.Int{},
-		AETDate:       null.Int{},
-		UsePowers:     null.String{},
 	}
+
+	f.Game.SetStartDate(time.Now()).
+		SetActivityDate(time.Now()).
+		SetWeatherStart(0).
+		SetPrivate("N").
+		SetAETInterval(4).
+		SetAETDate(0).
+		SetUsePowers("Y")
+
 	return f
 }
 
@@ -64,7 +63,7 @@ func (f *gameFactory) Build() models.Game {
 }
 
 func (f *gameFactory) BuildInsert() models.Game {
-	gID, _ := GameRepo.CreateGame(types.NewGame(f.Game))
+	gID, _ := GameRepo.CreateGame(f.Game)
 	f.Game.ID = gID
 	return f.Game
 }

@@ -1,10 +1,10 @@
-package unittypes
+package models
 
 type artillery struct {
 	indirectUnit
 }
 
-func NewArtillery() BaseUnit {
+func NewArtillery() Unit {
 	return &artillery{
 		indirectUnit{},
 	}

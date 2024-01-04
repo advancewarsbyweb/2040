@@ -10,6 +10,11 @@ import (
 
 type PressController struct{}
 
+type PressBody struct {
+	types.Press
+	Recipients []int `json:"recipients"`
+}
+
 var Press PressController
 
 func NewPressController() PressController {
@@ -25,10 +30,6 @@ func (pc *PressController) Get(c *gin.Context) {
 }
 
 func (pc *PressController) Create(c *gin.Context) {
-	type PressBody struct {
-		types.Press
-		Recipients []int `json:"recipients"`
-	}
 
 	var body PressBody
 

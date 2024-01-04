@@ -4,12 +4,11 @@ import (
 	"math/rand"
 
 	"github.com/awbw/2040/models"
-	"github.com/awbw/2040/types"
 	movementtypes "github.com/awbw/2040/types/movements"
 	unitnames "github.com/awbw/2040/types/units/names"
 )
 
-type UnitFunction func() models.BaseUnit
+type UnitFunction func() models.Unit
 type unitFactory struct {
 	Unit models.Unit
 }
@@ -45,6 +44,7 @@ func (f *unitFactory) Create(name unitnames.UnitName) *unitFactory {
 		X:        1,
 		Y:        1,
 		HP:       10,
+		moved:    1,
 		BaseUnit: bu,
 	}
 	f.Unit = u

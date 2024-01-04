@@ -1,4 +1,4 @@
-package unittypes
+package models
 
 import "testing"
 

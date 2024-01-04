@@ -1,4 +1,4 @@
-package unittypes
+package models
 
 const (
 	AttackerHasNoAmmo      string = "Attacker has no ammos"

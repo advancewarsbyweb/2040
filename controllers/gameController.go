@@ -7,12 +7,13 @@ import (
 	"time"
 
 	"github.com/awbw/2040/db"
+	"github.com/awbw/2040/models"
 	gamecolumns "github.com/awbw/2040/models/columnNames/game"
-	"github.com/awbw/2040/types"
 	"github.com/awbw/2040/utils"
 	"github.com/awbw/2040/ws"
 	"github.com/awbw/2040/ws/events"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 )
 
 type GameController struct{}
@@ -42,7 +43,7 @@ func (gc *GameController) Get(c *gin.Context) {
 
 func (gc *GameController) Create(c *gin.Context) {
 
-	var body types.Game
+	var body models.Game
 
 	c.Bind(&body)
 
@@ -56,13 +57,13 @@ func (gc *GameController) Create(c *gin.Context) {
 		return
 	}
 
-    game, err := db.GameRepo.FindGame(gameId)
-    if err != nil {
+	game, err := db.GameRepo.FindGame(gameId)
+	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
 			"message": err.Error(),
 		})
 		return
-    }
+	}
 
 	c.JSON(http.StatusOK, game)
 }
@@ -71,8 +72,8 @@ func (gc *GameController) Create(c *gin.Context) {
 func (gc *GameController) Update(c *gin.Context) {
 
 	var body struct {
-		ID            int                    `json:"id"`
-		UpdatedFields map[string]interface{} `json:"updatedFields"`
+		ID            int                    `json:"id" validate:"gt=0"`
+		UpdatedFields map[string]interface{} `json:"updatedFields" validate:"required,dive,keys,eq=name|password|maps_id|private|funds|capture_win|day|comment|boot_interval|unit_limit|team|aet_interval|use_powers"`
 	}
 	c.Bind(&body)
 

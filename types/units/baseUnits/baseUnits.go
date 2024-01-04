@@ -1,8 +1,13 @@
 package unittypes
 
 import (
+	"github.com/awbw/2040/models"
 	unitnames "github.com/awbw/2040/types/units/names"
 )
+
+/*
+
+ */
 
 type UnitFunction func() BaseUnit
 
@@ -14,8 +19,7 @@ type BaseUnit interface {
 	Load()
 }
 
-// Type to implement methods on only only
-type baseUnit struct{}
+type baseUnit models.BaseUnit
 
 func init() {
 	MakeUnit = map[unitnames.UnitName]UnitFunction{

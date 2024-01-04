@@ -1,4 +1,4 @@
-package unittypes
+package models
 
 import unitnames "github.com/awbw/2040/types/units/names"
 

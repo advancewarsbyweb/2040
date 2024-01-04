@@ -1,10 +1,10 @@
-package unittypes
+package models
 
 type tank struct {
 	directUnit
 }
 
-func NewTank() BaseUnit {
+func NewTank() Unit {
 	return &tank{
 		directUnit{},
 	}

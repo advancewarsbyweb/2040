@@ -1,4 +1,4 @@
-package unittypes
+package models
 
 import (
 	"errors"
@@ -8,7 +8,7 @@ import (
 )
 
 type directUnit struct {
-	baseUnit
+	unit
 }
 
 var DirectUnits []unitnames.UnitName
@@ -30,11 +30,11 @@ func init() {
 }
 
 func (u *directUnit) Fire(a Unit, d Unit) error {
-	distanceAway := int(math.Abs(float64(d.GetX())-float64(a.GetX())) + math.Abs(float64(d.GetY())-float64(a.GetY())))
-	if distanceAway > a.GetShortRange() || distanceAway < a.GetLongRange() {
+	distanceAway := int(math.Abs(float64(d.X())-float64(a.X())) + math.Abs(float64(d.Y())-float64(a.Y())))
+	if distanceAway > a.ShortRange() || distanceAway < a.LongRange() {
 		return errors.New(DefenderOutsideOfRange)
 	}
-	ammo := a.GetAmmo()
+	ammo := a.Ammo()
 	if ammo >= 0 {
 		a.SetAmmo(ammo - 1)
 	}

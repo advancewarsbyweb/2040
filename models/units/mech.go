@@ -1,4 +1,4 @@
-package unittypes
+package models
 
 type mech struct {
 	directUnit
