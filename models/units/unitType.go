@@ -5,6 +5,7 @@ import (
 	unitnames "github.com/awbw/2040/types/units/names"
 )
 
+// We return the IUnit in the Unit Model to be able to chain methods
 type Unit interface {
 	SetGame(g *models.Game) Unit
 	Game() *models.Game
@@ -30,10 +31,20 @@ type Unit interface {
 	Load()
 }
 
+func (u *unit) Move() {
+}
+
+func (u *unit) Fire(a Unit, b Unit) error {
+	return nil
+}
+
+func (u *unit) Load() {
+}
+
 func (u *unit) SetGame(g *models.Game) Unit {
 	u.game = g
 	u.gameID = g.ID
-	return u
+	return u.IUnit
 }
 
 func (u *unit) Game() *models.Game {
@@ -43,7 +54,7 @@ func (u *unit) Game() *models.Game {
 func (u *unit) SetPlayer(p *models.Player) Unit {
 	u.player = p
 	u.playerID = p.ID
-	return u
+	return u.IUnit
 }
 
 func (u *unit) Player() *models.Player {
@@ -51,27 +62,27 @@ func (u *unit) Player() *models.Player {
 }
 
 func (u *unit) Name() unitnames.UnitName {
-	return u.baseUnit.name
+	return u.name
 }
 
 func (u *unit) Ammo() int {
-	return u.baseUnit.ammo
+	return u.ammo
 }
 
 func (u *unit) SetAmmo(ammo int) Unit {
-	if ammo > 0 {
-		u.baseUnit.ammo = ammo
+	if ammo >= 0 {
+		u.ammo = ammo
 	}
-	return u
+	return u.IUnit
 }
 
 func (u *unit) Fuel() int {
-	return u.baseUnit.fuel
+	return u.fuel
 }
 
 func (u *unit) SetFuel(fuel int) Unit {
-	u.baseUnit.fuel = fuel
-	return u
+	u.fuel = fuel
+	return u.IUnit
 }
 
 func (u *unit) Hp() float64 {
@@ -80,7 +91,7 @@ func (u *unit) Hp() float64 {
 
 func (u *unit) SetHp(hp float64) Unit {
 	u.hp = hp
-	return u
+	return u.IUnit
 }
 
 func (u *unit) X() int {
@@ -94,7 +105,7 @@ func (u *unit) Y() int {
 func (u *unit) SetPos(x int, y int) Unit {
 	u.x = x
 	u.y = y
-	return u
+	return u.IUnit
 }
 
 func (u *unit) Moved() int {
@@ -103,13 +114,13 @@ func (u *unit) Moved() int {
 
 func (u *unit) SetMoved(moved int) Unit {
 	u.moved = moved
-	return u
+	return u.IUnit
 }
 
 func (u *unit) ShortRange() int {
-	return u.baseUnit.shortRange
+	return u.shortRange
 }
 
 func (u *unit) LongRange() int {
-	return u.baseUnit.longRange
+	return u.longRange
 }

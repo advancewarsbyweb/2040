@@ -1,8 +1,6 @@
 package models
 
 import (
-	"fmt"
-
 	movementtypes "github.com/awbw/2040/types/movements"
 	unitnames "github.com/awbw/2040/types/units/names"
 )
@@ -15,20 +13,18 @@ func (u *mech) Load() {
 }
 
 func NewMech(m *unit) Unit {
-	fmt.Printf("MECH")
 	u := &mech{
 		directUnit{
-			unit{
-				baseUnit: Mech(),
-			},
+			Mech(),
 		},
 	}
 	u.SetUnitProperties(m)
+	u.IUnit = u
 	return u
 }
 
-func Mech() baseUnit {
-	return baseUnit{
+func Mech() unit {
+	return unit{
 		name:           unitnames.Mech,
 		movementType:   movementtypes.B,
 		movementPoints: 2,

@@ -12,17 +12,16 @@ type tank struct {
 func NewTank(m *unit) Unit {
 	u := &tank{
 		directUnit{
-			unit{
-				baseUnit: Tank(),
-			},
+			Tank(),
 		},
 	}
 	u.SetUnitProperties(m)
+	u.IUnit = u
 	return u
 }
 
-func Tank() baseUnit {
-	return baseUnit{
+func Tank() unit {
+	return unit{
 		name:           unitnames.Tank,
 		movementType:   movementtypes.T,
 		movementPoints: 6,

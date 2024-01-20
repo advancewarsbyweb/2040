@@ -19,7 +19,10 @@ func TestIndirectFireDamage(t *testing.T) {
 	a := CreateUnitHelper(unitnames.Artillery).SetPos(1, 1)
 	d := CreateUnitHelper(unitnames.Mech).SetPos(2, 2)
 	err := a.Fire(a, d)
-	if err == nil && d.Hp() == 10 {
+	if err != nil {
+		t.Fatal(err)
+	}
+	if d.Hp() == 10 {
 		t.Fatalf("Indirect unit fired but dealt no damage")
 	}
 }
@@ -47,7 +50,7 @@ func TestIndirectFireNoAmmo(t *testing.T) {
 	a := CreateUnitHelper(unitnames.Artillery).SetAmmo(0).SetPos(1, 1)
 	d := CreateUnitHelper(unitnames.Mech).SetPos(2, 2)
 	err := a.Fire(a, d)
-	if err != nil && d.Hp() < 10 {
+	if err == nil || d.Hp() < 10 {
 		t.Fatalf("Indirect unit fired with no ammo")
 	}
 }

@@ -2,25 +2,51 @@ package models
 
 import (
 	"github.com/awbw/2040/models"
+	movementtypes "github.com/awbw/2040/types/movements"
 	unitnames "github.com/awbw/2040/types/units/names"
 )
 
 type unit struct {
-	id       int
-	playerID int
-	gameID   int
-	x        int
-	y        int
-	subDive  string
-	moved    int
-	fired    int
-	hp       float64
-	cargo1ID int
-	cargo2ID int
-	carried  string
-	game     *models.Game   `db:""`
-	player   *models.Player `db:""`
-	baseUnit
+	id             int
+	playerID       int
+	gameID         int
+	x              int
+	y              int
+	subDive        string
+	moved          int
+	fired          int
+	hp             float64
+	cargo1ID       int
+	cargo2ID       int
+	carried        string
+	game           *models.Game               `db:""`
+	player         *models.Player             `db:""`
+	name           unitnames.UnitName         `db:"units_name"`
+	movementPoints int                        `db:"units_movement_points"`
+	movementType   movementtypes.MovementType `db:"units_movement_type"`
+	vision         int                        `db:"units_vision"`
+	fuel           int                        `db:"units_fuel"`
+	fuelPerTurn    int                        `db:"units_fuel_per_turn"`
+	shortRange     int                        `db:"units_short_range"`
+	longRange      int                        `db:"units_long_range"`
+	cost           int                        `db:"units_cost"`
+	ammo           int                        `db:"units_ammo"`
+	// Reference to the created Unit type (e.g: Infantry, Mech, etc)
+	// This is to be able to return the proper struct and chain methods when using Setters
+	IUnit Unit
+}
+
+type UnitFunction func(u *unit) Unit
+
+var UnitMaker map[unitnames.UnitName]UnitFunction
+
+func init() {
+	UnitMaker = map[unitnames.UnitName]UnitFunction{
+		unitnames.Infantry:  NewInfantry,
+		unitnames.Mech:      NewMech,
+		unitnames.Artillery: NewArtillery,
+		unitnames.Tank:      NewTank,
+	}
 }
 
 // Create a Unit from a model retrieved from the database
@@ -30,13 +56,11 @@ func CreateUnit(m *unit) Unit {
 
 // Create a Unit from a name
 func CreateUnitHelper(name unitnames.UnitName) Unit {
-	u := unit{
-		hp: 10,
-		baseUnit: baseUnit{
-			name: name,
-		},
+	u := &unit{
+		hp:   10,
+		name: name,
 	}
-	return CreateUnit(&u)
+	return CreateUnit(u)
 }
 
 // Set the Unit's properties with the model received from the database

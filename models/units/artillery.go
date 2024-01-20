@@ -12,17 +12,16 @@ type artillery struct {
 func NewArtillery(m *unit) Unit {
 	u := &artillery{
 		indirectUnit{
-			unit{
-				baseUnit: Artillery(),
-			},
+			Artillery(),
 		},
 	}
 	u.SetUnitProperties(m)
+	u.IUnit = u
 	return u
 }
 
-func Artillery() baseUnit {
-	return baseUnit{
+func Artillery() unit {
+	return unit{
 		name:           unitnames.Artillery,
 		movementType:   movementtypes.T,
 		movementPoints: 5,

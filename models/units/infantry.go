@@ -16,17 +16,16 @@ func (u *infantry) Load() {
 func NewInfantry(m *unit) Unit {
 	u := &infantry{
 		directUnit{
-			unit{
-				baseUnit: Infantry(),
-			},
+			Infantry(),
 		},
 	}
 	u.SetUnitProperties(m)
+	u.IUnit = u
 	return u
 }
 
-func Infantry() baseUnit {
-	return baseUnit{
+func Infantry() unit {
+	return unit{
 		name:           unitnames.Infantry,
 		movementType:   movementtypes.F,
 		movementPoints: 3,

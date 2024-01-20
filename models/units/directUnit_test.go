@@ -16,6 +16,7 @@ func TestDirectFire(t *testing.T) {
 }
 
 func TestDirectFireDamage(t *testing.T) {
+
 	a := CreateUnitHelper(unitnames.Mech).SetPos(1, 1)
 	d := CreateUnitHelper(unitnames.Artillery).SetPos(2, 1)
 	err := a.Fire(a, d)
