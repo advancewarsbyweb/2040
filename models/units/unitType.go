@@ -6,7 +6,6 @@ import (
 )
 
 type Unit interface {
-	BaseUnit
 	SetGame(g *models.Game) Unit
 	Game() *models.Game
 	SetPlayer(p *models.Player) Unit
@@ -25,11 +24,15 @@ type Unit interface {
 	SetMoved(moved int) Unit
 	ShortRange() int
 	LongRange() int
+
+	Move()
+	Fire(a Unit, d Unit) error
+	Load()
 }
 
 func (u *unit) SetGame(g *models.Game) Unit {
 	u.game = g
-	u.playerID = g.ID
+	u.gameID = g.ID
 	return u
 }
 

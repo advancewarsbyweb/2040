@@ -20,7 +20,7 @@ type baseUnit struct {
 
 type UnitFunction func(u *unit) Unit
 
-var MakeUnit map[unitnames.UnitName]UnitFunction
+var UnitMaker map[unitnames.UnitName]UnitFunction
 
 type BaseUnit interface {
 	Move()
@@ -29,7 +29,7 @@ type BaseUnit interface {
 }
 
 func init() {
-	MakeUnit = map[unitnames.UnitName]UnitFunction{
+	UnitMaker = map[unitnames.UnitName]UnitFunction{
 		unitnames.Infantry:  NewInfantry,
 		unitnames.Mech:      NewMech,
 		unitnames.Artillery: NewArtillery,
@@ -37,12 +37,12 @@ func init() {
 	}
 }
 
-func (u *baseUnit) Move() {
+func (u *unit) Move() {
 }
 
-func (u *baseUnit) Fire(a Unit, b Unit) error {
+func (u *unit) Fire(a Unit, b Unit) error {
 	return nil
 }
 
-func (u *baseUnit) Load() {
+func (u *unit) Load() {
 }

@@ -2,6 +2,7 @@ package models
 
 import (
 	"github.com/awbw/2040/models"
+	unitnames "github.com/awbw/2040/types/units/names"
 )
 
 type unit struct {
@@ -24,7 +25,18 @@ type unit struct {
 
 // Create a Unit from a model retrieved from the database
 func CreateUnit(m *unit) Unit {
-	return MakeUnit[m.name](m)
+	return UnitMaker[m.name](m)
+}
+
+// Create a Unit from a name
+func CreateUnitHelper(name unitnames.UnitName) Unit {
+	u := unit{
+		hp: 10,
+		baseUnit: baseUnit{
+			name: name,
+		},
+	}
+	return CreateUnit(&u)
 }
 
 // Set the Unit's properties with the model received from the database
