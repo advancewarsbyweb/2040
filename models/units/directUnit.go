@@ -25,6 +25,7 @@ func init() {
 		unitnames.BCopter,
 		unitnames.Fighter,
 		unitnames.Bomber,
+		unitnames.Stealth,
 		unitnames.Sub,
 		unitnames.Cruiser,
 	}

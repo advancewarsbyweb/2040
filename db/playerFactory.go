@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/awbw/2040/models"
-	"github.com/awbw/2040/types"
 	"gopkg.in/guregu/null.v4"
 )
 
@@ -89,7 +88,7 @@ func (f *playerFactory) Build() models.Player {
 }
 
 func (f *playerFactory) BuildInsert() models.Player {
-	pID, _ := PlayerRepo.CreatePlayer(types.NewPlayer(f.Player))
+	pID, _ := PlayerRepo.CreatePlayer(f.Player)
 	f.Player.ID = pID
 	return f.Player
 }

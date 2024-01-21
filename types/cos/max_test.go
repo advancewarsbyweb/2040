@@ -4,22 +4,22 @@ import (
 	"testing"
 
 	"github.com/awbw/2040/db"
-	"github.com/awbw/2040/types"
+	"github.com/awbw/2040/models"
+	unitmodels "github.com/awbw/2040/models/units"
 	conames "github.com/awbw/2040/types/cos/names"
-	unittypes "github.com/awbw/2040/types/units/baseUnits"
 	unitnames "github.com/awbw/2040/types/units/names"
 )
 
 var maxTest Co
-var maxPlayer types.Player
+var maxPlayer models.Player
 
 func init() {
 	maxTest = NewCo(conames.Max)
-	maxPlayer = types.NewPlayer(db.PlayerFactory.Create().Build())
+	maxPlayer = db.PlayerFactory.Create().Build()
 }
 
 func TestRangeBoost(t *testing.T) {
-	u := unittypes.CreateUnit(unitnames.Artillery)
+	u := unitmodels.CreateUnitHelper(unitnames.Artillery).SetPlayer(&maxPlayer)
 
 	boost := maxTest.RangeBoost(u)
 	want := -1
@@ -30,7 +30,7 @@ func TestRangeBoost(t *testing.T) {
 }
 
 func TestIndirectUnitDamage(t *testing.T) {
-	u := unittypes.CreateUnit(unitnames.Artillery)
+	u := unitmodels.CreateUnitHelper(unitnames.Artillery).SetPlayer(&maxPlayer)
 
 	boost := maxTest.DamageBoost(u)
 	want := -10
@@ -41,7 +41,7 @@ func TestIndirectUnitDamage(t *testing.T) {
 }
 
 func TestDirectUnitDamage(t *testing.T) {
-	u := unittypes.CreateUnit(unitnames.Tank).SetPlayer(&maxPlayer)
+	u := unitmodels.CreateUnitHelper(unitnames.Tank).SetPlayer(&maxPlayer)
 
 	boost := maxTest.DamageBoost(u)
 	want := 20

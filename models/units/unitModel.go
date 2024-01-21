@@ -36,7 +36,7 @@ type unit struct {
 	IUnit Unit
 }
 
-type UnitFunction func(u *unit) Unit
+type UnitFunction func(m *unit) Unit
 
 var UnitMaker map[unitnames.UnitName]UnitFunction
 
@@ -44,8 +44,19 @@ func init() {
 	UnitMaker = map[unitnames.UnitName]UnitFunction{
 		unitnames.Infantry:  NewInfantry,
 		unitnames.Mech:      NewMech,
+		unitnames.Recon:     NewRecon,
 		unitnames.Artillery: NewArtillery,
 		unitnames.Tank:      NewTank,
+		unitnames.AntiAir:   NewAntiAir,
+		unitnames.BCopter:   NewBCopter,
+		unitnames.MDTank:    NewMDTank,
+		unitnames.Cruiser:   NewCruiser,
+		unitnames.Sub:       NewSub,
+		unitnames.Fighter:   NewFighter,
+		unitnames.Neotank:   NewNeotank,
+		unitnames.Bomber:    NewBomber,
+		unitnames.Stealth:   NewStealth,
+		unitnames.MegaTank:  NewMegaTank,
 	}
 }
 

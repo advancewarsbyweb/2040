@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/awbw/2040/models"
-	"github.com/awbw/2040/types"
 )
 
 type PlayerRepository struct {
@@ -49,7 +48,7 @@ func init() {
 }
 
 // PlayerModel with null UserModel in it
-func (r *PlayerRepository) FindPlayer(id int) (*types.Player, error) {
+func (r *PlayerRepository) FindPlayer(id int) (*models.Player, error) {
 	var playerModel models.Player
 	playerQuery := "SELECT * FROM awbw_players WHERE players_id = ?"
 
@@ -58,12 +57,11 @@ func (r *PlayerRepository) FindPlayer(id int) (*types.Player, error) {
 		return nil, errors.New(fmt.Sprintf("Failed to find player with given ID: %s", err.Error()))
 	}
 
-	p := types.NewPlayer(playerModel)
-	return &p, nil
+	return &playerModel, nil
 }
 
 // PlayerModel with non null UserModel in it
-func (r *PlayerRepository) FindPlayerUser(id int) (*types.Player, error) {
+func (r *PlayerRepository) FindPlayerUser(id int) (*models.Player, error) {
 	var playerModel models.Player
 	playerQuery := fmt.Sprintf(`SELECT awbw_players.*, %s FROM awbw_players, ofua_users
         WHERE players_id = ?
@@ -76,11 +74,10 @@ func (r *PlayerRepository) FindPlayerUser(id int) (*types.Player, error) {
 		return nil, errors.New(fmt.Sprintf("Failed to find playerUser with given ID: %s", err.Error()))
 	}
 
-	p := types.NewPlayer(playerModel)
-	return &p, nil
+	return &playerModel, nil
 }
 
-func (r *PlayerRepository) FindPlayersByGame(gameId int) ([]types.Player, error) {
+func (r *PlayerRepository) FindPlayersByGame(gameId int) ([]models.Player, error) {
 
 	var playerModels []models.Player
 	query := "SELECT * FROM awbw_players WHERE players_games_id = ?"
@@ -90,16 +87,16 @@ func (r *PlayerRepository) FindPlayersByGame(gameId int) ([]types.Player, error)
 		return nil, errors.New("Failed to find players with given game ID")
 	}
 
-	var pTypes []types.Player
+	var pTypes []models.Player
 
 	for _, m := range playerModels {
-		pTypes = append(pTypes, types.NewPlayer(m))
+		pTypes = append(pTypes, m)
 	}
 
 	return pTypes, nil
 }
 
-func (r *PlayerRepository) CreatePlayer(body types.Player) (int, error) {
+func (r *PlayerRepository) CreatePlayer(body models.Player) (int, error) {
 	createQuery := FormatCreateQuery("awbw_players", PlayerRepo.Columns)
 
 	res, err := DB.NamedExec(createQuery, body)

@@ -3,15 +3,15 @@ package cos
 import (
 	"math/rand"
 
+	unitmodels "github.com/awbw/2040/models/units"
 	conames "github.com/awbw/2040/types/cos/names"
-	unittypes "github.com/awbw/2040/types/units/baseUnits"
 )
 
 type Co interface {
-	DamageBoost(u unittypes.Unit) int
-	MovementBoost(u unittypes.Unit) int
-	RangeBoost(u unittypes.Unit) int
-	CaptureBoost(u unittypes.Unit) int
+	DamageBoost(u unitmodels.Unit) int
+	MovementBoost(u unitmodels.Unit) int
+	RangeBoost(u unitmodels.Unit) int
+	CaptureBoost(u unitmodels.Unit) int
 	LuckRange() int
 }
 
@@ -20,32 +20,41 @@ type co struct {
 	SuperPower string
 }
 
-var CoMakers map[conames.CoName]func() Co
+type Boost string
+
+var (
+	DamageBoost   Boost = "DamageBoost"
+	MovementBoost Boost = "MovementBoost"
+	RangeBoost    Boost = "RangeBoost"
+	CaptureBoost  Boost = "CaptureBoost"
+)
+
+var CoMaker map[conames.CoName]func() Co
 
 func init() {
-	CoMakers = map[conames.CoName]func() Co{
+	CoMaker = map[conames.CoName]func() Co{
 		conames.Max:  NewMax,
 		conames.Sami: NewSami,
 	}
 }
 
 func NewCo(name conames.CoName) Co {
-	return CoMakers[name]()
+	return CoMaker[name]()
 }
 
-func (co *co) DamageBoost(u unittypes.Unit) int {
+func (co *co) DamageBoost(u unitmodels.Unit) int {
 	return 0
 }
 
-func (co *co) MovementBoost(u unittypes.Unit) int {
+func (co *co) MovementBoost(u unitmodels.Unit) int {
 	return 0
 }
 
-func (co *co) RangeBoost(u unittypes.Unit) int {
+func (co *co) RangeBoost(u unitmodels.Unit) int {
 	return 0
 }
 
-func (co *co) CaptureBoost(u unittypes.Unit) int {
+func (co *co) CaptureBoost(u unitmodels.Unit) int {
 	return 0
 }
 
