@@ -10,10 +10,12 @@ import (
 	unitnames "github.com/awbw/2040/types/units/names"
 )
 
-var samiTest Co
-var samiPlayer models.Player
+var (
+	samiTest   Co
+	samiPlayer models.Player
 
-var Footsoldiers []unitnames.UnitName
+	Footsoldiers []unitnames.UnitName
+)
 
 func init() {
 	samiTest = NewCo(conames.Sami)
@@ -28,7 +30,7 @@ func TestDamageBoostFootsoldiers_Sami(t *testing.T) {
 		want := 30
 
 		if boost != want {
-			t.Fatalf("Sami's %s damage boost should be 30. Got (%d), want (%d)", unitName, boost, want)
+			t.Fatalf("Sami's %s damage boost is wrong. Got (%d), want (%d)", unitName, boost, want)
 		}
 	}
 }
@@ -40,7 +42,19 @@ func TestDamageBoostDirectUnits_Sami(t *testing.T) {
 		want := -10
 
 		if boost != want {
-			t.Fatalf("Sami's %s damage boost should be -10. Got (%d), want (%d)", unitName, boost, want)
+			t.Fatalf("Sami's %s damage boost is wrong. Got (%d), want (%d)", unitName, boost, want)
+		}
+	}
+}
+
+func TestDamageBoostIndirectUnits_Sami(t *testing.T) {
+	for _, unitName := range unitmodels.IndirectUnits {
+		u := unitmodels.CreateUnitHelper(unitName).SetPlayer(&samiPlayer)
+		boost := samiTest.DamageBoost(u)
+		want := 0
+
+		if boost != want {
+			t.Fatalf("Sami's %s damage boost is wrong. Got (%d), want (%d)", unitName, boost, want)
 		}
 	}
 }
@@ -53,12 +67,12 @@ func TestCaptureBoost_Sami(t *testing.T) {
 		want := 5
 
 		if boost != want {
-			t.Fatalf("Sami's %s capture boost should be +5 at %d hp . Got (%d), want (%d)", unitName, hp, boost, want)
+			t.Fatalf("Sami's %s capture boost is wrong at %d hp . Got (%d), want (%d)", unitName, hp, boost, want)
 		}
 	}
 }
 
-// Number with decimals. e.g: 3hp * 1.5 = 4.5, floored is 4
+// Number with decimals. e.g: 3hp * 1.5 = 4.5, floored is 4 (+1 boost)
 func TestCaptureBoostDecimalTotal_Sami(t *testing.T) {
 	for _, unitName := range Footsoldiers {
 		hp := 3
@@ -67,7 +81,24 @@ func TestCaptureBoostDecimalTotal_Sami(t *testing.T) {
 		want := 1
 
 		if boost != want {
-			t.Fatalf("Sami's %s capture boost should be +1 at %d hp. Got (%d), want (%d)", unitName, hp, boost, want)
+			t.Fatalf("Sami's %s capture boost is wrong at %d hp. Got (%d), want (%d)", unitName, hp, boost, want)
 		}
+	}
+}
+
+// Make sure any HP can capture a full HP building
+func TestCaptureBoostScop_Sami(t *testing.T) {
+	hp := 10
+	for _, unitName := range Footsoldiers {
+		samiPlayer.CoPowerOn = "S"
+		u := unitmodels.CreateUnitHelper(unitName).SetPlayer(&samiPlayer).SetHp(float64(hp))
+		boost := samiTest.CaptureBoost(u)
+		want := 20
+
+		if boost < want {
+			t.Fatalf("Sami's %s capture boost is wrong during SCOP at %d hp. Got (%d), want (%d)", unitName, hp, boost, want)
+		}
+
+		hp -= 6
 	}
 }

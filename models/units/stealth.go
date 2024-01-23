@@ -39,6 +39,6 @@ func Stealth() unit {
 		shortRange:     1,
 		longRange:      1,
 		ammo:           6,
-		cost:           25000,
+		cost:           24000,
 	}
 }

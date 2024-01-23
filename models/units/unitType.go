@@ -12,6 +12,7 @@ type Unit interface {
 	SetPlayer(p *models.Player) Unit
 	Player() *models.Player
 	Name() unitnames.UnitName
+	Cost() int
 	Ammo() int
 	SetAmmo(ammo int) Unit
 	Fuel() int
@@ -63,6 +64,10 @@ func (u *unit) Player() *models.Player {
 
 func (u *unit) Name() unitnames.UnitName {
 	return u.name
+}
+
+func (u *unit) Cost() int {
+	return u.cost
 }
 
 func (u *unit) Ammo() int {

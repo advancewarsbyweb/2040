@@ -13,6 +13,7 @@ type Co interface {
 	RangeBoost(u unitmodels.Unit) int
 	CaptureBoost(u unitmodels.Unit) int
 	LuckRange() int
+	CostModifier() float64
 }
 
 type co struct {
@@ -20,21 +21,14 @@ type co struct {
 	SuperPower string
 }
 
-type Boost string
-
-var (
-	DamageBoost   Boost = "DamageBoost"
-	MovementBoost Boost = "MovementBoost"
-	RangeBoost    Boost = "RangeBoost"
-	CaptureBoost  Boost = "CaptureBoost"
-)
-
 var CoMaker map[conames.CoName]func() Co
 
 func init() {
 	CoMaker = map[conames.CoName]func() Co{
-		conames.Max:  NewMax,
-		conames.Sami: NewSami,
+		conames.Andy:  NewAndy,
+		conames.Max:   NewMax,
+		conames.Sami:  NewSami,
+		conames.Colin: NewColin,
 	}
 }
 
@@ -60,6 +54,10 @@ func (co *co) CaptureBoost(u unitmodels.Unit) int {
 
 func (co *co) LuckRange() int {
 	return rand.Intn(9)
+}
+
+func (co *co) CostModifier() float64 {
+	return 1.0
 }
 
 func PowerBoost(coPowerOn string, noCopBoost int, copBoost int, scopBoost int) int {
