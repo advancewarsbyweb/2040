@@ -2,39 +2,39 @@ package terraintypes
 
 import "strings"
 
-type TerrainType string
+type TerrainName string
 
-type TerrainStars map[TerrainType]int
+type TerrainStars map[TerrainName]int
 
 var Stars TerrainStars
 
 const (
-	Plain    TerrainType = "Plain"
-	Mountain TerrainType = "Mountain"
-	Wood     TerrainType = "Wood"
-	River    TerrainType = "River"
-	Road     TerrainType = "Road"
-	Bridge   TerrainType = "Bridge"
-	Sea      TerrainType = "Sea"
-	Shoal    TerrainType = "Shoal"
-	Reef     TerrainType = "Reef"
-	City     TerrainType = "City"
-	Base     TerrainType = "Base"
-	Airport  TerrainType = "Airport"
-	Port     TerrainType = "Port"
-	HQ       TerrainType = "HQ"
-	Pipe     TerrainType = "Pipe"
-	Seam     TerrainType = "Seam"
-	Silo     TerrainType = "Silo"
-	ComTower TerrainType = "ComTower"
-	Lab      TerrainType = "Lab"
+	Plain    TerrainName = "Plain"
+	Mountain TerrainName = "Mountain"
+	Wood     TerrainName = "Wood"
+	River    TerrainName = "River"
+	Road     TerrainName = "Road"
+	Bridge   TerrainName = "Bridge"
+	Sea      TerrainName = "Sea"
+	Shoal    TerrainName = "Shoal"
+	Reef     TerrainName = "Reef"
+	City     TerrainName = "City"
+	Base     TerrainName = "Base"
+	Airport  TerrainName = "Airport"
+	Port     TerrainName = "Port"
+	HQ       TerrainName = "HQ"
+	Pipe     TerrainName = "Pipe"
+	Seam     TerrainName = "Seam"
+	Silo     TerrainName = "Silo"
+	ComTower TerrainName = "ComTower"
+	Lab      TerrainName = "Lab"
 )
 
-func (t TerrainType) Match(terrainName string) bool {
+func (t TerrainName) Match(terrainName string) bool {
 	return strings.Contains(terrainName, string(t))
 }
 
-func (t TerrainType) Stars() int {
+func (t TerrainName) Stars() int {
 	return Stars[t]
 }
 
