@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/awbw/2040/db"
-	"github.com/awbw/2040/factories"
 	"github.com/awbw/2040/utils/auth"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -19,7 +18,7 @@ func init() {
 
 func TestServeWS(t *testing.T) {
 
-	u := factories.User.Create()
+	u := db.User.Create()
 	uID, _ := db.UserRepo.CreateUser(u)
 	u.ID = uID
 

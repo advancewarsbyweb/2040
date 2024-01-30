@@ -56,7 +56,7 @@ func (r *PressRepository) FindRecipients(pressId int) ([]types.PressTo, error) {
 	return pressToTypes, nil
 }
 
-func (r *PressRepository) CreatePress(body types.Press, recipients []int) (int, error) {
+func (r *PressRepository) CreatePress(body models.Press, recipients []int) (int, error) {
 	pressColumns := []string{
 		presscolumns.Text,
 		presscolumns.PlayerID,

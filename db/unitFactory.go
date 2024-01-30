@@ -3,7 +3,6 @@ package db
 import (
 	"github.com/awbw/2040/models"
 	unitmodels "github.com/awbw/2040/models/units"
-	unitnames "github.com/awbw/2040/types/units/names"
 )
 
 type unitFactory struct {

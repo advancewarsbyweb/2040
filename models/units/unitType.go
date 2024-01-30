@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/awbw/2040/models"
-	unitnames "github.com/awbw/2040/types/units/names"
+	unitnames "github.com/awbw/2040/models/units/names"
 )
 
 // We return the IUnit in the Unit Model to be able to chain methods

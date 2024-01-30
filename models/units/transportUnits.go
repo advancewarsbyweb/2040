@@ -1,6 +1,6 @@
 package models
 
-import unitnames "github.com/awbw/2040/types/units/names"
+import unitnames "github.com/awbw/2040/models/units/names"
 
 var TransportUnits []unitnames.UnitName
 

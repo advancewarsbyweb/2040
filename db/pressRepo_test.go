@@ -13,8 +13,8 @@ func init() {
 
 func TestCreatePress(t *testing.T) {
 
-	p1 := Player.Create().CreateRelations().BuildInsert()
-	p2 := Player.Create().CreateRelations().BuildInsert()
+	p1 := PlayerFactory.Create().CreateRelations().BuildInsert()
+	p2 := PlayerFactory.Create().CreateRelations().BuildInsert()
 
 	recipients := []int{p1.ID, p2.ID}
 
@@ -30,7 +30,7 @@ func TestCreatePress(t *testing.T) {
 		t.Fatalf("Could not find Press (%d): %s", pressId, err.Error())
 	}
 
-	if newPress.Subject != p.Subject {
+	if newPress.Subject != p.Subject.String {
 		t.Fatalf("Subject of Press created does not match given Subject: got (%s), want (%s)", newPress.Subject, p.Subject)
 	}
 
@@ -46,8 +46,8 @@ func TestFindRecipients(t *testing.T) {
 
 	g := Game.Create().BuildInsert()
 
-	p1 := Player.Create().CreateUser().SetGame(&g).BuildInsert()
-	p2 := Player.Create().CreateUser().SetGame(&g).BuildInsert()
+	p1 := PlayerFactory.Create().CreateUser().SetGame(&g).BuildInsert()
+	p2 := PlayerFactory.Create().CreateUser().SetGame(&g).BuildInsert()
 
 	recipients := []int{p1.ID, p2.ID}
 

@@ -2,8 +2,8 @@ package models
 
 import (
 	"github.com/awbw/2040/models"
+	unitnames "github.com/awbw/2040/models/units/names"
 	movementtypes "github.com/awbw/2040/types/movements"
-	unitnames "github.com/awbw/2040/types/units/names"
 )
 
 type unit struct {

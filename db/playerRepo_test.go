@@ -9,7 +9,7 @@ func init() {
 }
 
 func TestCreatePlayer(t *testing.T) {
-	p := Player.Create().Build()
+	p := PlayerFactory.Create().Build()
 	playerId, err := PlayerRepo.CreatePlayer(p)
 
 	if err != nil {
@@ -27,7 +27,7 @@ func TestCreatePlayer(t *testing.T) {
 }
 
 func TestFindPlayerUser(t *testing.T) {
-	p := Player.Create().CreateUser().BuildInsert()
+	p := PlayerFactory.Create().CreateUser().BuildInsert()
 
 	r, err := PlayerRepo.FindPlayerUser(p.ID)
 	if err != nil {

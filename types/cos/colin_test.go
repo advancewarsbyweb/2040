@@ -6,7 +6,7 @@ import (
 	"github.com/awbw/2040/db"
 	"github.com/awbw/2040/models"
 	unitmodels "github.com/awbw/2040/models/units"
-	unitnames "github.com/awbw/2040/types/units/names"
+	unitnames "github.com/awbw/2040/models/units/names"
 )
 
 var (

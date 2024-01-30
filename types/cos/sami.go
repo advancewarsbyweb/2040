@@ -4,7 +4,7 @@ import (
 	"math"
 
 	unitmodels "github.com/awbw/2040/models/units"
-	unitnames "github.com/awbw/2040/types/units/names"
+	unitnames "github.com/awbw/2040/models/units/names"
 	"golang.org/x/exp/slices"
 )
 
