@@ -22,6 +22,15 @@ func CreateTerrainMap(mapTiles []Tile) TerrainMap {
 	return terrainMap
 }
 
+func (m *testMaps) Tile(id int) Tile {
+	return Tile{
+		Terrain: Terrain{
+			ID:   id,
+			Name: terraintypes.Names[id],
+		},
+	}
+}
+
 func (m *testMaps) FromTiles(tileIDs [][]int) []Tile {
 	var mapTiles []Tile
 	for y, row := range tileIDs {

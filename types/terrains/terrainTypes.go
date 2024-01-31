@@ -25,13 +25,14 @@ const (
 	HQ       TerrainName = "HQ"
 	Pipe     TerrainName = "Pipe"
 	Seam     TerrainName = "Seam"
+	Rubble   TerrainName = "Rubble"
 	Silo     TerrainName = "Silo"
 	ComTower TerrainName = "ComTower"
 	Lab      TerrainName = "Lab"
 )
 
-func (t TerrainName) Match(terrainName string) bool {
-	return strings.Contains(terrainName, string(t))
+func (t TerrainName) Match(compare TerrainName) bool {
+	return strings.Contains(string(compare), string(t))
 }
 
 func (t TerrainName) Stars() int {

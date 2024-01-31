@@ -2,6 +2,8 @@ package models
 
 import (
 	"github.com/awbw/2040/models"
+	terrainmodels "github.com/awbw/2040/models/terrains"
+
 	unitnames "github.com/awbw/2040/models/units/names"
 )
 
@@ -26,6 +28,7 @@ type Unit interface {
 	SetMoved(moved int) Unit
 	ShortRange() int
 	LongRange() int
+	Tile() *terrainmodels.Tile
 	Unit() *unit
 
 	Move()
@@ -129,6 +132,10 @@ func (u *unit) ShortRange() int {
 
 func (u *unit) LongRange() int {
 	return u.longRange
+}
+
+func (u *unit) Tile() *terrainmodels.Tile {
+	return u.tile
 }
 
 func (u *unit) Unit() *unit {
