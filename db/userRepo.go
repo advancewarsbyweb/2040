@@ -63,36 +63,39 @@ func init() {
 	UserRepo = NewUserRepository()
 }
 
-func (r *UserRepository) FindUser(id int) (*types.User, error) {
-	var userModel models.User
+func (r *UserRepository) FindUser(id int) (*models.User, error) {
+	var u models.User
 	userQuery := fmt.Sprintf("SELECT %s FROM ofua_users WHERE users_id = ?", strings.Join(UserRepo.Columns, ","))
-	err := DB.Get(&userModel, userQuery, id)
 
+	err := DB.Get(&u, userQuery, id)
 	if err != nil {
 		return nil, errors.New(fmt.Sprintf("Failed to find player with given ID (%d): %s", id, err.Error()))
 	}
 
-	u := types.NewUser(userModel)
 	return &u, nil
 }
 
-func (r *UserRepository) FindUserByPlayer(id int) (*types.User, error) {
-	var m models.User
-	query := `SELECT ofua_users.* from ofua_users, awbw_players
-		WHERE players_id = ?
-		AND players_users_id = users_id`
-	err := DB.Get(&m, query, id)
+func (r *UserRepository) FindUserByPlayer(playerId int) (*models.User, error) {
+	var u models.User
+	query := fmt.Sprintf(
+		`SELECT %s from ofua_users, awbw_players
+        INNER JOIN awbw_players
+            ON players_users_id = users_id
+        WHERE players_id = ?`,
+		strings.Join(UserRepo.Columns, ","),
+	)
 
+	err := DB.Get(&u, query, playerId)
 	if err != nil {
-		return nil, errors.New(fmt.Sprintf("Failed to find player with given ID (%d): %s", id, err.Error()))
+		return nil, errors.New(fmt.Sprintf("Failed to find player with given ID (%d): %s", playerId, err.Error()))
 	}
 
-	t := types.NewUser(m)
-	return &t, nil
+	return &u, nil
 }
 
-func (r *UserRepository) CreateUser(body types.User) (int, error) {
+func (r *UserRepository) CreateUser(body models.User) (int, error) {
 	createQuery := FormatCreateQuery("ofua_users", UserRepo.Columns)
+
 	res, err := DB.NamedExec(createQuery, body)
 	if err != nil {
 		return -1, errors.New(fmt.Sprintf("Could not create new User: %s", err.Error()))
@@ -104,13 +107,12 @@ func (r *UserRepository) CreateUser(body types.User) (int, error) {
 }
 
 func (r *UserRepository) FindUsersByGame(gameId int) ([]models.User, error) {
-
 	var userModels []models.User
-	usersQuery := "SELECT ofua_users.* FROM awbw_players, ofua_users WHERE players_games_id = ? AND players_users_id = users_id"
+	usersQuery := fmt.Sprintf("SELECT %s FROM awbw_players, ofua_users WHERE players_games_id = ? AND players_users_id = users_id")
 
 	err := DB.Select(&userModels, usersQuery, gameId)
 	if err != nil {
-		return []models.User{}, errors.New("Failed to find players with given game ID")
+		return nil, errors.New("Failed to find players with given game ID")
 	}
 
 	return userModels, nil

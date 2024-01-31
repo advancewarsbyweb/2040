@@ -61,15 +61,16 @@ func (r *PlayerRepository) FindPlayer(id int) (*models.Player, error) {
 }
 
 // PlayerModel with non null UserModel in it
-func (r *PlayerRepository) FindPlayerUser(id int) (*models.Player, error) {
+func (r *PlayerRepository) FindPlayerRelations(id int) (*models.Player, error) {
 	var playerModel models.Player
-	playerQuery := fmt.Sprintf(`SELECT awbw_players.*, %s FROM awbw_players, ofua_users
-        WHERE players_id = ?
-        AND users_id = players_users_id`,
+	query := fmt.Sprintf(`SELECT awbw_players.*, %s FROM awbw_players, ofua_users
+        INNER JOIN ofua_users
+            ON ofua_users.users_id = awbw_players.players_users_id
+        WHERE players_id = ?`,
 		strings.Join(UserRepo.Columns, ","),
 	)
 
-	err := DB.Get(&playerModel, playerQuery, id)
+	err := DB.Get(&playerModel, query, id)
 	if err != nil {
 		return nil, errors.New(fmt.Sprintf("Failed to find playerUser with given ID: %s", err.Error()))
 	}
@@ -78,7 +79,6 @@ func (r *PlayerRepository) FindPlayerUser(id int) (*models.Player, error) {
 }
 
 func (r *PlayerRepository) FindPlayersByGame(gameId int) ([]models.Player, error) {
-
 	var playerModels []models.Player
 	query := "SELECT * FROM awbw_players WHERE players_games_id = ?"
 
@@ -87,19 +87,29 @@ func (r *PlayerRepository) FindPlayersByGame(gameId int) ([]models.Player, error
 		return nil, errors.New("Failed to find players with given game ID")
 	}
 
-	var pTypes []models.Player
+	return playerModels, nil
+}
 
-	for _, m := range playerModels {
-		pTypes = append(pTypes, m)
+func (r *PlayerRepository) FindPlayersRelationsByGame(gameId int) ([]models.Player, error) {
+	var playerModels []models.Player
+	query := fmt.Sprintf(`SELECT awbw_players.*, %s FROM awbw_players, ofua_users
+        INNER JOIN ofua_users
+            ON ofua_users.users_id = awbw_players.players_users_id
+        WHERE awbw_players.players_games_id = ?`,
+		strings.Join(UserRepo.Columns, ","),
+	)
+
+	err := DB.Select(&playerModels, query, gameId)
+	if err != nil {
+		return nil, errors.New("Failed to find players with given game ID")
 	}
 
-	return pTypes, nil
+	return playerModels, nil
 }
 
 func (r *PlayerRepository) CreatePlayer(body models.Player) (int, error) {
-	createQuery := FormatCreateQuery("awbw_players", PlayerRepo.Columns)
-
-	res, err := DB.NamedExec(createQuery, body)
+	query := FormatCreateQuery("awbw_players", PlayerRepo.Columns)
+	res, err := DB.NamedExec(query, body)
 	if err != nil {
 		return -1, errors.New(fmt.Sprintf("Could not create new Player: %s", err.Error()))
 	}

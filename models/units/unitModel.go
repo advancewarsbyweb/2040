@@ -2,25 +2,27 @@ package models
 
 import (
 	"github.com/awbw/2040/models"
+	terrainmodels "github.com/awbw/2040/models/terrains"
 	unitnames "github.com/awbw/2040/models/units/names"
 	movementtypes "github.com/awbw/2040/types/movements"
 )
 
 type unit struct {
-	id             int
-	playerID       int
-	gameID         int
-	x              int
-	y              int
-	subDive        string
-	moved          int
-	fired          int
-	hp             float64
-	cargo1ID       int
-	cargo2ID       int
-	carried        string
+	id             int                        `db:"units_id"`
+	playerID       int                        `db:"units_players_id"`
+	gameID         int                        `db:"units_games_id"`
+	x              int                        `db:"units_x"`
+	y              int                        `db:"units_y"`
+	subDive        string                     `db:"units_sub_dive"`
+	moved          int                        `db:"units_moved"`
+	fired          int                        `db:"units_fired"`
+	hp             float64                    `db:"units_hp"`
+	cargo1ID       int                        `db:"units_cargo1_units_id"`
+	cargo2ID       int                        `db:"units_cargo2_units_id"`
+	carried        string                     `db:"units_carried"`
 	game           *models.Game               `db:""`
 	player         *models.Player             `db:""`
+	tile           *terrainmodels.Tile        `db:""`
 	name           unitnames.UnitName         `db:"units_name"`
 	movementPoints int                        `db:"units_movement_points"`
 	movementType   movementtypes.MovementType `db:"units_movement_type"`

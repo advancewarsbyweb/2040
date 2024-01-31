@@ -26,6 +26,7 @@ type Unit interface {
 	SetMoved(moved int) Unit
 	ShortRange() int
 	LongRange() int
+	Unit() *unit
 
 	Move()
 	Fire(a Unit, d Unit) error
@@ -128,4 +129,8 @@ func (u *unit) ShortRange() int {
 
 func (u *unit) LongRange() int {
 	return u.longRange
+}
+
+func (u *unit) Unit() *unit {
+	return u
 }
