@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/awbw/2040/models"
-	"github.com/awbw/2040/types"
 )
 
 type UserRepository struct {

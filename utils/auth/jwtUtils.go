@@ -7,12 +7,12 @@ import (
 	"time"
 
 	"github.com/awbw/2040/db"
-	"github.com/awbw/2040/types"
+	"github.com/awbw/2040/models"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func CreateTokenString(user types.User) (string, error) {
+func CreateTokenString(user models.User) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"id":  user.ID,
 		"exp": time.Now().Add(time.Hour * 24 * 30).Unix(),
@@ -50,7 +50,7 @@ func VerifyTokenExp(claims jwt.MapClaims) bool {
 	return isValid
 }
 
-func VerifyTokenUser(claims jwt.MapClaims) (*types.User, error) {
+func VerifyTokenUser(claims jwt.MapClaims) (*models.User, error) {
 	userId := int(claims["id"].(float64))
 	//if err != nil {
 	//	return nil, errors.New(fmt.Sprintf("Could not get the user id from claims: %s", err.Error()))
@@ -64,7 +64,7 @@ func VerifyTokenUser(claims jwt.MapClaims) (*types.User, error) {
 	return user, nil
 }
 
-func RequireAuth(c *gin.Context) (*types.User, error) {
+func RequireAuth(c *gin.Context) (*models.User, error) {
 	tokenString := GetTokenHeader(c)
 
 	token, err := VerifyTokenString(tokenString)

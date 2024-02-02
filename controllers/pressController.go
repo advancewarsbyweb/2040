@@ -4,14 +4,14 @@ import (
 	"net/http"
 
 	"github.com/awbw/2040/db"
-	"github.com/awbw/2040/types"
+	"github.com/awbw/2040/models"
 	"github.com/gin-gonic/gin"
 )
 
 type PressController struct{}
 
 type PressBody struct {
-	types.Press
+	models.Press
 	Recipients []int `json:"recipients"`
 }
 
@@ -39,7 +39,7 @@ func (pc *PressController) Create(c *gin.Context) {
 	}
 
 	p, _ := c.Get("PlayerUser")
-	playerUser := p.(types.Player)
+	playerUser := p.(models.Player)
 	playersInGame, err := db.PlayerRepo.FindPlayersByGame(playerUser.GameID)
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)

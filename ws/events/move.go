@@ -1,6 +1,7 @@
 package events
 
 import "github.com/awbw/2040/models"
+import unitmodels "github.com/awbw/2040/models/units"
 
 type Team string
 
@@ -13,13 +14,13 @@ type PathTile struct {
 }
 
 type Discovereds struct {
-	Units     []models.Unit
+	Units     []unitmodels.Unit
 	Buildings []models.Building
 }
 
 // Information for all players. This needs to be formatted for individual players
 type MoveUnformated struct {
-	Unit       models.Unit
+	Unit       unitmodels.Unit
 	Paths      map[Team][]PathTile    `json:"paths"`
 	Dist       int                    `json:"dist"`
 	Trapped    bool                   `json:"trapped"`
@@ -33,8 +34,8 @@ type MoveRequest struct {
 }
 
 type MoveResponse struct {
-	Unit        models.Unit   `json:"unit"`
-	Path        []PathTile    `json:"path"`
-	Discovereds []Discovereds `json:"discovered_units,omitempty"`
-	Trapped     bool          `json:"trapped"`
+	Unit        unitmodels.Unit `json:"unit"`
+	Path        []PathTile      `json:"path"`
+	Discovereds []Discovereds   `json:"discovered_units,omitempty"`
+	Trapped     bool            `json:"trapped"`
 }

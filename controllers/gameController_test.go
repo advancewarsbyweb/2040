@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	"github.com/awbw/2040/db"
-	"github.com/awbw/2040/types"
+	"github.com/awbw/2040/models"
 	"github.com/gin-gonic/gin"
 )
 
@@ -39,7 +39,7 @@ func TestCreateGame(t *testing.T) {
 		t.Fatalf("Wrong status code returned. Got (%d), want (%d)", w.Result().StatusCode, http.StatusOK)
 	}
 
-	var res types.Game
+	var res models.Game
 	json.Unmarshal(w.Body.Bytes(), &res)
 
 	if g.Name != res.Name {
@@ -66,7 +66,7 @@ func TestGetGame(t *testing.T) {
 		t.Fatalf("Wrong status code returned. Got (%d), want (%d)", w.Result().StatusCode, http.StatusOK)
 	}
 
-	var res types.Game
+	var res models.Game
 	json.Unmarshal(w.Body.Bytes(), &res)
 
 	if g.ID != res.ID {

@@ -56,7 +56,7 @@ func (f *playerFactory) Create() *playerFactory {
 
 func (f *playerFactory) CreateRelations() *playerFactory {
 
-	u := User.Create().BuildInsert()
+	u := UserFactory.Create().BuildInsert()
 	g := Game.Create().BuildInsert()
 
 	p := PlayerFactory.Create().SetGame(&g).SetUser(&u)
@@ -65,7 +65,7 @@ func (f *playerFactory) CreateRelations() *playerFactory {
 }
 
 func (f *playerFactory) CreateUser() *playerFactory {
-	u := User.Create().BuildInsert()
+	u := UserFactory.Create().BuildInsert()
 	f.Player.UserID = u.ID
 	f.Player.User = &u
 	return f

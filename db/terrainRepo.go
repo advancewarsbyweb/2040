@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/awbw/2040/models"
+	terrainmodels "github.com/awbw/2040/models/terrains"
 )
 
 type MapRepository struct{}
@@ -19,9 +19,9 @@ func init() {
 	MapRepo = NewMapRepo()
 }
 
-func (r *MapRepository) FindMapTiles(mapId int) ([]models.Tile, error) {
+func (r *MapRepository) FindMapTiles(mapId int) ([]terrainmodels.Tile, error) {
 
-	var mapTiles []models.Tile
+	var mapTiles []terrainmodels.Tile
 	findQuery := `SELECT awbw_tiles.tiles_x, awbw_tiles.tiles_y, awbw_terrain.* FROM awbw_tiles, awbw_terrain
 		WHERE tiles_maps_id = ?
 		AND tiles_terrain_id = terrain_id`

@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/awbw/2040/models"
-	"github.com/awbw/2040/types"
 	"github.com/bxcodec/faker/v4"
 	"gopkg.in/guregu/null.v4"
 )
@@ -13,14 +12,14 @@ type userFactory struct {
 	User models.User
 }
 
-var User userFactory
+var UserFactory userFactory
 
 func NewUserFactory() userFactory {
 	return userFactory{}
 }
 
 func init() {
-	User = NewUserFactory()
+	UserFactory = NewUserFactory()
 }
 
 func (f *userFactory) Create() *userFactory {
@@ -70,7 +69,7 @@ func (f *userFactory) Build() models.User {
 }
 
 func (f *userFactory) BuildInsert() models.User {
-	uID, _ := UserRepo.CreateUser(types.NewUser(f.User))
+	uID, _ := UserRepo.CreateUser(f.User)
 	f.User.ID = uID
 	return f.User
 }

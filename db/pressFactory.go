@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/awbw/2040/models"
-	"github.com/awbw/2040/types"
 	"github.com/bxcodec/faker/v4"
 	"gopkg.in/guregu/null.v4"
 )
@@ -51,7 +50,7 @@ func (f *pressFactory) Build() models.Press {
 }
 
 func (f *pressFactory) BuildAndInsert(sendToIds []int) models.Press {
-	pID, _ := PressRepo.CreatePress(types.NewPress(f.Press), sendToIds)
+	pID, _ := PressRepo.CreatePress(f.Press, sendToIds)
 	f.Press.ID = pID
 	return f.Press
 }

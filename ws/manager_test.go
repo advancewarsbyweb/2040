@@ -18,9 +18,7 @@ func init() {
 
 func TestServeWS(t *testing.T) {
 
-	u := db.User.Create()
-	uID, _ := db.UserRepo.CreateUser(u)
-	u.ID = uID
+	u := db.UserFactory.Create().BuildInsert()
 
 	w := http.Hijacker{}
 	c, _ := gin.CreateTestContext(w)

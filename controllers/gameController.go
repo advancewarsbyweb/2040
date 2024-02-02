@@ -20,12 +20,16 @@ type GameController struct{}
 
 var Game GameController
 
+var validate *validator.Validate
+
 func NewGameController() GameController {
 	return GameController{}
 }
 
 func init() {
 	Game = NewGameController()
+
+	validate = validator.New(validator.WithRequiredStructEnabled())
 }
 
 func (gc *GameController) Get(c *gin.Context) {
@@ -47,7 +51,13 @@ func (gc *GameController) Create(c *gin.Context) {
 
 	c.Bind(&body)
 
-	// Validation here
+	err := validate.Struct(body)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Validation failed for some fields",
+			"fields":  utils.ValidatorErrors(err),
+		})
+	}
 
 	gameId, err := db.GameRepo.CreateGame(body)
 	if err != nil {
@@ -77,6 +87,14 @@ func (gc *GameController) Update(c *gin.Context) {
 	}
 	c.Bind(&body)
 
+	err := validate.Struct(body)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Validation failed for some fields",
+			"fields":  utils.ValidatorErrors(err),
+		})
+	}
+
 	g, err := db.GameRepo.UpdateGame(body.ID, body.UpdatedFields)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -101,7 +119,7 @@ func (gc *GameController) Start(c *gin.Context) {
 	gameId, err := strconv.Atoi(c.Param("id"))
 	gameModel, err := db.GameRepo.FindGame(gameId)
 
-	if gameModel.StartDate.IsZero() {
+	if gameModel.StartDate().IsZero() {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Game is already started",
 		})

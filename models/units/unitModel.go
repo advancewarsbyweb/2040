@@ -35,7 +35,6 @@ type unit struct {
 	ammo           int                        `db:"units_ammo"`
 	// Reference to the created Unit type (e.g: Infantry, Mech, etc)
 	// This is to be able to return the proper struct and chain methods when using Setters
-	IUnit Unit
 }
 
 type UnitFunction func(m *unit) Unit

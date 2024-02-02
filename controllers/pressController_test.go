@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	"github.com/awbw/2040/db"
-	"github.com/awbw/2040/types"
+	"github.com/awbw/2040/models"
 	"github.com/gin-gonic/gin"
 )
 
@@ -21,9 +21,9 @@ func TestCreatePress(t *testing.T) {
 
 	g := db.Game.Create().BuildInsert()
 
-	p1 := db.Player.Create().SetGame(&g).BuildInsert()
-	p2 := db.Player.Create().SetGame(&g).BuildInsert()
-	p3 := db.Player.Create().CreateUser().SetGame(&g).BuildInsert()
+	p1 := db.PlayerFactory.Create().SetGame(&g).BuildInsert()
+	p2 := db.PlayerFactory.Create().SetGame(&g).BuildInsert()
+	p3 := db.PlayerFactory.Create().CreateUser().SetGame(&g).BuildInsert()
 
 	press := db.Press.Create().SetPlayer(&p3).Build()
 
@@ -50,7 +50,7 @@ func TestCreatePress(t *testing.T) {
 		t.Fatalf("Wrong status code returned. Got (%d), want (%d)", w.Result().StatusCode, http.StatusOK)
 	}
 
-	var res types.Press
+	var res models.Press
 	json.Unmarshal(w.Body.Bytes(), &res)
 
 	if press.Subject != res.Subject {
