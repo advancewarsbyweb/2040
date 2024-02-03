@@ -25,15 +25,15 @@ func NewMech(m *unit) Unit {
 
 func Mech() unit {
 	return unit{
-		name:           unitnames.Mech,
-		movementType:   movementtypes.B,
-		movementPoints: 2,
-		vision:         2,
-		fuel:           99,
-		fuelPerTurn:    0,
-		shortRange:     1,
-		longRange:      1,
-		ammo:           3,
-		cost:           3000,
+		Name:           unitnames.Mech,
+		MovementType:   movementtypes.B,
+		MovementPoints: 2,
+		Vision:         2,
+		Fuel:           99,
+		FuelPerTurn:    0,
+		ShortRange:     1,
+		LongRange:      1,
+		Ammo:           3,
+		Cost:           3000,
 	}
 }

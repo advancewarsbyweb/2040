@@ -10,26 +10,26 @@ import (
 // We return the IUnit in the Unit Model to be able to chain methods
 type Unit interface {
 	SetGame(g *models.Game) Unit
-	Game() *models.Game
+	GetGame() *models.Game
 	SetPlayer(p *models.Player) Unit
-	Player() *models.Player
-	Name() unitnames.UnitName
-	Cost() int
-	Ammo() int
+	GetPlayer() *models.Player
+	GetName() unitnames.UnitName
+	GetCost() int
+	GetAmmo() int
 	SetAmmo(ammo int) Unit
-	Fuel() int
+	GetFuel() int
 	SetFuel(fuel int) Unit
-	Hp() float64
+	GetHp() float64
 	SetHp(hp float64) Unit
-	X() int
-	Y() int
+	GetX() int
+	GetY() int
 	SetPos(x int, y int) Unit
-	Moved() int
+	GetMoved() int
 	SetMoved(moved int) Unit
-	ShortRange() int
-	LongRange() int
-	Tile() *terrainmodels.Tile
-	Unit() *unit
+	GetShortRange() int
+	GetLongRange() int
+	GetTile() *terrainmodels.Tile
+	GetUnit() *unit
 
 	Move()
 	Fire(a Unit, d Unit) error
@@ -47,97 +47,97 @@ func (u *unit) Load() {
 }
 
 func (u *unit) SetGame(g *models.Game) Unit {
-	u.game = g
-	u.gameID = g.ID
+	u.Game = g
+	u.GameID = g.ID
 	return u.IUnit
 }
 
-func (u *unit) Game() *models.Game {
-	return u.game
+func (u *unit) GetGame() *models.Game {
+	return u.Game
 }
 
 func (u *unit) SetPlayer(p *models.Player) Unit {
-	u.player = p
-	u.playerID = p.ID
+	u.Player = p
+	u.PlayerID = p.ID
 	return u.IUnit
 }
 
-func (u *unit) Player() *models.Player {
-	return u.player
+func (u *unit) GetPlayer() *models.Player {
+	return u.Player
 }
 
-func (u *unit) Name() unitnames.UnitName {
-	return u.name
+func (u *unit) GetName() unitnames.UnitName {
+	return u.Name
 }
 
-func (u *unit) Cost() int {
-	return u.cost
+func (u *unit) GetCost() int {
+	return u.Cost
 }
 
-func (u *unit) Ammo() int {
-	return u.ammo
+func (u *unit) GetAmmo() int {
+	return u.Ammo
 }
 
 func (u *unit) SetAmmo(ammo int) Unit {
 	if ammo >= 0 {
-		u.ammo = ammo
+		u.Ammo = ammo
 	}
 	return u.IUnit
 }
 
-func (u *unit) Fuel() int {
-	return u.fuel
+func (u *unit) GetFuel() int {
+	return u.Fuel
 }
 
 func (u *unit) SetFuel(fuel int) Unit {
-	u.fuel = fuel
+	u.Fuel = fuel
 	return u.IUnit
 }
 
-func (u *unit) Hp() float64 {
-	return u.hp
+func (u *unit) GetHp() float64 {
+	return u.Hp
 }
 
 func (u *unit) SetHp(hp float64) Unit {
-	u.hp = hp
+	u.Hp = hp
 	return u.IUnit
 }
 
-func (u *unit) X() int {
-	return u.x
+func (u *unit) GetX() int {
+	return u.X
 }
 
-func (u *unit) Y() int {
-	return u.y
+func (u *unit) GetY() int {
+	return u.Y
 }
 
 func (u *unit) SetPos(x int, y int) Unit {
-	u.x = x
-	u.y = y
+	u.X = x
+	u.Y = y
 	return u.IUnit
 }
 
-func (u *unit) Moved() int {
-	return u.moved
+func (u *unit) GetMoved() int {
+	return u.Moved
 }
 
 func (u *unit) SetMoved(moved int) Unit {
-	u.moved = moved
+	u.Moved = moved
 	return u.IUnit
 }
 
-func (u *unit) ShortRange() int {
-	return u.shortRange
+func (u *unit) GetShortRange() int {
+	return u.ShortRange
 }
 
-func (u *unit) LongRange() int {
-	return u.longRange
+func (u *unit) GetLongRange() int {
+	return u.LongRange
 }
 
-func (u *unit) Tile() *terrainmodels.Tile {
-	return u.tile
+func (u *unit) GetTile() *terrainmodels.Tile {
+	return u.Tile
 }
 
-func (u *unit) Unit() *unit {
+func (u *unit) GetUnit() *unit {
 	return u
 }

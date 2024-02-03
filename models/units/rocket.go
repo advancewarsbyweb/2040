@@ -22,15 +22,15 @@ func NewRocket(m *unit) Unit {
 
 func Rocket() unit {
 	return unit{
-		name:           unitnames.Rocket,
-		movementType:   movementtypes.W,
-		movementPoints: 5,
-		vision:         1,
-		fuel:           50,
-		fuelPerTurn:    0,
-		shortRange:     3,
-		longRange:      5,
-		ammo:           6,
-		cost:           15000,
+		Name:           unitnames.Rocket,
+		MovementType:   movementtypes.W,
+		MovementPoints: 5,
+		Vision:         1,
+		Fuel:           50,
+		FuelPerTurn:    0,
+		ShortRange:     3,
+		LongRange:      5,
+		Ammo:           6,
+		Cost:           15000,
 	}
 }

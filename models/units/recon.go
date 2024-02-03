@@ -22,15 +22,15 @@ func NewRecon(m *unit) Unit {
 
 func Recon() unit {
 	return unit{
-		name:           unitnames.Recon,
-		movementType:   movementtypes.W,
-		movementPoints: 8,
-		vision:         5,
-		fuel:           99,
-		fuelPerTurn:    0,
-		shortRange:     1,
-		longRange:      1,
-		ammo:           -1,
-		cost:           4000,
+		Name:           unitnames.Recon,
+		MovementType:   movementtypes.W,
+		MovementPoints: 8,
+		Vision:         5,
+		Fuel:           99,
+		FuelPerTurn:    0,
+		ShortRange:     1,
+		LongRange:      1,
+		Ammo:           -1,
+		Cost:           4000,
 	}
 }

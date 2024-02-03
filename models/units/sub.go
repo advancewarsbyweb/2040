@@ -22,15 +22,15 @@ func NewSub(m *unit) Unit {
 
 func Sub() unit {
 	return unit{
-		name:           unitnames.Sub,
-		movementType:   movementtypes.S,
-		movementPoints: 5,
-		vision:         5,
-		fuel:           60,
-		fuelPerTurn:    1,
-		shortRange:     1,
-		longRange:      1,
-		ammo:           6,
-		cost:           20000,
+		Name:           unitnames.Sub,
+		MovementType:   movementtypes.S,
+		MovementPoints: 5,
+		Vision:         5,
+		Fuel:           60,
+		FuelPerTurn:    1,
+		ShortRange:     1,
+		LongRange:      1,
+		Ammo:           6,
+		Cost:           20000,
 	}
 }

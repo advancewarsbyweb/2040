@@ -22,15 +22,15 @@ func NewBCopter(m *unit) Unit {
 
 func BCopter() unit {
 	return unit{
-		name:           unitnames.Bomber,
-		movementType:   movementtypes.A,
-		movementPoints: 6,
-		vision:         3,
-		fuel:           99,
-		fuelPerTurn:    2,
-		shortRange:     1,
-		longRange:      1,
-		ammo:           6,
-		cost:           9000,
+		Name:           unitnames.Bomber,
+		MovementType:   movementtypes.A,
+		MovementPoints: 6,
+		Vision:         3,
+		Fuel:           99,
+		FuelPerTurn:    2,
+		ShortRange:     1,
+		LongRange:      1,
+		Ammo:           6,
+		Cost:           9000,
 	}
 }

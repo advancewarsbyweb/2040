@@ -22,14 +22,14 @@ func NewTCopter(m *unit) Unit {
 
 func TCopter() unit {
 	return unit{
-		name:         unitnames.TCopter,
-		movementType: movementtypes.A,
-		vision:       1,
-		fuel:         99,
-		fuelPerTurn:  2,
-		shortRange:   0,
-		longRange:    0,
-		ammo:         0,
-		cost:         5000,
+		Name:         unitnames.TCopter,
+		MovementType: movementtypes.A,
+		Vision:       1,
+		Fuel:         99,
+		FuelPerTurn:  2,
+		ShortRange:   0,
+		LongRange:    0,
+		Ammo:         0,
+		Cost:         5000,
 	}
 }

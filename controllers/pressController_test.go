@@ -11,6 +11,7 @@ import (
 	"github.com/awbw/2040/db"
 	"github.com/awbw/2040/models"
 	"github.com/gin-gonic/gin"
+	"github.com/stretchr/testify/assert"
 )
 
 func init() {
@@ -18,6 +19,7 @@ func init() {
 }
 
 func TestCreatePress(t *testing.T) {
+	assert := assert.New(t)
 
 	g := db.Game.Create().BuildInsert()
 
@@ -29,8 +31,8 @@ func TestCreatePress(t *testing.T) {
 
 	data, _ := json.Marshal(map[string]interface{}{
 		"playerId":   press.PlayerID,
-		"subject":    press.Subject,
-		"text":       press.Text,
+		"subject":    press.GetSubject(),
+		"text":       press.GetText(),
 		"recipients": []int{p1.ID, p2.ID},
 	})
 
@@ -53,7 +55,5 @@ func TestCreatePress(t *testing.T) {
 	var res models.Press
 	json.Unmarshal(w.Body.Bytes(), &res)
 
-	if press.Subject != res.Subject {
-		t.Fatalf("Press subject does not match given one. Got (%s), want (%s)", press.Subject, res.Subject)
-	}
+	assert.Equal(press.GetSubject(), res.GetSubject(), "Press subject does not match given one. Got (%s), want (%s)")
 }

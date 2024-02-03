@@ -22,15 +22,15 @@ func NewNeotank(m *unit) Unit {
 
 func Neotank() unit {
 	return unit{
-		name:           unitnames.Neotank,
-		movementType:   movementtypes.T,
-		movementPoints: 6,
-		vision:         1,
-		fuel:           99,
-		fuelPerTurn:    0,
-		shortRange:     1,
-		longRange:      1,
-		ammo:           9,
-		cost:           22000,
+		Name:           unitnames.Neotank,
+		MovementType:   movementtypes.T,
+		MovementPoints: 6,
+		Vision:         1,
+		Fuel:           99,
+		FuelPerTurn:    0,
+		ShortRange:     1,
+		LongRange:      1,
+		Ammo:           9,
+		Cost:           22000,
 	}
 }

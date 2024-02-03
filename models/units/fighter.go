@@ -22,15 +22,15 @@ func NewFighter(m *unit) Unit {
 
 func Fighter() unit {
 	return unit{
-		name:           unitnames.Fighter,
-		movementType:   movementtypes.A,
-		movementPoints: 9,
-		vision:         2,
-		fuel:           99,
-		fuelPerTurn:    5,
-		shortRange:     1,
-		longRange:      1,
-		ammo:           9,
-		cost:           20000,
+		Name:           unitnames.Fighter,
+		MovementType:   movementtypes.A,
+		MovementPoints: 9,
+		Vision:         2,
+		Fuel:           99,
+		FuelPerTurn:    5,
+		ShortRange:     1,
+		LongRange:      1,
+		Ammo:           9,
+		Cost:           20000,
 	}
 }

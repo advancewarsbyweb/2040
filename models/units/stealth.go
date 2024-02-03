@@ -9,12 +9,12 @@ type stealth struct {
 	directUnit
 }
 
-func (u *stealth) FuelPerTurn() int {
-	if u.subDive == "Y" {
-		return u.fuelPerTurn + 3
+func (u *stealth) GetFuelPerTurn() int {
+	if u.SubDive == "Y" {
+		return u.FuelPerTurn + 3
 	}
 	// Eagle's Buff
-	return u.fuelPerTurn
+	return u.FuelPerTurn
 }
 
 func NewStealth(m *unit) Unit {
@@ -30,15 +30,15 @@ func NewStealth(m *unit) Unit {
 
 func Stealth() unit {
 	return unit{
-		name:           unitnames.Stealth,
-		movementType:   movementtypes.A,
-		movementPoints: 6,
-		vision:         4,
-		fuel:           60,
-		fuelPerTurn:    5,
-		shortRange:     1,
-		longRange:      1,
-		ammo:           6,
-		cost:           24000,
+		Name:           unitnames.Stealth,
+		MovementType:   movementtypes.A,
+		MovementPoints: 6,
+		Vision:         4,
+		Fuel:           60,
+		FuelPerTurn:    5,
+		ShortRange:     1,
+		LongRange:      1,
+		Ammo:           6,
+		Cost:           24000,
 	}
 }

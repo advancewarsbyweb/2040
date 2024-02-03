@@ -22,15 +22,15 @@ func NewCruiser(m *unit) Unit {
 
 func Cruiser() unit {
 	return unit{
-		name:           unitnames.Cruiser,
-		movementType:   movementtypes.S,
-		movementPoints: 6,
-		vision:         3,
-		fuel:           99,
-		fuelPerTurn:    1,
-		shortRange:     1,
-		longRange:      1,
-		ammo:           9,
-		cost:           18000,
+		Name:           unitnames.Cruiser,
+		MovementType:   movementtypes.S,
+		MovementPoints: 6,
+		Vision:         3,
+		Fuel:           99,
+		FuelPerTurn:    1,
+		ShortRange:     1,
+		LongRange:      1,
+		Ammo:           9,
+		Cost:           18000,
 	}
 }

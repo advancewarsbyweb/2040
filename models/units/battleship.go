@@ -22,15 +22,15 @@ func NewBattleship(m *unit) Unit {
 
 func Battleship() unit {
 	return unit{
-		name:           unitnames.Battleship,
-		movementType:   movementtypes.S,
-		movementPoints: 5,
-		vision:         2,
-		fuel:           99,
-		fuelPerTurn:    1,
-		shortRange:     2,
-		longRange:      6,
-		ammo:           9,
-		cost:           28000,
+		Name:           unitnames.Battleship,
+		MovementType:   movementtypes.S,
+		MovementPoints: 5,
+		Vision:         2,
+		Fuel:           99,
+		FuelPerTurn:    1,
+		ShortRange:     2,
+		LongRange:      6,
+		Ammo:           9,
+		Cost:           28000,
 	}
 }

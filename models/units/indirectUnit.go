@@ -25,15 +25,15 @@ func init() {
 }
 
 func (u *indirectUnit) Fire(a Unit, d Unit) error {
-	if a.Moved() == 1 {
+	if a.GetMoved() == 1 {
 		return errors.New(AttackerAlreadyMoved)
 	}
-	ammo := a.Ammo()
+	ammo := a.GetAmmo()
 	if ammo == 0 {
 		return errors.New(AttackerHasNoAmmo)
 	}
-	distanceAway := int(math.Abs(float64(d.X())-float64(a.X())) + math.Abs(float64(d.Y())-float64(a.Y())))
-	if distanceAway > a.LongRange() || distanceAway < a.ShortRange() {
+	distanceAway := int(math.Abs(float64(d.GetX())-float64(a.GetX())) + math.Abs(float64(d.GetY())-float64(a.GetY())))
+	if distanceAway > a.GetLongRange() || distanceAway < a.GetShortRange() {
 		return errors.New(DefenderOutsideOfRange)
 	}
 	a.SetAmmo(ammo - 1)

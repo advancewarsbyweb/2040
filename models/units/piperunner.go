@@ -22,15 +22,15 @@ func NewPiperunner(m *unit) Unit {
 
 func Piperunner() unit {
 	return unit{
-		name:           unitnames.Piperunner,
-		movementType:   movementtypes.P,
-		movementPoints: 9,
-		vision:         4,
-		fuel:           99,
-		fuelPerTurn:    0,
-		shortRange:     2,
-		longRange:      5,
-		ammo:           6,
-		cost:           20000,
+		Name:           unitnames.Piperunner,
+		MovementType:   movementtypes.P,
+		MovementPoints: 9,
+		Vision:         4,
+		Fuel:           99,
+		FuelPerTurn:    0,
+		ShortRange:     2,
+		LongRange:      5,
+		Ammo:           6,
+		Cost:           20000,
 	}
 }

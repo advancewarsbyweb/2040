@@ -26,15 +26,15 @@ func NewInfantry(m *unit) Unit {
 
 func Infantry() unit {
 	return unit{
-		name:           unitnames.Infantry,
-		movementType:   movementtypes.F,
-		movementPoints: 3,
-		vision:         2,
-		fuel:           99,
-		fuelPerTurn:    0,
-		shortRange:     1,
-		longRange:      1,
-		ammo:           -1,
-		cost:           1000,
+		Name:           unitnames.Infantry,
+		MovementType:   movementtypes.F,
+		MovementPoints: 3,
+		Vision:         2,
+		Fuel:           99,
+		FuelPerTurn:    0,
+		ShortRange:     1,
+		LongRange:      1,
+		Ammo:           -1,
+		Cost:           1000,
 	}
 }

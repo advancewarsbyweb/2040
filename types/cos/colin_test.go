@@ -44,7 +44,7 @@ func TestDamageBoostScop_Colin(t *testing.T) {
 
 func TestCostModifier_Colin(t *testing.T) {
 	u := unitmodels.CreateUnitHelper(unitnames.Infantry).SetPlayer(&colinPlayer)
-	cost := int(float64(u.Cost()) * colinTest.CostModifier())
+	cost := int(float64(u.GetCost()) * colinTest.CostModifier())
 	want := 800
 
 	if cost != want {

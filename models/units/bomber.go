@@ -22,15 +22,15 @@ func NewBomber(m *unit) Unit {
 
 func Bomber() unit {
 	return unit{
-		name:           unitnames.Bomber,
-		movementType:   movementtypes.A,
-		movementPoints: 8,
-		vision:         2,
-		fuel:           99,
-		fuelPerTurn:    5,
-		shortRange:     1,
-		longRange:      1,
-		ammo:           9,
-		cost:           22000,
+		Name:           unitnames.Bomber,
+		MovementType:   movementtypes.A,
+		MovementPoints: 8,
+		Vision:         2,
+		Fuel:           99,
+		FuelPerTurn:    5,
+		ShortRange:     1,
+		LongRange:      1,
+		Ammo:           9,
+		Cost:           22000,
 	}
 }

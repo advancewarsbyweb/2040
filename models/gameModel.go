@@ -7,18 +7,18 @@ import (
 )
 
 type Game struct {
-	ID            int         `db:"games_id"`
+	ID            int         `db:"games_id" json:"id"`
 	Name          string      `db:"games_name" validate:"required"`
 	Password      string      `db:"games_password" json:"-"`
-	startDate     null.Time   `db:"games_start_date"`
-	endDate       null.Time   `db:"games_end_date"`
+	StartDate     null.Time   `db:"games_start_date"`
+	EndDate       null.Time   `db:"games_end_date"`
 	CreatorID     int         `db:"games_creator"`
-	activityDate  null.Time   `db:"games_activity_date"`
+	ActivityDate  null.Time   `db:"games_activity_date"`
 	MapID         int         `db:"games_maps_id" validate:"required"`
 	WeatherType   string      `db:"games_weather_type"`
-	weatherStart  null.Int    `db:"games_weather_start"`
-	WeatherCode   string      `db:"games_weather_code" validate:"eq=N|R|S"`
-	private       null.String `db:"games_private"`
+	WeatherStart  null.Int    `db:"games_weather_start"`
+	WeatherCode   string      `db:"games_weather_code" validate:"eq=N|eq=R|eq=S"`
+	Private       null.String `db:"games_private"`
 	TurnID        int         `db:"games_turn"`
 	Day           int         `db:"games_day"`
 	Active        string      `db:"games_active"`
@@ -35,67 +35,67 @@ type Game struct {
 	UnitLimit     int         `db:"games_unit_limit"`
 	League        string      `db:"games_league"`
 	Team          string      `db:"games_team"`
-	aetInterval   null.Int    `db:"games_aet_interval"`
-	aetDate       null.Int    `db:"games_aet_date"`
-	usePowers     null.String `db:"games_use_powers"`
+	AetInterval   null.Int    `db:"games_aet_interval"`
+	AetDate       null.Int    `db:"games_aet_date"`
+	UsePowers     null.String `db:"games_use_powers"`
 }
 
 // Getters
 
-func (g *Game) ActivityDate() time.Time { return g.activityDate.Time }
+func (g *Game) GetActivityDate() time.Time { return g.ActivityDate.Time }
 
-func (g *Game) StartDate() time.Time { return g.startDate.Time }
+func (g *Game) GetStartDate() time.Time { return g.StartDate.Time }
 
-func (g *Game) EndDate() time.Time { return g.endDate.Time }
+func (g *Game) GetEndDate() time.Time { return g.EndDate.Time }
 
-func (g *Game) WeatherStart() int { return int(g.weatherStart.Int64) }
+func (g *Game) GetWeatherStart() int { return int(g.WeatherStart.Int64) }
 
-func (g *Game) Private() string { return g.private.String }
+func (g *Game) GetPrivate() string { return g.Private.String }
 
-func (g *Game) AETInterval() int { return int(g.aetInterval.Int64) }
+func (g *Game) GetAETInterval() int { return int(g.AetInterval.Int64) }
 
-func (g *Game) AETDate() int { return int(g.aetDate.Int64) }
+func (g *Game) GetAETDate() int { return int(g.AetDate.Int64) }
 
-func (g *Game) UsePowers() string { return g.usePowers.String }
+func (g *Game) GetUsePowers() string { return g.UsePowers.String }
 
 // Setters - return the model to be able to chain methods
 
 func (g *Game) SetActivityDate(t time.Time) *Game {
-	g.activityDate = null.TimeFrom(t)
+	g.ActivityDate = null.TimeFrom(t)
 	return g
 }
 
 func (g *Game) SetStartDate(t time.Time) *Game {
-	g.startDate = null.TimeFrom(t)
+	g.StartDate = null.TimeFrom(t)
 	return g
 }
 
 func (g *Game) SetEndDate(t time.Time) *Game {
-	g.endDate = null.TimeFrom(t)
+	g.EndDate = null.TimeFrom(t)
 	return g
 }
 
 func (g *Game) SetWeatherStart(i int64) *Game {
-	g.weatherStart = null.IntFrom(i)
+	g.WeatherStart = null.IntFrom(i)
 	return g
 }
 
 func (g *Game) SetPrivate(s string) *Game {
-	g.private = null.StringFrom(s)
+	g.Private = null.StringFrom(s)
 	return g
 }
 
 func (g *Game) SetAETInterval(i int64) *Game {
-	g.aetInterval = null.IntFrom(i)
+	g.AetInterval = null.IntFrom(i)
 	return g
 }
 
 func (g *Game) SetAETDate(i int64) *Game {
-	g.aetDate = null.IntFrom(i)
+	g.AetDate = null.IntFrom(i)
 	return g
 }
 
 func (g *Game) SetUsePowers(s string) *Game {
-	g.usePowers = null.StringFrom(s)
+	g.UsePowers = null.StringFrom(s)
 	return g
 }

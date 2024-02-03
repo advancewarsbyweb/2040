@@ -32,11 +32,11 @@ func init() {
 }
 
 func (u *directUnit) Fire(a Unit, d Unit) error {
-	distanceAway := int(math.Abs(float64(d.X())-float64(a.X())) + math.Abs(float64(d.Y())-float64(a.Y())))
-	if distanceAway > a.ShortRange() || distanceAway < a.LongRange() {
+	distanceAway := int(math.Abs(float64(d.GetX())-float64(a.GetX())) + math.Abs(float64(d.GetY())-float64(a.GetY())))
+	if distanceAway > a.GetShortRange() || distanceAway < a.GetLongRange() {
 		return errors.New(DefenderOutsideOfRange)
 	}
-	ammo := a.Ammo()
+	ammo := a.GetAmmo()
 	if ammo >= 0 {
 		a.SetAmmo(ammo - 1)
 	}

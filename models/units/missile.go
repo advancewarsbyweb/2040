@@ -22,15 +22,15 @@ func NewMissile(m *unit) Unit {
 
 func Missile() unit {
 	return unit{
-		name:           unitnames.Missile,
-		movementType:   movementtypes.W,
-		movementPoints: 4,
-		vision:         5,
-		fuel:           50,
-		fuelPerTurn:    0,
-		shortRange:     3,
-		longRange:      5,
-		ammo:           6,
-		cost:           12000,
+		Name:           unitnames.Missile,
+		MovementType:   movementtypes.W,
+		MovementPoints: 4,
+		Vision:         5,
+		Fuel:           50,
+		FuelPerTurn:    0,
+		ShortRange:     3,
+		LongRange:      5,
+		Ammo:           6,
+		Cost:           12000,
 	}
 }

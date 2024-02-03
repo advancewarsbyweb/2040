@@ -8,33 +8,34 @@ import (
 )
 
 type unit struct {
-	id             int                        `db:"units_id"`
-	playerID       int                        `db:"units_players_id"`
-	gameID         int                        `db:"units_games_id"`
-	x              int                        `db:"units_x"`
-	y              int                        `db:"units_y"`
-	subDive        string                     `db:"units_sub_dive"`
-	moved          int                        `db:"units_moved"`
-	fired          int                        `db:"units_fired"`
-	hp             float64                    `db:"units_hp"`
-	cargo1ID       int                        `db:"units_cargo1_units_id"`
-	cargo2ID       int                        `db:"units_cargo2_units_id"`
-	carried        string                     `db:"units_carried"`
-	game           *models.Game               `db:""`
-	player         *models.Player             `db:""`
-	tile           *terrainmodels.Tile        `db:""`
-	name           unitnames.UnitName         `db:"units_name"`
-	movementPoints int                        `db:"units_movement_points"`
-	movementType   movementtypes.MovementType `db:"units_movement_type"`
-	vision         int                        `db:"units_vision"`
-	fuel           int                        `db:"units_fuel"`
-	fuelPerTurn    int                        `db:"units_fuel_per_turn"`
-	shortRange     int                        `db:"units_short_range"`
-	longRange      int                        `db:"units_long_range"`
-	cost           int                        `db:"units_cost"`
-	ammo           int                        `db:"units_ammo"`
+	ID             int                        `db:"units_id" json:"id"`
+	PlayerID       int                        `db:"units_players_id" json:"playerId"`
+	GameID         int                        `db:"units_games_id" json:"gameId"`
+	X              int                        `db:"units_x" json:"x"`
+	Y              int                        `db:"units_y" json:"y"`
+	SubDive        string                     `db:"units_sub_dive" json:"subDive"`
+	Moved          int                        `db:"units_moved" json:"moved"`
+	Fired          int                        `db:"units_fired" json:"fired"`
+	Hp             float64                    `db:"units_hp" json:"hp"`
+	Cargo1ID       int                        `db:"units_cargo1_units_id" json:"cargo1Id"`
+	Cargo2ID       int                        `db:"units_cargo2_units_id" json:"cargo2Id"`
+	Carried        string                     `db:"units_carried" json:"carried"`
+	Game           *models.Game               `db:""`
+	Player         *models.Player             `db:""`
+	Tile           *terrainmodels.Tile        `db:""`
+	Name           unitnames.UnitName         `db:"units_name" json:"name"`
+	MovementPoints int                        `db:"units_movement_points" json:"movementPoints"`
+	MovementType   movementtypes.MovementType `db:"units_movement_type" json:"movementType"`
+	Vision         int                        `db:"units_vision" json:"vision"`
+	Fuel           int                        `db:"units_fuel" json:"fuel"`
+	FuelPerTurn    int                        `db:"units_fuel_per_turn" json:"fuelPerTurn"`
+	ShortRange     int                        `db:"units_short_range" json:"shortRange"`
+	LongRange      int                        `db:"units_long_range" json:"longRange"`
+	Cost           int                        `db:"units_cost" json:"cost"`
+	Ammo           int                        `db:"units_ammo" json:"ammo"`
 	// Reference to the created Unit type (e.g: Infantry, Mech, etc)
 	// This is to be able to return the proper struct and chain methods when using Setters
+	IUnit Unit
 }
 
 type UnitFunction func(m *unit) Unit
@@ -68,14 +69,14 @@ func init() {
 
 // Create a Unit from a model retrieved from the database
 func CreateUnit(m *unit) Unit {
-	return UnitMaker[m.name](m)
+	return UnitMaker[m.Name](m)
 }
 
 // Create a Unit from a name
 func CreateUnitHelper(name unitnames.UnitName) Unit {
 	u := &unit{
-		hp:   10,
-		name: name,
+		Hp:   10,
+		Name: name,
 	}
 	return CreateUnit(u)
 }
@@ -84,19 +85,19 @@ func CreateUnitHelper(name unitnames.UnitName) Unit {
 // This is used after creating a Unit type struct to have the appropriate Unit methods
 // For example in NewInfantry
 func (u *unit) SetUnitProperties(m *unit) {
-	u.id = m.id
-	u.playerID = m.playerID
-	u.gameID = m.gameID
-	u.x = m.x
-	u.y = m.y
-	u.subDive = m.subDive
-	u.moved = m.moved
-	u.fired = m.fired
-	u.hp = m.hp
-	u.cargo1ID = m.cargo1ID
-	u.cargo2ID = m.cargo2ID
-	u.carried = m.carried
-	u.game = m.game
-	u.player = m.player
-	u.fuel = m.fuel
+	u.ID = m.ID
+	u.PlayerID = m.PlayerID
+	u.GameID = m.GameID
+	u.X = m.X
+	u.Y = m.Y
+	u.SubDive = m.SubDive
+	u.Moved = m.Moved
+	u.Fired = m.Fired
+	u.Hp = m.Hp
+	u.Cargo1ID = m.Cargo1ID
+	u.Cargo2ID = m.Cargo2ID
+	u.Carried = m.Carried
+	u.Game = m.Game
+	u.Player = m.Player
+	u.Fuel = m.Fuel
 }

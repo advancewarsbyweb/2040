@@ -13,31 +13,31 @@ type sami struct {
 }
 
 func (co *sami) DamageBoost(u unitmodels.Unit) int {
-	if u.Name() != unitnames.Infantry && u.Name() != unitnames.Mech {
-		if slices.Contains(unitmodels.IndirectUnits, u.Name()) {
+	if u.GetName() != unitnames.Infantry && u.GetName() != unitnames.Mech {
+		if slices.Contains(unitmodels.IndirectUnits, u.GetName()) {
 			return 0
 		}
 		return -10
 	}
-	return PowerBoost(u.Player().CoPowerOn, 30, 50, 70)
+	return PowerBoost(u.GetPlayer().CoPowerOn, 30, 50, 70)
 }
 
 func (co *sami) MovementBoost(u unitmodels.Unit) int {
-	if slices.Contains(unitmodels.TransportUnits, u.Name()) {
+	if slices.Contains(unitmodels.TransportUnits, u.GetName()) {
 		return 1
 	}
-	if u.Name() != unitnames.Infantry && u.Name() != unitnames.Mech {
+	if u.GetName() != unitnames.Infantry && u.GetName() != unitnames.Mech {
 		return 0
 	}
-	return PowerBoost(u.Player().CoPowerOn, 0, 1, 2)
+	return PowerBoost(u.GetPlayer().CoPowerOn, 0, 1, 2)
 }
 
 func (co *sami) CaptureBoost(u unitmodels.Unit) int {
-	if u.Name() != unitnames.Infantry && u.Name() != unitnames.Mech {
+	if u.GetName() != unitnames.Infantry && u.GetName() != unitnames.Mech {
 		return 0
 	}
-	capt := int(math.Floor(u.Hp()*1.5)) - int(u.Hp())
-	return PowerBoost(u.Player().CoPowerOn, capt, capt, 20)
+	capt := int(math.Floor(u.GetHp()*1.5)) - int(u.GetHp())
+	return PowerBoost(u.GetPlayer().CoPowerOn, capt, capt, 20)
 }
 
 func NewSami() Co {

@@ -22,15 +22,15 @@ func NewMDTank(m *unit) Unit {
 
 func MDTank() unit {
 	return unit{
-		name:           unitnames.MDTank,
-		movementType:   movementtypes.T,
-		movementPoints: 5,
-		vision:         1,
-		fuel:           50,
-		fuelPerTurn:    0,
-		shortRange:     1,
-		longRange:      1,
-		ammo:           8,
-		cost:           16000,
+		Name:           unitnames.MDTank,
+		MovementType:   movementtypes.T,
+		MovementPoints: 5,
+		Vision:         1,
+		Fuel:           50,
+		FuelPerTurn:    0,
+		ShortRange:     1,
+		LongRange:      1,
+		Ammo:           8,
+		Cost:           16000,
 	}
 }

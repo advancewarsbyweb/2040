@@ -22,15 +22,15 @@ func NewArtillery(m *unit) Unit {
 
 func Artillery() unit {
 	return unit{
-		name:           unitnames.Artillery,
-		movementType:   movementtypes.T,
-		movementPoints: 5,
-		vision:         1,
-		fuel:           99,
-		fuelPerTurn:    0,
-		shortRange:     2,
-		longRange:      3,
-		ammo:           6,
-		cost:           6000,
+		Name:           unitnames.Artillery,
+		MovementType:   movementtypes.T,
+		MovementPoints: 5,
+		Vision:         1,
+		Fuel:           99,
+		FuelPerTurn:    0,
+		ShortRange:     2,
+		LongRange:      3,
+		Ammo:           6,
+		Cost:           6000,
 	}
 }

@@ -22,14 +22,14 @@ func NewAPC(m *unit) Unit {
 
 func APC() unit {
 	return unit{
-		name:         unitnames.APC,
-		movementType: movementtypes.T,
-		vision:       1,
-		fuel:         99,
-		fuelPerTurn:  0,
-		shortRange:   0,
-		longRange:    0,
-		ammo:         0,
-		cost:         5000,
+		Name:         unitnames.APC,
+		MovementType: movementtypes.T,
+		Vision:       1,
+		Fuel:         99,
+		FuelPerTurn:  0,
+		ShortRange:   0,
+		LongRange:    0,
+		Ammo:         0,
+		Cost:         5000,
 	}
 }

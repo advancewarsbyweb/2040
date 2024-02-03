@@ -22,15 +22,15 @@ func NewCarrier(m *unit) Unit {
 
 func Carrier() unit {
 	return unit{
-		name:           unitnames.Carrier,
-		movementType:   movementtypes.S,
-		movementPoints: 5,
-		vision:         4,
-		fuel:           99,
-		fuelPerTurn:    1,
-		shortRange:     3,
-		longRange:      8,
-		ammo:           9,
-		cost:           30000,
+		Name:           unitnames.Carrier,
+		MovementType:   movementtypes.S,
+		MovementPoints: 5,
+		Vision:         4,
+		Fuel:           99,
+		FuelPerTurn:    1,
+		ShortRange:     3,
+		LongRange:      8,
+		Ammo:           9,
+		Cost:           30000,
 	}
 }

@@ -11,10 +11,10 @@ type colin struct {
 }
 
 func (co *colin) DamageBoost(u unitmodels.Unit) int {
-	if u.Player().CoPowerOn != "S" {
+	if u.GetPlayer().CoPowerOn != "S" {
 		return -10
 	}
-	boost := math.Floor(float64(u.Player().Funds)/1000) * 3
+	boost := math.Floor(float64(u.GetPlayer().Funds)/1000) * 3
 	return int(boost)
 }
 

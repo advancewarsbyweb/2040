@@ -22,15 +22,15 @@ func NewMegaTank(m *unit) Unit {
 
 func MegaTank() unit {
 	return unit{
-		name:           unitnames.MegaTank,
-		movementType:   movementtypes.T,
-		movementPoints: 4,
-		vision:         1,
-		fuel:           50,
-		fuelPerTurn:    0,
-		shortRange:     1,
-		longRange:      1,
-		ammo:           3,
-		cost:           28000,
+		Name:           unitnames.MegaTank,
+		MovementType:   movementtypes.T,
+		MovementPoints: 4,
+		Vision:         1,
+		Fuel:           50,
+		FuelPerTurn:    0,
+		ShortRange:     1,
+		LongRange:      1,
+		Ammo:           3,
+		Cost:           28000,
 	}
 }

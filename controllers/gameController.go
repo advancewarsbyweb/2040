@@ -55,7 +55,7 @@ func (gc *GameController) Create(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Validation failed for some fields",
-			"fields":  utils.ValidatorErrors(err),
+			"errors":  utils.ValidatorErrors(err),
 		})
 	}
 
@@ -91,7 +91,7 @@ func (gc *GameController) Update(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Validation failed for some fields",
-			"fields":  utils.ValidatorErrors(err),
+			"errors":  utils.ValidatorErrors(err),
 		})
 	}
 
@@ -119,7 +119,7 @@ func (gc *GameController) Start(c *gin.Context) {
 	gameId, err := strconv.Atoi(c.Param("id"))
 	gameModel, err := db.GameRepo.FindGame(gameId)
 
-	if gameModel.StartDate().IsZero() {
+	if gameModel.GetStartDate().IsZero() {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Game is already started",
 		})
