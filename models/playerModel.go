@@ -1,6 +1,8 @@
 package models
 
-import "gopkg.in/guregu/null.v4"
+import (
+	"gopkg.in/guregu/null.v4"
+)
 
 type Player struct {
 	ID           int         `db:"players_id"`

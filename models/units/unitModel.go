@@ -47,6 +47,7 @@ func init() {
 		unitnames.Infantry:   NewInfantry,
 		unitnames.Mech:       NewMech,
 		unitnames.Recon:      NewRecon,
+		unitnames.APC:        NewAPC,
 		unitnames.Artillery:  NewArtillery,
 		unitnames.Tank:       NewTank,
 		unitnames.AntiAir:    NewAntiAir,

@@ -31,8 +31,8 @@ const (
 	Lab      TerrainName = "Lab"
 )
 
-func (t TerrainName) Match(compare TerrainName) bool {
-	return strings.Contains(string(compare), string(t))
+func (t TerrainName) Match(haystack TerrainName) bool {
+	return strings.Contains(string(haystack), string(t))
 }
 
 func (t TerrainName) Stars() int {

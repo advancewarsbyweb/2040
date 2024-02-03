@@ -29,6 +29,7 @@ func init() {
 		conames.Max:   NewMax,
 		conames.Sami:  NewSami,
 		conames.Colin: NewColin,
+		conames.Jake:  NewJake,
 	}
 }
 

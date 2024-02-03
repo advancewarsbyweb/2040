@@ -29,6 +29,7 @@ type Unit interface {
 	GetShortRange() int
 	GetLongRange() int
 	GetTile() *terrainmodels.Tile
+	SetTile(t *terrainmodels.Tile) Unit
 	GetUnit() *unit
 
 	Move()
@@ -136,6 +137,11 @@ func (u *unit) GetLongRange() int {
 
 func (u *unit) GetTile() *terrainmodels.Tile {
 	return u.Tile
+}
+
+func (u *unit) SetTile(t *terrainmodels.Tile) Unit {
+	u.Tile = t
+	return u.IUnit
 }
 
 func (u *unit) GetUnit() *unit {
