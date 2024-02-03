@@ -1,7 +1,6 @@
 package models
 
 import (
-	"github.com/awbw/2040/models"
 	terrainmodels "github.com/awbw/2040/models/terrains"
 	unitnames "github.com/awbw/2040/models/units/names"
 	movementtypes "github.com/awbw/2040/types/movements"
@@ -20,7 +19,7 @@ type unit struct {
 	Cargo1ID       int                        `db:"units_cargo1_units_id" json:"cargo1Id"`
 	Cargo2ID       int                        `db:"units_cargo2_units_id" json:"cargo2Id"`
 	Carried        string                     `db:"units_carried" json:"carried"`
-	Game           *models.Game               `db:""`
+	Game           *Game                      `db:""`
 	Player         *models.Player             `db:""`
 	Tile           *terrainmodels.Tile        `db:""`
 	Name           unitnames.UnitName         `db:"units_name" json:"name"`

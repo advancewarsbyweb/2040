@@ -2,6 +2,7 @@ package models
 
 import (
 	"github.com/awbw/2040/models"
+	playermodels "github.com/awbw/2040/models/players"
 	terrainmodels "github.com/awbw/2040/models/terrains"
 
 	unitnames "github.com/awbw/2040/models/units/names"
@@ -12,7 +13,7 @@ type Unit interface {
 	SetGame(g *models.Game) Unit
 	GetGame() *models.Game
 	SetPlayer(p *models.Player) Unit
-	GetPlayer() *models.Player
+	GetPlayer() *playermodels.Player
 	GetName() unitnames.UnitName
 	GetCost() int
 	GetAmmo() int
