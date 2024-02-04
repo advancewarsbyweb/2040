@@ -1,14 +1,15 @@
-package models
+package unitmodels
 
 import (
 	"errors"
 	"math"
 
-	unitnames "github.com/awbw/2040/models/units/names"
+	"github.com/awbw/2040/models"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 )
 
 type indirectUnit struct {
-	unit
+	models.Unit
 }
 
 var IndirectUnits []unitnames.UnitName
@@ -24,7 +25,7 @@ func init() {
 	}
 }
 
-func (u *indirectUnit) Fire(a Unit, d Unit) error {
+func (u *indirectUnit) Fire(a models.IUnit, d models.IUnit) error {
 	if a.GetMoved() == 1 {
 		return errors.New(AttackerAlreadyMoved)
 	}

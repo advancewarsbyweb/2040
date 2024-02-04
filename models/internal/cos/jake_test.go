@@ -4,21 +4,22 @@ import (
 	"fmt"
 	"testing"
 
-	conames "github.com/awbw/2040/models/players/coNames"
-	terrainmodels "github.com/awbw/2040/models/terrains"
-	unitmodels "github.com/awbw/2040/models/units"
-	unitnames "github.com/awbw/2040/models/units/names"
+	"github.com/awbw/2040/models"
+	conames "github.com/awbw/2040/models/internal/cos/names"
+	terrainmodels "github.com/awbw/2040/models/internal/terrains"
+	unitmodels "github.com/awbw/2040/models/internal/units"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 	"github.com/stretchr/testify/assert"
 )
 
 var (
-	jakeTest   Co
-	jakePlayer Player
+	jakeTest   models.ICo
+	jakePlayer models.Player
 )
 
 func init() {
 	jakeTest = CoMaker[conames.Jake]()
-	jakePlayer = Player{}
+	jakePlayer = models.Player{}
 }
 
 func TestDamageBoost_Jake(t *testing.T) {

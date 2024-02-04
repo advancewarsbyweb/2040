@@ -1,7 +1,8 @@
-package models
+package unitmodels
 
 import (
-	unitnames "github.com/awbw/2040/models/units/names"
+	"github.com/awbw/2040/models"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 	movementtypes "github.com/awbw/2040/types/movements"
 )
 
@@ -9,7 +10,7 @@ type tcopter struct {
 	transportUnit
 }
 
-func NewTCopter(m *unit) Unit {
+func NewTCopter(m *models.Unit) models.IUnit {
 	u := &tcopter{
 		transportUnit{
 			TCopter(),
@@ -20,8 +21,8 @@ func NewTCopter(m *unit) Unit {
 	return u
 }
 
-func TCopter() unit {
-	return unit{
+func TCopter() models.Unit {
+	return models.Unit{
 		Name:         unitnames.TCopter,
 		MovementType: movementtypes.A,
 		Vision:       1,

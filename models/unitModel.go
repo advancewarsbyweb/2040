@@ -1,12 +1,12 @@
 package models
 
 import (
-	terrainmodels "github.com/awbw/2040/models/terrains"
-	unitnames "github.com/awbw/2040/models/units/names"
+	terrainmodels "github.com/awbw/2040/models/internal/terrains"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 	movementtypes "github.com/awbw/2040/types/movements"
 )
 
-type unit struct {
+type Unit struct {
 	ID             int                        `db:"units_id" json:"id"`
 	PlayerID       int                        `db:"units_players_id" json:"playerId"`
 	GameID         int                        `db:"units_games_id" json:"gameId"`
@@ -20,7 +20,7 @@ type unit struct {
 	Cargo2ID       int                        `db:"units_cargo2_units_id" json:"cargo2Id"`
 	Carried        string                     `db:"units_carried" json:"carried"`
 	Game           *Game                      `db:""`
-	Player         *models.Player             `db:""`
+	Player         *Player                    `db:""`
 	Tile           *terrainmodels.Tile        `db:""`
 	Name           unitnames.UnitName         `db:"units_name" json:"name"`
 	MovementPoints int                        `db:"units_movement_points" json:"movementPoints"`
@@ -34,57 +34,63 @@ type unit struct {
 	Ammo           int                        `db:"units_ammo" json:"ammo"`
 	// Reference to the created Unit type (e.g: Infantry, Mech, etc)
 	// This is to be able to return the proper struct and chain methods when using Setters
-	IUnit Unit
+	IUnit IUnit
 }
 
-type UnitFunction func(m *unit) Unit
+/*
+type UnitFunction func(m *Unit) IUnit
 
 var UnitMaker map[unitnames.UnitName]UnitFunction
+*/
 
 func init() {
-	UnitMaker = map[unitnames.UnitName]UnitFunction{
-		unitnames.Infantry:   NewInfantry,
-		unitnames.Mech:       NewMech,
-		unitnames.Recon:      NewRecon,
-		unitnames.APC:        NewAPC,
-		unitnames.Artillery:  NewArtillery,
-		unitnames.Tank:       NewTank,
-		unitnames.AntiAir:    NewAntiAir,
-		unitnames.BCopter:    NewBCopter,
-		unitnames.Missile:    NewMissile,
-		unitnames.Rocket:     NewRocket,
-		unitnames.MDTank:     NewMDTank,
-		unitnames.Cruiser:    NewCruiser,
-		unitnames.Sub:        NewSub,
-		unitnames.Fighter:    NewFighter,
-		unitnames.Piperunner: NewPiperunner,
-		unitnames.Neotank:    NewNeotank,
-		unitnames.Bomber:     NewBomber,
-		unitnames.Stealth:    NewStealth,
-		unitnames.Battleship: NewBattleship,
-		unitnames.MegaTank:   NewMegaTank,
-		unitnames.Carrier:    NewCarrier,
-	}
+	/*
+		UnitMaker = map[unitnames.UnitName]UnitFunction{
+			unitnames.Infantry:   NewInfantry,
+			unitnames.Mech:       NewMech,
+			unitnames.Recon:      NewRecon,
+			unitnames.APC:        NewAPC,
+			unitnames.Artillery:  NewArtillery,
+			unitnames.Tank:       NewTank,
+			unitnames.AntiAir:    NewAntiAir,
+			unitnames.BCopter:    NewBCopter,
+			unitnames.Missile:    NewMissile,
+			unitnames.Rocket:     NewRocket,
+			unitnames.MDTank:     NewMDTank,
+			unitnames.Cruiser:    NewCruiser,
+			unitnames.Sub:        NewSub,
+			unitnames.Fighter:    NewFighter,
+			unitnames.Piperunner: NewPiperunner,
+			unitnames.Neotank:    NewNeotank,
+			unitnames.Bomber:     NewBomber,
+			unitnames.Stealth:    NewStealth,
+			unitnames.Battleship: NewBattleship,
+			unitnames.MegaTank:   NewMegaTank,
+			unitnames.Carrier:    NewCarrier,
+		}
+	*/
 }
 
 // Create a Unit from a model retrieved from the database
-func CreateUnit(m *unit) Unit {
+/*
+func CreateUnit(m *Unit) IUnit {
 	return UnitMaker[m.Name](m)
 }
 
 // Create a Unit from a name
-func CreateUnitHelper(name unitnames.UnitName) Unit {
-	u := &unit{
+func CreateUnitHelper(name unitnames.UnitName) IUnit {
+	u := &Unit{
 		Hp:   10,
 		Name: name,
 	}
 	return CreateUnit(u)
 }
+*/
 
 // Set the Unit's properties with the model received from the database
 // This is used after creating a Unit type struct to have the appropriate Unit methods
 // For example in NewInfantry
-func (u *unit) SetUnitProperties(m *unit) {
+func (u *Unit) SetUnitProperties(m *Unit) {
 	u.ID = m.ID
 	u.PlayerID = m.PlayerID
 	u.GameID = m.GameID

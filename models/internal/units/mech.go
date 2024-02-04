@@ -1,7 +1,8 @@
-package models
+package unitmodels
 
 import (
-	unitnames "github.com/awbw/2040/models/units/names"
+	"github.com/awbw/2040/models"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 	movementtypes "github.com/awbw/2040/types/movements"
 )
 
@@ -12,7 +13,7 @@ type mech struct {
 func (u *mech) Load() {
 }
 
-func NewMech(m *unit) Unit {
+func NewMech(m *models.Unit) models.IUnit {
 	u := &mech{
 		directUnit{
 			Mech(),
@@ -23,8 +24,8 @@ func NewMech(m *unit) Unit {
 	return u
 }
 
-func Mech() unit {
-	return unit{
+func Mech() models.Unit {
+	return models.Unit{
 		Name:           unitnames.Mech,
 		MovementType:   movementtypes.B,
 		MovementPoints: 2,

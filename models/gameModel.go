@@ -1,4 +1,4 @@
-package gamemodels
+package models
 
 import (
 	"time"

@@ -1,7 +1,8 @@
-package models
+package unitmodels
 
 import (
-	unitnames "github.com/awbw/2040/models/units/names"
+	"github.com/awbw/2040/models"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 	movementtypes "github.com/awbw/2040/types/movements"
 )
 
@@ -9,7 +10,7 @@ type rocket struct {
 	indirectUnit
 }
 
-func NewRocket(m *unit) Unit {
+func NewRocket(m *models.Unit) models.IUnit {
 	u := &rocket{
 		indirectUnit{
 			Rocket(),
@@ -20,8 +21,8 @@ func NewRocket(m *unit) Unit {
 	return u
 }
 
-func Rocket() unit {
-	return unit{
+func Rocket() models.Unit {
+	return models.Unit{
 		Name:           unitnames.Rocket,
 		MovementType:   movementtypes.W,
 		MovementPoints: 5,

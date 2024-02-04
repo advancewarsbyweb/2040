@@ -1,7 +1,8 @@
-package models
+package unitmodels
 
 import (
-	unitnames "github.com/awbw/2040/models/units/names"
+	"github.com/awbw/2040/models"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 	movementtypes "github.com/awbw/2040/types/movements"
 )
 
@@ -17,7 +18,7 @@ func (u *stealth) GetFuelPerTurn() int {
 	return u.FuelPerTurn
 }
 
-func NewStealth(m *unit) Unit {
+func NewStealth(m *models.Unit) models.IUnit {
 	u := &stealth{
 		directUnit{
 			Stealth(),
@@ -28,8 +29,8 @@ func NewStealth(m *unit) Unit {
 	return u
 }
 
-func Stealth() unit {
-	return unit{
+func Stealth() models.Unit {
+	return models.Unit{
 		Name:           unitnames.Stealth,
 		MovementType:   movementtypes.A,
 		MovementPoints: 6,

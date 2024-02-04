@@ -1,7 +1,8 @@
-package models
+package unitmodels
 
 import (
-	unitnames "github.com/awbw/2040/models/units/names"
+	"github.com/awbw/2040/models"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 	movementtypes "github.com/awbw/2040/types/movements"
 )
 
@@ -9,7 +10,7 @@ type tank struct {
 	directUnit
 }
 
-func NewTank(m *unit) Unit {
+func NewTank(m *models.Unit) models.IUnit {
 	u := &tank{
 		directUnit{
 			Tank(),
@@ -20,8 +21,8 @@ func NewTank(m *unit) Unit {
 	return u
 }
 
-func Tank() unit {
-	return unit{
+func Tank() models.Unit {
+	return models.Unit{
 		Name:           unitnames.Tank,
 		MovementType:   movementtypes.T,
 		MovementPoints: 6,

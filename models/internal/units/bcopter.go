@@ -1,7 +1,8 @@
-package models
+package unitmodels
 
 import (
-	unitnames "github.com/awbw/2040/models/units/names"
+	"github.com/awbw/2040/models"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 	movementtypes "github.com/awbw/2040/types/movements"
 )
 
@@ -9,7 +10,7 @@ type bcopter struct {
 	directUnit
 }
 
-func NewBCopter(m *unit) Unit {
+func NewBCopter(m *models.Unit) models.IUnit {
 	u := &bcopter{
 		directUnit{
 			BCopter(),
@@ -20,8 +21,8 @@ func NewBCopter(m *unit) Unit {
 	return u
 }
 
-func BCopter() unit {
-	return unit{
+func BCopter() models.Unit {
+	return models.Unit{
 		Name:           unitnames.Bomber,
 		MovementType:   movementtypes.A,
 		MovementPoints: 6,

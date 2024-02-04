@@ -1,7 +1,8 @@
-package models
+package unitmodels
 
 import (
-	unitnames "github.com/awbw/2040/models/units/names"
+	"github.com/awbw/2040/models"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 	movementtypes "github.com/awbw/2040/types/movements"
 )
 
@@ -9,7 +10,7 @@ type recon struct {
 	directUnit
 }
 
-func NewRecon(m *unit) Unit {
+func NewRecon(m *models.Unit) models.IUnit {
 	u := &recon{
 		directUnit{
 			Recon(),
@@ -20,8 +21,8 @@ func NewRecon(m *unit) Unit {
 	return u
 }
 
-func Recon() unit {
-	return unit{
+func Recon() models.Unit {
+	return models.Unit{
 		Name:           unitnames.Recon,
 		MovementType:   movementtypes.W,
 		MovementPoints: 8,

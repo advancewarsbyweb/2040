@@ -1,7 +1,8 @@
-package models
+package unitmodels
 
 import (
-	unitnames "github.com/awbw/2040/models/units/names"
+	"github.com/awbw/2040/models"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 	movementtypes "github.com/awbw/2040/types/movements"
 )
 
@@ -9,7 +10,7 @@ type sub struct {
 	directUnit
 }
 
-func NewSub(m *unit) Unit {
+func NewSub(m *models.Unit) models.IUnit {
 	u := &sub{
 		directUnit{
 			Sub(),
@@ -20,8 +21,8 @@ func NewSub(m *unit) Unit {
 	return u
 }
 
-func Sub() unit {
-	return unit{
+func Sub() models.Unit {
+	return models.Unit{
 		Name:           unitnames.Sub,
 		MovementType:   movementtypes.S,
 		MovementPoints: 5,

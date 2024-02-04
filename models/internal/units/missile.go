@@ -1,7 +1,8 @@
-package models
+package unitmodels
 
 import (
-	unitnames "github.com/awbw/2040/models/units/names"
+	"github.com/awbw/2040/models"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 	movementtypes "github.com/awbw/2040/types/movements"
 )
 
@@ -9,7 +10,7 @@ type missile struct {
 	indirectUnit
 }
 
-func NewMissile(m *unit) Unit {
+func NewMissile(m *models.Unit) models.IUnit {
 	u := &missile{
 		indirectUnit{
 			Missile(),
@@ -20,8 +21,8 @@ func NewMissile(m *unit) Unit {
 	return u
 }
 
-func Missile() unit {
-	return unit{
+func Missile() models.Unit {
+	return models.Unit{
 		Name:           unitnames.Missile,
 		MovementType:   movementtypes.W,
 		MovementPoints: 4,

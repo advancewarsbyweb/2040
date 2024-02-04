@@ -1,7 +1,8 @@
-package models
+package unitmodels
 
 import (
-	unitnames "github.com/awbw/2040/models/units/names"
+	"github.com/awbw/2040/models"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 	movementtypes "github.com/awbw/2040/types/movements"
 )
 
@@ -9,7 +10,7 @@ type carrier struct {
 	indirectUnit
 }
 
-func NewCarrier(m *unit) Unit {
+func NewCarrier(m *models.Unit) models.IUnit {
 	u := &carrier{
 		indirectUnit{
 			Carrier(),
@@ -20,8 +21,8 @@ func NewCarrier(m *unit) Unit {
 	return u
 }
 
-func Carrier() unit {
-	return unit{
+func Carrier() models.Unit {
+	return models.Unit{
 		Name:           unitnames.Carrier,
 		MovementType:   movementtypes.S,
 		MovementPoints: 5,

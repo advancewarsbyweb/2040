@@ -1,7 +1,8 @@
-package models
+package unitmodels
 
 import (
-	unitnames "github.com/awbw/2040/models/units/names"
+	"github.com/awbw/2040/models"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 	movementtypes "github.com/awbw/2040/types/movements"
 )
 
@@ -9,7 +10,7 @@ type battleship struct {
 	indirectUnit
 }
 
-func NewBattleship(m *unit) Unit {
+func NewBattleship(m *models.Unit) models.IUnit {
 	u := &battleship{
 		indirectUnit{
 			Battleship(),
@@ -20,8 +21,8 @@ func NewBattleship(m *unit) Unit {
 	return u
 }
 
-func Battleship() unit {
-	return unit{
+func Battleship() models.Unit {
+	return models.Unit{
 		Name:           unitnames.Battleship,
 		MovementType:   movementtypes.S,
 		MovementPoints: 5,

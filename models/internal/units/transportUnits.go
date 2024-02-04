@@ -1,11 +1,14 @@
-package models
+package unitmodels
 
-import unitnames "github.com/awbw/2040/models/units/names"
+import (
+	"github.com/awbw/2040/models"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
+)
 
 var TransportUnits []unitnames.UnitName
 
 type transportUnit struct {
-	unit
+	models.Unit
 }
 
 func init() {

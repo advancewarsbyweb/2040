@@ -1,7 +1,8 @@
-package models
+package unitmodels
 
 import (
-	unitnames "github.com/awbw/2040/models/units/names"
+	"github.com/awbw/2040/models"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 	movementtypes "github.com/awbw/2040/types/movements"
 )
 
@@ -9,7 +10,7 @@ type antiAir struct {
 	directUnit
 }
 
-func NewAntiAir(m *unit) Unit {
+func NewAntiAir(m *models.Unit) models.IUnit {
 	u := &antiAir{
 		directUnit{
 			AntiAir(),
@@ -20,8 +21,8 @@ func NewAntiAir(m *unit) Unit {
 	return u
 }
 
-func AntiAir() unit {
-	return unit{
+func AntiAir() models.Unit {
+	return models.Unit{
 		Name:           unitnames.AntiAir,
 		MovementType:   movementtypes.T,
 		MovementPoints: 6,

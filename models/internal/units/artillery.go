@@ -1,7 +1,8 @@
-package models
+package unitmodels
 
 import (
-	unitnames "github.com/awbw/2040/models/units/names"
+	"github.com/awbw/2040/models"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 	movementtypes "github.com/awbw/2040/types/movements"
 )
 
@@ -9,7 +10,7 @@ type artillery struct {
 	indirectUnit
 }
 
-func NewArtillery(m *unit) Unit {
+func NewArtillery(m *models.Unit) models.IUnit {
 	u := &artillery{
 		indirectUnit{
 			Artillery(),
@@ -20,8 +21,8 @@ func NewArtillery(m *unit) Unit {
 	return u
 }
 
-func Artillery() unit {
-	return unit{
+func Artillery() models.Unit {
+	return models.Unit{
 		Name:           unitnames.Artillery,
 		MovementType:   movementtypes.T,
 		MovementPoints: 5,

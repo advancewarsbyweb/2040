@@ -3,14 +3,14 @@ package models
 import (
 	"math"
 
-	unitmodels "github.com/awbw/2040/models/units"
+	"github.com/awbw/2040/models"
 )
 
 type colin struct {
-	co
+	models.Co
 }
 
-func (co *colin) DamageBoost(u unitmodels.Unit) int {
+func (co *colin) DamageBoost(u models.IUnit) int {
 	if u.GetPlayer().CoPowerOn != "S" {
 		return -10
 	}
@@ -22,6 +22,6 @@ func (co *colin) CostModifier() float64 {
 	return 0.8
 }
 
-func NewColin() Co {
+func NewColin() models.ICo {
 	return &colin{}
 }

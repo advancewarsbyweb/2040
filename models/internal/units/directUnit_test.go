@@ -1,9 +1,9 @@
-package models
+package unitmodels
 
 import (
 	"testing"
 
-	unitnames "github.com/awbw/2040/models/units/names"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 )
 
 func TestDirectFire(t *testing.T) {
@@ -16,7 +16,6 @@ func TestDirectFire(t *testing.T) {
 }
 
 func TestDirectFireDamage(t *testing.T) {
-
 	a := CreateUnitHelper(unitnames.Mech).SetPos(1, 1)
 	d := CreateUnitHelper(unitnames.Artillery).SetPos(2, 1)
 	err := a.Fire(a, d)

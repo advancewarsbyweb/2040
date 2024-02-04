@@ -1,7 +1,8 @@
-package models
+package unitmodels
 
 import (
-	unitnames "github.com/awbw/2040/models/units/names"
+	"github.com/awbw/2040/models"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 	movementtypes "github.com/awbw/2040/types/movements"
 )
 
@@ -9,7 +10,7 @@ type cruiser struct {
 	directUnit
 }
 
-func NewCruiser(m *unit) Unit {
+func NewCruiser(m *models.Unit) models.IUnit {
 	u := &cruiser{
 		directUnit{
 			Cruiser(),
@@ -20,8 +21,8 @@ func NewCruiser(m *unit) Unit {
 	return u
 }
 
-func Cruiser() unit {
-	return unit{
+func Cruiser() models.Unit {
+	return models.Unit{
 		Name:           unitnames.Cruiser,
 		MovementType:   movementtypes.S,
 		MovementPoints: 6,

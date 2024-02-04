@@ -1,7 +1,8 @@
-package models
+package unitmodels
 
 import (
-	unitnames "github.com/awbw/2040/models/units/names"
+	"github.com/awbw/2040/models"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 	movementtypes "github.com/awbw/2040/types/movements"
 )
 
@@ -9,7 +10,7 @@ type neotank struct {
 	directUnit
 }
 
-func NewNeotank(m *unit) Unit {
+func NewNeotank(m *models.Unit) models.IUnit {
 	u := &neotank{
 		directUnit{
 			Neotank(),
@@ -20,8 +21,8 @@ func NewNeotank(m *unit) Unit {
 	return u
 }
 
-func Neotank() unit {
-	return unit{
+func Neotank() models.Unit {
+	return models.Unit{
 		Name:           unitnames.Neotank,
 		MovementType:   movementtypes.T,
 		MovementPoints: 6,

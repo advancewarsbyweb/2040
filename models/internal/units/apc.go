@@ -1,7 +1,8 @@
-package models
+package unitmodels
 
 import (
-	unitnames "github.com/awbw/2040/models/units/names"
+	"github.com/awbw/2040/models"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 	movementtypes "github.com/awbw/2040/types/movements"
 )
 
@@ -9,7 +10,7 @@ type apc struct {
 	transportUnit
 }
 
-func NewAPC(m *unit) Unit {
+func NewAPC(m *models.Unit) models.IUnit {
 	u := &apc{
 		transportUnit{
 			APC(),
@@ -20,8 +21,8 @@ func NewAPC(m *unit) Unit {
 	return u
 }
 
-func APC() unit {
-	return unit{
+func APC() models.Unit {
+	return models.Unit{
 		Name:         unitnames.APC,
 		MovementType: movementtypes.T,
 		Vision:       1,

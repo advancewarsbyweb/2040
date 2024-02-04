@@ -3,23 +3,24 @@ package models
 import (
 	"testing"
 
-	unitmodels "github.com/awbw/2040/models/units"
-	unitnames "github.com/awbw/2040/models/units/names"
+	"github.com/awbw/2040/models"
+	unitmodels "github.com/awbw/2040/models/internal/units"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 )
 
 var (
-	colinTest   Co
-	colinPlayer Player
+	colinTest   models.ICo
+	colinPlayer models.Player
 )
 
 func init() {
 	colinTest = NewColin()
-	colinPlayer = Player{}
+	colinPlayer = models.Player{}
 }
 
 func TestDamageBoost_Colin(t *testing.T) {
 	colinPlayer.CoPowerOn = "N"
-	u := unitmodels.CreateUnitHelper(unitnames.Infantry).SetPlayer(colinPlayer)
+	u := unitmodels.CreateUnitHelper(unitnames.Infantry).SetPlayer(&colinPlayer)
 	boost := colinTest.DamageBoost(u)
 	want := -10
 

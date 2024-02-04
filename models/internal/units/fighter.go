@@ -1,7 +1,8 @@
-package models
+package unitmodels
 
 import (
-	unitnames "github.com/awbw/2040/models/units/names"
+	"github.com/awbw/2040/models"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 	movementtypes "github.com/awbw/2040/types/movements"
 )
 
@@ -9,7 +10,7 @@ type fighter struct {
 	directUnit
 }
 
-func NewFighter(m *unit) Unit {
+func NewFighter(m *models.Unit) models.IUnit {
 	u := &fighter{
 		directUnit{
 			Fighter(),
@@ -20,8 +21,8 @@ func NewFighter(m *unit) Unit {
 	return u
 }
 
-func Fighter() unit {
-	return unit{
+func Fighter() models.Unit {
+	return models.Unit{
 		Name:           unitnames.Fighter,
 		MovementType:   movementtypes.A,
 		MovementPoints: 9,

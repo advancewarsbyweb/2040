@@ -1,15 +1,16 @@
-package models
+package unitmodels
 
 import (
 	"errors"
 	"math"
 
-	unitnames "github.com/awbw/2040/models/units/names"
+	"github.com/awbw/2040/models"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 )
 
 // This might need to have baseUnit embedded in it directly for the inheritance to work
 type directUnit struct {
-	unit
+	models.Unit
 }
 
 var DirectUnits []unitnames.UnitName
@@ -31,7 +32,7 @@ func init() {
 	}
 }
 
-func (u *directUnit) Fire(a Unit, d Unit) error {
+func (u *directUnit) Fire(a models.IUnit, d models.IUnit) error {
 	distanceAway := int(math.Abs(float64(d.GetX())-float64(a.GetX())) + math.Abs(float64(d.GetY())-float64(a.GetY())))
 	if distanceAway > a.GetShortRange() || distanceAway < a.GetLongRange() {
 		return errors.New(DefenderOutsideOfRange)

@@ -3,18 +3,19 @@ package models
 import (
 	"testing"
 
-	conames "github.com/awbw/2040/models/players/coNames"
-	unitmodels "github.com/awbw/2040/models/units"
+	"github.com/awbw/2040/models"
+	conames "github.com/awbw/2040/models/internal/cos/names"
+	unitmodels "github.com/awbw/2040/models/internal/units"
 )
 
 var (
-	maxTest   Co
-	maxPlayer Player
+	maxTest   models.ICo
+	maxPlayer models.Player
 )
 
 func init() {
 	maxTest = NewCo(conames.Max)
-	maxPlayer = Player{}
+	maxPlayer = models.Player{}
 }
 
 func TestRangeBoost_Max(t *testing.T) {

@@ -3,21 +3,22 @@ package models
 import (
 	"testing"
 
-	conames "github.com/awbw/2040/models/players/coNames"
-	unitmodels "github.com/awbw/2040/models/units"
-	unitnames "github.com/awbw/2040/models/units/names"
+	"github.com/awbw/2040/models"
+	conames "github.com/awbw/2040/models/internal/cos/names"
+	unitmodels "github.com/awbw/2040/models/internal/units"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 )
 
 var (
-	samiTest   Co
-	samiPlayer Player
+	samiTest   models.ICo
+	samiPlayer models.Player
 
 	Footsoldiers []unitnames.UnitName
 )
 
 func init() {
 	samiTest = NewCo(conames.Sami)
-	samiPlayer = Player{}
+	samiPlayer = models.Player{}
 	Footsoldiers = []unitnames.UnitName{unitnames.Infantry, unitnames.Mech}
 }
 

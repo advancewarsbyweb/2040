@@ -1,150 +1,149 @@
 package models
 
 import (
-	"github.com/awbw/2040/models"
-	playermodels "github.com/awbw/2040/models/players"
-	terrainmodels "github.com/awbw/2040/models/terrains"
+	terrainmodels "github.com/awbw/2040/models/internal/terrains"
 
-	unitnames "github.com/awbw/2040/models/units/names"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 )
 
 // We return the IUnit in the Unit Model to be able to chain methods
-type Unit interface {
-	SetGame(g *models.Game) Unit
-	GetGame() *models.Game
-	SetPlayer(p *models.Player) Unit
-	GetPlayer() *playermodels.Player
+type IUnit interface {
+	SetGame(g *Game) IUnit
+	GetGame() *Game
+	SetPlayer(p *Player) IUnit
+	GetPlayer() *Player
 	GetName() unitnames.UnitName
 	GetCost() int
 	GetAmmo() int
-	SetAmmo(ammo int) Unit
+	SetAmmo(ammo int) IUnit
 	GetFuel() int
-	SetFuel(fuel int) Unit
+	SetFuel(fuel int) IUnit
 	GetHp() float64
-	SetHp(hp float64) Unit
+	SetHp(hp float64) IUnit
 	GetX() int
 	GetY() int
-	SetPos(x int, y int) Unit
+	SetPos(x int, y int) IUnit
 	GetMoved() int
-	SetMoved(moved int) Unit
+	SetMoved(moved int) IUnit
 	GetShortRange() int
 	GetLongRange() int
 	GetTile() *terrainmodels.Tile
-	SetTile(t *terrainmodels.Tile) Unit
-	GetUnit() *unit
+	SetTile(t *terrainmodels.Tile) IUnit
+	// Return the Unit in order to be able to return the json object to the client
+	GetUnit() *Unit
 
 	Move()
-	Fire(a Unit, d Unit) error
+	Fire(a IUnit, d IUnit) error
 	Load()
 }
 
-func (u *unit) Move() {
+func (u *Unit) Move() {
 }
 
-func (u *unit) Fire(a Unit, b Unit) error {
+func (u *Unit) Fire(a IUnit, b IUnit) error {
 	return nil
 }
 
-func (u *unit) Load() {
+func (u *Unit) Load() {
 }
 
-func (u *unit) SetGame(g *models.Game) Unit {
+func (u *Unit) SetGame(g *Game) IUnit {
 	u.Game = g
 	u.GameID = g.ID
 	return u.IUnit
 }
 
-func (u *unit) GetGame() *models.Game {
+func (u *Unit) GetGame() *Game {
 	return u.Game
 }
 
-func (u *unit) SetPlayer(p *models.Player) Unit {
+func (u *Unit) SetPlayer(p *Player) IUnit {
 	u.Player = p
 	u.PlayerID = p.ID
 	return u.IUnit
 }
 
-func (u *unit) GetPlayer() *models.Player {
+func (u *Unit) GetPlayer() *Player {
 	return u.Player
 }
 
-func (u *unit) GetName() unitnames.UnitName {
+func (u *Unit) GetName() unitnames.UnitName {
 	return u.Name
 }
 
-func (u *unit) GetCost() int {
+func (u *Unit) GetCost() int {
 	return u.Cost
 }
 
-func (u *unit) GetAmmo() int {
+func (u *Unit) GetAmmo() int {
 	return u.Ammo
 }
 
-func (u *unit) SetAmmo(ammo int) Unit {
+func (u *Unit) SetAmmo(ammo int) IUnit {
 	if ammo >= 0 {
 		u.Ammo = ammo
 	}
 	return u.IUnit
 }
 
-func (u *unit) GetFuel() int {
+func (u *Unit) GetFuel() int {
 	return u.Fuel
 }
 
-func (u *unit) SetFuel(fuel int) Unit {
+func (u *Unit) SetFuel(fuel int) IUnit {
 	u.Fuel = fuel
 	return u.IUnit
 }
 
-func (u *unit) GetHp() float64 {
+func (u *Unit) GetHp() float64 {
 	return u.Hp
 }
 
-func (u *unit) SetHp(hp float64) Unit {
+func (u *Unit) SetHp(hp float64) IUnit {
 	u.Hp = hp
 	return u.IUnit
 }
 
-func (u *unit) GetX() int {
+func (u *Unit) GetX() int {
 	return u.X
 }
 
-func (u *unit) GetY() int {
+func (u *Unit) GetY() int {
 	return u.Y
 }
 
-func (u *unit) SetPos(x int, y int) Unit {
+func (u *Unit) SetPos(x int, y int) IUnit {
 	u.X = x
 	u.Y = y
 	return u.IUnit
 }
 
-func (u *unit) GetMoved() int {
+func (u *Unit) GetMoved() int {
 	return u.Moved
 }
 
-func (u *unit) SetMoved(moved int) Unit {
+func (u *Unit) SetMoved(moved int) IUnit {
 	u.Moved = moved
 	return u.IUnit
 }
 
-func (u *unit) GetShortRange() int {
+func (u *Unit) GetShortRange() int {
 	return u.ShortRange
 }
 
-func (u *unit) GetLongRange() int {
+func (u *Unit) GetLongRange() int {
 	return u.LongRange
 }
 
-func (u *unit) GetTile() *terrainmodels.Tile {
+func (u *Unit) GetTile() *terrainmodels.Tile {
 	return u.Tile
 }
 
-func (u *unit) SetTile(t *terrainmodels.Tile) Unit {
+func (u *Unit) SetTile(t *terrainmodels.Tile) IUnit {
 	u.Tile = t
 	return u.IUnit
 }
 
-func (u *unit) GetUnit() *unit {
+func (u *Unit) GetUnit() *Unit {
 	return u
 }
