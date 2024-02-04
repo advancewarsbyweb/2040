@@ -3,7 +3,7 @@ package cos
 import (
 	"math/rand"
 
-	unitmodels "github.com/awbw/2040/models/units"
+	unitmodels "github.com/awbw/2040/models/internal/units"
 	conames "github.com/awbw/2040/types/cos/names"
 )
 
@@ -12,7 +12,7 @@ type Co interface {
 	MovementBoost(u unitmodels.Unit) int
 	RangeBoost(u unitmodels.Unit) int
 	CaptureBoost(u unitmodels.Unit) int
-	LuckRange() int
+	LuckRange() (int, int)
 	CostModifier() float64
 }
 
