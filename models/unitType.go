@@ -27,8 +27,8 @@ type IUnit interface {
 	SetMoved(moved int) IUnit
 	GetShortRange() int
 	GetLongRange() int
-	GetTile() *terrainmodels.Tile
-	SetTile(t *terrainmodels.Tile) IUnit
+	GetTile() *Tile
+	SetTile(t *Tile) IUnit
 	// Return the Unit in order to be able to return the json object to the client
 	GetUnit() *Unit
 

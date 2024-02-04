@@ -2,8 +2,6 @@ package calculator
 
 import (
 	"github.com/awbw/2040/models"
-	terrainmodels "github.com/awbw/2040/models/terrains"
-	unitmodels "github.com/awbw/2040/models/units"
 	"github.com/awbw/2040/types/cos"
 )
 
@@ -16,8 +14,8 @@ type CalculatorInput struct {
 	// Damage and Defense can vary based on the CO, Power, etc
 	Damage  int
 	Defense int
-	Unit    unitmodels.Unit
-	Tile    *terrainmodels.Tile
+	Unit    models.IUnit
+	Tile    *models.Tile
 	Player  *models.Player
 	Co      cos.Co
 }
@@ -41,14 +39,14 @@ func (ci *CalculatorInput) DamageBoost() int {
 	return boost
 }
 
-func NewCalculator(a unitmodels.Unit, d unitmodels.Unit) Calculator {
+func NewCalculator(a models.IUnit, d models.IUnit) Calculator {
 	return Calculator{
 		Attacker: NewCalculatorInput(a),
 		Defender: NewCalculatorInput(d),
 	}
 }
 
-func NewCalculatorInput(u unitmodels.Unit) *CalculatorInput {
+func NewCalculatorInput(u models.IUnit) *CalculatorInput {
 	return &CalculatorInput{
 		Damage:  0,
 		Defense: 0,
