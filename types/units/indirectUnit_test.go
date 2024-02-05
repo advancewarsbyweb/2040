@@ -3,7 +3,7 @@ package unitmodels
 import (
 	"testing"
 
-	unitnames "github.com/awbw/2040/models/internal/units/names"
+	unitnames "github.com/awbw/2040/types/units/names"
 )
 
 func TestIndirectFire(t *testing.T) {

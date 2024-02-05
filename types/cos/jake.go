@@ -1,9 +1,9 @@
-package models
+package cos
 
 import (
 	"github.com/awbw/2040/models"
-	unitmodels "github.com/awbw/2040/models/internal/units"
-	terraintypes "github.com/awbw/2040/types/terrains"
+	terrainnames "github.com/awbw/2040/types/terrains/names"
+	unitmodels "github.com/awbw/2040/types/units"
 	"golang.org/x/exp/slices"
 )
 
@@ -12,7 +12,7 @@ type jake struct {
 }
 
 func (co *jake) DamageBoost(u models.IUnit) int {
-	if u.GetTile().Name == terraintypes.Plain || terraintypes.Rubble.Match(u.GetTile().Name) {
+	if u.GetTile().Name == terrainnames.Plain || terrainnames.Rubble.Match(u.GetTile().Name) {
 		return PowerBoost(u.GetPlayer().CoPowerOn, 10, 20, 40)
 	}
 	return 0

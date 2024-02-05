@@ -1,7 +1,7 @@
 package calculator
 
 import (
-	unitnames "github.com/awbw/2040/models/units/names"
+	unitnames "github.com/awbw/2040/types/units/names"
 )
 
 type unitDamage map[unitnames.UnitName][2]int
@@ -27,38 +27,35 @@ func (m *damageMatrix) FindSecondary(a unitnames.UnitName, d unitnames.UnitName)
 }
 
 func init() {
-	// Arbitrary index so the matrix is not full of repeated names ?
-	allUnits := []unitnames.UnitName{
-		unitnames.AntiAir,
-		unitnames.APC,
-		unitnames.Artillery,
-		unitnames.BCopter,
-		unitnames.Battleship,
-		unitnames.BlackBoat,
-		unitnames.BlackBomb,
-		unitnames.Bomber,
-		unitnames.Carrier,
-		unitnames.Cruiser,
-		unitnames.Fighter,
-		unitnames.Infantry,
-		unitnames.Lander,
-		unitnames.MDTank,
-		unitnames.Mech,
-		unitnames.MegaTank,
-		unitnames.Missile,
-		unitnames.Neotank,
-		unitnames.Piperunner,
-		unitnames.Recon,
-		unitnames.Stealth,
-		unitnames.Sub,
-		unitnames.TCopter,
-		unitnames.Tank,
-	}
-
-	// Infantry has no primary Fire
-	for _, unitName := range allUnits {
-		DamageMatrix[unitnames.Infantry][unitName] = d(-1, -1)
-	}
+	/*
+		// Arbitrary index so the matrix is not full of repeated names ?
+		allUnits := []unitnames.UnitName{
+			unitnames.AntiAir,
+			unitnames.APC,
+			unitnames.Artillery,
+			unitnames.BCopter,
+			unitnames.Battleship,
+			unitnames.BlackBoat,
+			unitnames.BlackBomb,
+			unitnames.Bomber,
+			unitnames.Carrier,
+			unitnames.Cruiser,
+			unitnames.Fighter,
+			unitnames.Infantry,
+			unitnames.Lander,
+			unitnames.MDTank,
+			unitnames.Mech,
+			unitnames.MegaTank,
+			unitnames.Missile,
+			unitnames.Neotank,
+			unitnames.Piperunner,
+			unitnames.Recon,
+			unitnames.Stealth,
+			unitnames.Sub,
+			unitnames.TCopter,
+			unitnames.Tank,
+		}
+	*/
 
 	DamageMatrix = damageMatrix{
 		unitnames.AntiAir: unitDamage{
@@ -225,7 +222,26 @@ func init() {
 		},
 		unitnames.Lander: unitDamage{},
 		unitnames.MDTank: unitDamage{
-			unitnames.Infantry: d(105, 0),
+			unitnames.AntiAir:    d(105, 7),
+			unitnames.APC:        d(105, 45),
+			unitnames.Artillery:  d(105, 45),
+			unitnames.BCopter:    d(0, 12),
+			unitnames.Battleship: d(10, 0),
+			unitnames.BlackBoat:  d(35, 0),
+			unitnames.Carrier:    d(10, 0),
+			unitnames.Cruiser:    d(30, 0),
+			unitnames.Infantry:   d(0, 105),
+			unitnames.Lander:     d(35, 0),
+			unitnames.MDTank:     d(55, 1),
+			unitnames.Mech:       d(0, 95),
+			unitnames.MegaTank:   d(25, 1),
+			unitnames.Missile:    d(105, 35),
+			unitnames.Neotank:    d(45, 1),
+			unitnames.Piperunner: d(85, 8),
+			unitnames.Recon:      d(105, 45),
+			unitnames.Sub:        d(10, 0),
+			unitnames.TCopter:    d(0, 45),
+			unitnames.Tank:       d(85, 8),
 		},
 		unitnames.Mech: unitDamage{
 			unitnames.AntiAir:    d(65, 5),
@@ -260,7 +276,26 @@ func init() {
 			// Fill
 		},
 		unitnames.Neotank: unitDamage{
-			// Fill
+			unitnames.AntiAir:    d(115, 17),
+			unitnames.APC:        d(125, 65),
+			unitnames.Artillery:  d(115, 65),
+			unitnames.BCopter:    d(0, 22),
+			unitnames.Battleship: d(15, 0),
+			unitnames.BlackBoat:  d(40, 0),
+			unitnames.Carrier:    d(15, 0),
+			unitnames.Cruiser:    d(30, 0),
+			unitnames.Infantry:   d(0, 125),
+			unitnames.Lander:     d(40, 0),
+			unitnames.MDTank:     d(75, 1),
+			unitnames.Mech:       d(0, 115),
+			unitnames.MegaTank:   d(35, 1),
+			unitnames.Missile:    d(125, 55),
+			unitnames.Neotank:    d(55, 1),
+			unitnames.Piperunner: d(105, 10),
+			unitnames.Recon:      d(125, 65),
+			unitnames.Sub:        d(15, 0),
+			unitnames.TCopter:    d(55, 0),
+			unitnames.Tank:       d(105, 10),
 		},
 		unitnames.Piperunner: unitDamage{
 			// Fill
@@ -278,8 +313,27 @@ func init() {
 			// Fill
 		},
 		unitnames.TCopter: unitDamage{},
-		unitnames.Tank:    unitDamage{
-			// Fill
+		unitnames.Tank: unitDamage{
+			unitnames.AntiAir:    d(65, 6),
+			unitnames.APC:        d(75, 45),
+			unitnames.Artillery:  d(70, 45),
+			unitnames.BCopter:    d(0, 10),
+			unitnames.Battleship: d(1, 0),
+			unitnames.BlackBoat:  d(10, 0),
+			unitnames.Carrier:    d(1, 0),
+			unitnames.Cruiser:    d(5, 0),
+			unitnames.Infantry:   d(0, 75),
+			unitnames.Lander:     d(10, 0),
+			unitnames.MDTank:     d(15, 1),
+			unitnames.Mech:       d(0, 70),
+			unitnames.MegaTank:   d(15, 1),
+			unitnames.Missile:    d(85, 30),
+			unitnames.Neotank:    d(15, 1),
+			unitnames.Piperunner: d(55, 6),
+			unitnames.Recon:      d(55, 6),
+			unitnames.Sub:        d(1, 0),
+			unitnames.TCopter:    d(0, 40),
+			unitnames.Tank:       d(55, 6),
 		},
 	}
 }

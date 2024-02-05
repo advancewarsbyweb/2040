@@ -1,8 +1,8 @@
-package models
+package cos
 
 import (
 	"github.com/awbw/2040/models"
-	conames "github.com/awbw/2040/models/internal/cos/names"
+	conames "github.com/awbw/2040/types/cos/names"
 )
 
 var CoMaker map[conames.CoName]func() models.ICo

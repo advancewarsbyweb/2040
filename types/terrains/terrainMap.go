@@ -28,8 +28,9 @@ func CreateTerrainMap(mapTiles []models.Tile) TerrainMap {
 func (m *testMaps) Tile(id int) models.Tile {
 	return models.Tile{
 		Terrain: models.Terrain{
-			ID:   id,
-			Name: terrainnames.Names[id],
+			ID:      id,
+			Name:    terrainnames.Names[id],
+			Defense: terrainnames.Names[id].Stars(),
 		},
 	}
 }

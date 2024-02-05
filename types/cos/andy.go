@@ -1,4 +1,4 @@
-package models
+package cos
 
 import "github.com/awbw/2040/models"
 

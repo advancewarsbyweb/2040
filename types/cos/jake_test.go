@@ -1,14 +1,14 @@
-package models
+package cos
 
 import (
 	"fmt"
 	"testing"
 
 	"github.com/awbw/2040/models"
-	conames "github.com/awbw/2040/models/internal/cos/names"
-	terrainmodels "github.com/awbw/2040/models/internal/terrains"
-	unitmodels "github.com/awbw/2040/models/internal/units"
-	unitnames "github.com/awbw/2040/models/internal/units/names"
+	conames "github.com/awbw/2040/types/cos/names"
+	terrainmodels "github.com/awbw/2040/types/terrains"
+	unitmodels "github.com/awbw/2040/types/units"
+	unitnames "github.com/awbw/2040/types/units/names"
 	"github.com/stretchr/testify/assert"
 )
 

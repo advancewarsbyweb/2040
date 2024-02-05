@@ -1,7 +1,7 @@
 package models
 
 import (
-	"math/rand"
+	conames "github.com/awbw/2040/types/cos/names"
 )
 
 type ICo interface {
@@ -15,6 +15,7 @@ type ICo interface {
 }
 
 type Co struct {
+	Name       conames.CoName
 	Power      string
 	SuperPower string
 }
@@ -36,7 +37,7 @@ func (co *Co) CaptureBoost(u IUnit) int {
 }
 
 func (co *Co) LuckRange() (int, int) {
-	return 0, rand.Intn(9)
+	return 0, 9
 }
 
 func (co *Co) CostModifier() float64 {

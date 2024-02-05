@@ -5,7 +5,7 @@ import (
 	"math"
 
 	"github.com/awbw/2040/models"
-	unitnames "github.com/awbw/2040/models/internal/units/names"
+	unitnames "github.com/awbw/2040/types/units/names"
 )
 
 // This might need to have baseUnit embedded in it directly for the inheritance to work

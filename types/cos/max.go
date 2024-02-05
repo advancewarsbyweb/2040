@@ -1,8 +1,8 @@
-package models
+package cos
 
 import (
 	"github.com/awbw/2040/models"
-	unitmodels "github.com/awbw/2040/models/internal/units"
+	unitmodels "github.com/awbw/2040/types/units"
 	"golang.org/x/exp/slices"
 )
 

@@ -1,12 +1,12 @@
-package models
+package cos
 
 import (
 	"testing"
 
 	"github.com/awbw/2040/models"
-	conames "github.com/awbw/2040/models/internal/cos/names"
-	unitmodels "github.com/awbw/2040/models/internal/units"
-	unitnames "github.com/awbw/2040/models/internal/units/names"
+	conames "github.com/awbw/2040/types/cos/names"
+	unitmodels "github.com/awbw/2040/types/units"
+	unitnames "github.com/awbw/2040/types/units/names"
 )
 
 var (
