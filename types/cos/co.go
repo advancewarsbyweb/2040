@@ -3,7 +3,7 @@ package cos
 import (
 	"math/rand"
 
-	unitmodels "github.com/awbw/2040/models/internal/units"
+	unitmodels "github.com/awbw/2040/models/units"
 	conames "github.com/awbw/2040/types/cos/names"
 )
 

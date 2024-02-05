@@ -1,20 +1,23 @@
-package models
+package terraintypes
 
-import terraintypes "github.com/awbw/2040/types/terrains"
+import (
+	"github.com/awbw/2040/models"
+	terrainnames "github.com/awbw/2040/types/terrains/names"
+)
 
-type TerrainMap map[int]map[int]Tile
+type TerrainMap map[int]map[int]models.Tile
 
 type testMaps struct{}
 
 var TestMaps testMaps
 
 // Create from Tiles received from the database
-func CreateTerrainMap(mapTiles []Tile) TerrainMap {
+func CreateTerrainMap(mapTiles []models.Tile) TerrainMap {
 	terrainMap := make(TerrainMap)
 
 	for _, t := range mapTiles {
 		if terrainMap[t.Y] == nil {
-			terrainMap[t.Y] = make(map[int]Tile)
+			terrainMap[t.Y] = make(map[int]models.Tile)
 		}
 		terrainMap[t.Y][t.X] = t
 	}
@@ -22,25 +25,25 @@ func CreateTerrainMap(mapTiles []Tile) TerrainMap {
 	return terrainMap
 }
 
-func (m *testMaps) Tile(id int) Tile {
-	return Tile{
-		Terrain: Terrain{
+func (m *testMaps) Tile(id int) models.Tile {
+	return models.Tile{
+		Terrain: models.Terrain{
 			ID:   id,
-			Name: terraintypes.Names[id],
+			Name: terrainnames.Names[id],
 		},
 	}
 }
 
-func (m *testMaps) FromTiles(tileIDs [][]int) []Tile {
-	var mapTiles []Tile
+func (m *testMaps) FromTiles(tileIDs [][]int) []models.Tile {
+	var mapTiles []models.Tile
 	for y, row := range tileIDs {
 		for x, id := range row {
-			mapTiles = append(mapTiles, Tile{
+			mapTiles = append(mapTiles, models.Tile{
 				X: x,
 				Y: y,
-				Terrain: Terrain{
+				Terrain: models.Terrain{
 					ID:   id,
-					Name: terraintypes.Names[id],
+					Name: terrainnames.Names[id],
 				},
 			})
 		}
@@ -48,7 +51,7 @@ func (m *testMaps) FromTiles(tileIDs [][]int) []Tile {
 	return mapTiles
 }
 
-func (m *testMaps) ShangriLa() []Tile {
+func (m *testMaps) ShangriLa() []models.Tile {
 	tileIDs := [][]int{
 		{3, 112, 3, 5, 1, 1, 1, 1, 34, 16, 2, 2, 1, 10, 8, 1, 1, 34, 10, 8, 2, 34, 1, 32, 28},
 		{112, 47, 112, 26, 3, 36, 1, 1, 3, 21, 19, 1, 1, 3, 133, 1, 18, 20, 1, 10, 8, 1, 1, 1, 30},

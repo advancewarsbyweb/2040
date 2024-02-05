@@ -2,12 +2,12 @@ package models
 
 import (
 	countrycodes "github.com/awbw/2040/types/countries/codes"
-	terraintypes "github.com/awbw/2040/types/terrains"
+	terrainnames "github.com/awbw/2040/types/terrains/names"
 )
 
 type Terrain struct {
 	ID          int
-	Name        terraintypes.TerrainName
+	Name        terrainnames.TerrainName
 	Defense     int
 	Symbol      string
 	CountryCode countrycodes.CountryCode

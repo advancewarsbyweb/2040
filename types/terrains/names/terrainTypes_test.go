@@ -1,4 +1,4 @@
-package terraintypes
+package terrainnames
 
 import "testing"
 

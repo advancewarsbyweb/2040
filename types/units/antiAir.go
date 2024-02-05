@@ -2,8 +2,8 @@ package unitmodels
 
 import (
 	"github.com/awbw/2040/models"
-	unitnames "github.com/awbw/2040/models/internal/units/names"
 	movementtypes "github.com/awbw/2040/types/movements"
+	unitnames "github.com/awbw/2040/types/units/names"
 )
 
 type antiAir struct {

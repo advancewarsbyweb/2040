@@ -1,22 +1,21 @@
-package cos
+package models
 
 import (
 	"testing"
 
-	"github.com/awbw/2040/db"
 	"github.com/awbw/2040/models"
-	unitmodels "github.com/awbw/2040/models/units"
-	conames "github.com/awbw/2040/types/cos/names"
+	conames "github.com/awbw/2040/models/internal/cos/names"
+	unitmodels "github.com/awbw/2040/models/internal/units"
 )
 
 var (
-	maxTest   Co
+	maxTest   models.ICo
 	maxPlayer models.Player
 )
 
 func init() {
 	maxTest = NewCo(conames.Max)
-	maxPlayer = db.PlayerFactory.Create().Build()
+	maxPlayer = models.Player{}
 }
 
 func TestRangeBoost_Max(t *testing.T) {

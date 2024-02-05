@@ -1,9 +1,7 @@
 package models
 
 import (
-	terrainmodels "github.com/awbw/2040/models/internal/terrains"
-
-	unitnames "github.com/awbw/2040/models/internal/units/names"
+	unitnames "github.com/awbw/2040/types/units/names"
 )
 
 // We return the IUnit in the Unit Model to be able to chain methods
@@ -135,11 +133,11 @@ func (u *Unit) GetLongRange() int {
 	return u.LongRange
 }
 
-func (u *Unit) GetTile() *terrainmodels.Tile {
+func (u *Unit) GetTile() *Tile {
 	return u.Tile
 }
 
-func (u *Unit) SetTile(t *terrainmodels.Tile) IUnit {
+func (u *Unit) SetTile(t *Tile) IUnit {
 	u.Tile = t
 	return u.IUnit
 }

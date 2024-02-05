@@ -1,9 +1,8 @@
 package models
 
 import (
-	terrainmodels "github.com/awbw/2040/models/internal/terrains"
-	unitnames "github.com/awbw/2040/models/internal/units/names"
 	movementtypes "github.com/awbw/2040/types/movements"
+	unitnames "github.com/awbw/2040/types/units/names"
 )
 
 type Unit struct {
@@ -21,7 +20,7 @@ type Unit struct {
 	Carried        string                     `db:"units_carried" json:"carried"`
 	Game           *Game                      `db:""`
 	Player         *Player                    `db:""`
-	Tile           *terrainmodels.Tile        `db:""`
+	Tile           *Tile                      `db:""`
 	Name           unitnames.UnitName         `db:"units_name" json:"name"`
 	MovementPoints int                        `db:"units_movement_points" json:"movementPoints"`
 	MovementType   movementtypes.MovementType `db:"units_movement_type" json:"movementType"`

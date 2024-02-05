@@ -1,9 +1,11 @@
-package cos
+package models
+
+import "github.com/awbw/2040/models"
 
 type andy struct {
-	co
+	models.Co
 }
 
-func NewAndy() Co {
+func NewAndy() models.ICo {
 	return &andy{}
 }

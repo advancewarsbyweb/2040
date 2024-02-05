@@ -1,22 +1,21 @@
-package cos
+package models
 
 import (
 	"testing"
 
-	"github.com/awbw/2040/db"
 	"github.com/awbw/2040/models"
-	unitmodels "github.com/awbw/2040/models/units"
-	unitnames "github.com/awbw/2040/models/units/names"
+	unitmodels "github.com/awbw/2040/models/internal/units"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 )
 
 var (
-	colinTest   Co
+	colinTest   models.ICo
 	colinPlayer models.Player
 )
 
 func init() {
 	colinTest = NewColin()
-	colinPlayer = db.PlayerFactory.Create().Build()
+	colinPlayer = models.Player{}
 }
 
 func TestDamageBoost_Colin(t *testing.T) {

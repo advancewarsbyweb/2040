@@ -1,17 +1,16 @@
-package cos
+package models
 
 import (
 	"testing"
 
-	"github.com/awbw/2040/db"
 	"github.com/awbw/2040/models"
-	unitmodels "github.com/awbw/2040/models/units"
-	unitnames "github.com/awbw/2040/models/units/names"
-	conames "github.com/awbw/2040/types/cos/names"
+	conames "github.com/awbw/2040/models/internal/cos/names"
+	unitmodels "github.com/awbw/2040/models/internal/units"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 )
 
 var (
-	samiTest   Co
+	samiTest   models.ICo
 	samiPlayer models.Player
 
 	Footsoldiers []unitnames.UnitName
@@ -19,7 +18,7 @@ var (
 
 func init() {
 	samiTest = NewCo(conames.Sami)
-	samiPlayer = db.PlayerFactory.Create().Build()
+	samiPlayer = models.Player{}
 	Footsoldiers = []unitnames.UnitName{unitnames.Infantry, unitnames.Mech}
 }
 

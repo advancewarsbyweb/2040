@@ -1,18 +1,19 @@
-package cos
+package models
 
 import (
 	"math"
 
-	unitmodels "github.com/awbw/2040/models/units"
-	unitnames "github.com/awbw/2040/models/units/names"
+	"github.com/awbw/2040/models"
+	unitmodels "github.com/awbw/2040/models/internal/units"
+	unitnames "github.com/awbw/2040/models/internal/units/names"
 	"golang.org/x/exp/slices"
 )
 
 type sami struct {
-	co
+	models.Co
 }
 
-func (co *sami) DamageBoost(u unitmodels.Unit) int {
+func (co *sami) DamageBoost(u models.IUnit) int {
 	if u.GetName() != unitnames.Infantry && u.GetName() != unitnames.Mech {
 		if slices.Contains(unitmodels.IndirectUnits, u.GetName()) {
 			return 0
@@ -22,7 +23,7 @@ func (co *sami) DamageBoost(u unitmodels.Unit) int {
 	return PowerBoost(u.GetPlayer().CoPowerOn, 30, 50, 70)
 }
 
-func (co *sami) MovementBoost(u unitmodels.Unit) int {
+func (co *sami) MovementBoost(u models.IUnit) int {
 	if slices.Contains(unitmodels.TransportUnits, u.GetName()) {
 		return 1
 	}
@@ -32,7 +33,7 @@ func (co *sami) MovementBoost(u unitmodels.Unit) int {
 	return PowerBoost(u.GetPlayer().CoPowerOn, 0, 1, 2)
 }
 
-func (co *sami) CaptureBoost(u unitmodels.Unit) int {
+func (co *sami) CaptureBoost(u models.IUnit) int {
 	if u.GetName() != unitnames.Infantry && u.GetName() != unitnames.Mech {
 		return 0
 	}
@@ -40,6 +41,6 @@ func (co *sami) CaptureBoost(u unitmodels.Unit) int {
 	return PowerBoost(u.GetPlayer().CoPowerOn, capt, capt, 20)
 }
 
-func NewSami() Co {
+func NewSami() models.ICo {
 	return &sami{}
 }
