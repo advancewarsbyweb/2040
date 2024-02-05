@@ -151,6 +151,18 @@ func (c *Calculator) BaseDamage(a models.IUnit, d models.IUnit) int {
 	return baseDamage
 }
 
+// Apply Damage to involved Units
+func (c *Calculator) ApplyDamage() {
+	a := c.Attacker
+	d := c.Defender
+
+	attHp := (a.Unit.GetHp()*10 - float64(d.Damage)) / 10
+	a.Unit.SetHp(math.Ceil(attHp))
+
+	defHp := (d.Unit.GetHp()*10 - float64(a.Damage)) / 10
+	d.Unit.SetHp(math.Ceil(defHp))
+}
+
 func (ci *CalculatorInput) DamageBoost() int {
 	boost := ci.Co.DamageBoost(ci.Unit)
 	if ci.Player.CoPowerOn != "N" {
