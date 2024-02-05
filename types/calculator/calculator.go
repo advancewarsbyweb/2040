@@ -8,6 +8,8 @@ import (
 
 	"github.com/awbw/2040/models"
 	"github.com/awbw/2040/types/cos"
+	unitmodels "github.com/awbw/2040/types/units"
+	"golang.org/x/exp/slices"
 )
 
 type damageRange struct {
@@ -42,6 +44,9 @@ func (c *Calculator) CalcPreviewResult() error {
 		return err
 	}
 	c.Attacker.Preview = preview
+	if slices.Contains(unitmodels.IndirectUnits, c.Attacker.Unit.GetName()) {
+		return nil
+	}
 
 	preview, err = c.CalcDamagePreview(c.Defender, c.Attacker)
 	if err != nil {
@@ -57,6 +62,9 @@ func (c *Calculator) CalcResult() error {
 		return err
 	}
 	c.Attacker.Damage = damage
+	if slices.Contains(unitmodels.IndirectUnits, c.Attacker.Unit.GetName()) {
+		return nil
+	}
 
 	damage, err = c.CalcDamage(c.Defender, c.Attacker)
 	if err != nil {
@@ -76,6 +84,12 @@ func (c *Calculator) CalcDamagePreview(a *CalculatorInput, d *CalculatorInput) (
 	attackValue := 100 + a.Co.DamageBoost(a.Unit)
 	minHp := math.Ceil((a.Unit.GetHp()*10 - float64(d.Preview[0].Max)) / 10)
 	maxHp := math.Ceil((a.Unit.GetHp()*10 - float64(d.Preview[0].Min)) / 10)
+	if d.Preview[0].Min > 100 {
+		maxHp = 0
+	}
+	if d.Preview[0].Max > 100 {
+		minHp = 0
+	}
 	minLuck, maxLuck := c.Attacker.Co.LuckRange()
 
 	dDef := 100 + d.Co.DefenseModifier()
@@ -87,7 +101,7 @@ func (c *Calculator) CalcDamagePreview(a *CalculatorInput, d *CalculatorInput) (
 
 	var damageValues []damageRange
 	damageValues = []damageRange{
-		damageRange{Hp: int(minHp), Min: minHpMinDamage, Max: minHpMaxDamage},
+		{Hp: int(minHp), Min: minHpMinDamage, Max: minHpMaxDamage},
 	}
 
 	if minHp != maxHp {

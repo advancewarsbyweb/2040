@@ -31,12 +31,10 @@ func init() {
 
 func TestCalculatePreviewResultSecondary(t *testing.T) {
 	assert := assert.New(t)
-
 	a := unitmodels.CreateUnitHelper(unitnames.Infantry).SetPlayer(&p).SetTile(&road)
 	d := unitmodels.CreateUnitHelper(unitnames.Infantry).SetPlayer(&p).SetTile(&road)
 
 	c := NewCalculator(a, d)
-
 	c.CalcPreviewResult()
 
 	assert.Equal(c.Attacker.Preview[0].Min, 55)
@@ -52,12 +50,10 @@ func TestCalculatePreviewResultSecondary(t *testing.T) {
 
 func TestCalculatePreviewResultPrimary(t *testing.T) {
 	assert := assert.New(t)
-
 	a := unitmodels.CreateUnitHelper(unitnames.Neotank).SetPlayer(&p).SetTile(&road)
 	d := unitmodels.CreateUnitHelper(unitnames.MDTank).SetPlayer(&p).SetTile(&road)
 
 	c := NewCalculator(a, d)
-
 	c.CalcPreviewResult()
 
 	assert.Equal(c.Attacker.Preview[0].Min, 75)
@@ -66,7 +62,50 @@ func TestCalculatePreviewResultPrimary(t *testing.T) {
 	assert.Equal(len(c.Defender.Preview), 2)
 	assert.Equal(c.Defender.Preview[0].Min, 9)
 	assert.Equal(c.Defender.Preview[0].Max, 10)
-
 	assert.Equal(c.Defender.Preview[1].Min, 13)
 	assert.Equal(c.Defender.Preview[1].Max, 16)
+}
+
+func TestCalculatePreviewLuck(t *testing.T) {
+	assert := assert.New(t)
+
+	a := unitmodels.CreateUnitHelper(unitnames.Infantry).SetPlayer(&p).SetTile(&road).SetHp(8)
+	d := unitmodels.CreateUnitHelper(unitnames.Infantry).SetPlayer(&p).SetTile(&road)
+
+	c := NewCalculator(a, d)
+
+	c.CalcPreviewResult()
+
+	// The Luck Value should be 7 instead of 9 for the Attacker (8 Hp)
+	assert.Equal(c.Attacker.Preview[0].Max-c.Attacker.Preview[0].Min, 7)
+}
+
+func TestCalculatePreviewIndirectUnit(t *testing.T) {
+	assert := assert.New(t)
+	a := unitmodels.CreateUnitHelper(unitnames.Artillery).SetPlayer(&p).SetTile(&road)
+	d := unitmodels.CreateUnitHelper(unitnames.Tank).SetPlayer(&p).SetTile(&road)
+
+	c := NewCalculator(a, d)
+	c.CalcPreviewResult()
+
+	assert.Equal(c.Attacker.Preview[0].Min, 70)
+	assert.Equal(c.Attacker.Preview[0].Max, 79)
+
+	assert.Equal(c.Defender.Preview[0].Min, 0)
+	assert.Equal(c.Defender.Preview[0].Max, 0)
+}
+
+func TestCalculatePreviewDefenderDead(t *testing.T) {
+	assert := assert.New(t)
+	a := unitmodels.CreateUnitHelper(unitnames.Neotank).SetPlayer(&p).SetTile(&road)
+	d := unitmodels.CreateUnitHelper(unitnames.Tank).SetPlayer(&p).SetTile(&road)
+
+	c := NewCalculator(a, d)
+	c.CalcPreviewResult()
+
+	assert.Equal(c.Attacker.Preview[0].Min, 105)
+	assert.Equal(c.Attacker.Preview[0].Max, 114)
+
+	assert.Equal(c.Defender.Preview[0].Min, 0)
+	assert.Equal(c.Defender.Preview[0].Max, 0)
 }
