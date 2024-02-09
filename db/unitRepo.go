@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	models "github.com/awbw/2040/models/units"
+	models "github.com/awbw/2040/models"
 )
 
 type UnitRepository struct {

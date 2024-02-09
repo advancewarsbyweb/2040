@@ -7,9 +7,6 @@ import (
 	"math/rand"
 
 	"github.com/awbw/2040/models"
-	"github.com/awbw/2040/types/cos"
-	unitmodels "github.com/awbw/2040/types/units"
-	"golang.org/x/exp/slices"
 )
 
 type damageRange struct {
@@ -25,17 +22,15 @@ type Calculator struct {
 
 type CalculatorInput struct {
 	// Damage and Defense can vary based on the CO, Power, etc
-	Damage int
+	Damage  int
+	UseAmmo bool
 	// There may be multiple possible HP a defender can counter attack from so we need
 	// to consider all possibilities
-	// e.g: { 5, 27, 32 } = 5HP, min 27, max 32
-	Preview   []damageRange
-	MaxDamage int
-	MinDamage int
-	Unit      models.IUnit
-	Tile      *models.Tile
-	Player    *models.Player
-	Co        models.ICo
+	Preview []damageRange
+	Unit    models.IUnit
+	Tile    *models.Tile
+	Player  *models.Player
+	Co      models.ICo
 }
 
 func (c *Calculator) CalcPreviewResult() error {
@@ -44,9 +39,6 @@ func (c *Calculator) CalcPreviewResult() error {
 		return err
 	}
 	c.Attacker.Preview = preview
-	if slices.Contains(unitmodels.IndirectUnits, c.Attacker.Unit.GetName()) {
-		return nil
-	}
 
 	preview, err = c.CalcDamagePreview(c.Defender, c.Attacker)
 	if err != nil {
@@ -62,9 +54,6 @@ func (c *Calculator) CalcResult() error {
 		return err
 	}
 	c.Attacker.Damage = damage
-	if slices.Contains(unitmodels.IndirectUnits, c.Attacker.Unit.GetName()) {
-		return nil
-	}
 
 	damage, err = c.CalcDamage(c.Defender, c.Attacker)
 	if err != nil {
@@ -92,7 +81,7 @@ func (c *Calculator) CalcDamagePreview(a *CalculatorInput, d *CalculatorInput) (
 	}
 	minLuck, maxLuck := c.Attacker.Co.LuckRange()
 
-	dDef := 100 + d.Co.DefenseModifier()
+	dDef := 100 + d.Co.DefenseBoost(d.Unit)
 	terrainStars := d.Tile.Defense
 	dHp := math.Ceil(d.Unit.GetHp())
 
@@ -125,7 +114,7 @@ func (c *Calculator) CalcDamage(a *CalculatorInput, d *CalculatorInput) (int, er
 	minLuck, maxLuck := c.Attacker.Co.LuckRange()
 	luckValue := rand.Intn(maxLuck-minLuck) + minLuck
 
-	dDef := 100 + d.Co.DefenseModifier()
+	dDef := 100 + d.Co.DefenseBoost(d.Unit)
 	terrainStars := d.Tile.Defense
 	dHp := math.Ceil(d.Unit.GetHp())
 
@@ -145,30 +134,11 @@ func (c *Calculator) Formula(baseDamage int, attackValue int, luckValue int, aHp
 func (c *Calculator) BaseDamage(a models.IUnit, d models.IUnit) int {
 	baseDamage := DamageMatrix.FindPrimary(a.GetName(), d.GetName())
 
-	if baseDamage <= 0 {
-		baseDamage = DamageMatrix.FindSecondary(a.GetUnit().Name, d.GetUnit().Name)
+	if baseDamage <= 0 || a.GetAmmo() == 0 {
+		return DamageMatrix.FindSecondary(a.GetUnit().Name, d.GetUnit().Name)
 	}
+	c.Attacker.UseAmmo = true
 	return baseDamage
-}
-
-// Apply Damage to involved Units
-func (c *Calculator) ApplyDamage() {
-	a := c.Attacker
-	d := c.Defender
-
-	attHp := (a.Unit.GetHp()*10 - float64(d.Damage)) / 10
-	a.Unit.SetHp(math.Ceil(attHp))
-
-	defHp := (d.Unit.GetHp()*10 - float64(a.Damage)) / 10
-	d.Unit.SetHp(math.Ceil(defHp))
-}
-
-func (ci *CalculatorInput) DamageBoost() int {
-	boost := ci.Co.DamageBoost(ci.Unit)
-	if ci.Player.CoPowerOn != "N" {
-		boost += 10
-	}
-	return boost
 }
 
 func NewCalculator(a models.IUnit, d models.IUnit) Calculator {
@@ -185,6 +155,6 @@ func NewCalculatorInput(u models.IUnit) *CalculatorInput {
 		Unit:    u,
 		Tile:    u.GetTile(),
 		Player:  u.GetPlayer(),
-		Co:      cos.NewCo(u.GetPlayer().Co.Name),
+		Co:      u.GetPlayer().Co.ICo,
 	}
 }

@@ -18,7 +18,7 @@ func ValidatePlayer(c *gin.Context) {
 	var playerID Body
 	c.Bind(&playerID)
 
-	playerUser, err := db.PlayerRepo.FindPlayerUser(playerID.ID)
+	playerUser, err := db.PlayerRepo.FindPlayerRelations(playerID.ID)
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 	}

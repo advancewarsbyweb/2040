@@ -7,7 +7,7 @@ import (
 )
 
 type unitFactory struct {
-	Unit unitmodels.Unit
+	Unit models.IUnit
 }
 
 var (
@@ -53,11 +53,11 @@ func (f *unitFactory) SetPlayer(p *models.Player) *unitFactory {
 	return f
 }
 
-func (f *unitFactory) Build() unitmodels.Unit {
+func (f *unitFactory) Build() models.IUnit {
 	return f.Unit
 }
 
-func (f *unitFactory) BuildInsert() unitmodels.Unit {
+func (f *unitFactory) BuildInsert() models.IUnit {
 	// Add UnitRepo create function here
 	return f.Unit
 }

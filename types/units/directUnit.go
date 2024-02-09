@@ -5,6 +5,7 @@ import (
 	"math"
 
 	"github.com/awbw/2040/models"
+	"github.com/awbw/2040/types/calculator"
 	unitnames "github.com/awbw/2040/types/units/names"
 )
 
@@ -37,10 +38,21 @@ func (u *directUnit) Fire(a models.IUnit, d models.IUnit) error {
 	if distanceAway > a.GetShortRange() || distanceAway < a.GetLongRange() {
 		return errors.New(DefenderOutsideOfRange)
 	}
-	ammo := a.GetAmmo()
-	if ammo >= 0 {
-		a.SetAmmo(ammo - 1)
+
+	c := calculator.NewCalculator(a, d)
+	_ = c.CalcResult()
+
+	attHp := (c.Attacker.Unit.GetHp()*10 - float64(c.Defender.Damage)) / 10
+	a.SetHp(math.Ceil(attHp))
+	if c.Attacker.UseAmmo == true {
+		a.SetAmmo(a.GetAmmo() - 1)
 	}
-	d.SetHp(9)
+
+	defHp := (c.Defender.Unit.GetHp()*10 - float64(c.Attacker.Damage)) / 10
+	d.SetHp(math.Ceil(defHp))
+	if c.Defender.UseAmmo == true {
+		d.SetAmmo(d.GetAmmo() - 1)
+	}
+
 	return nil
 }

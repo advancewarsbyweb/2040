@@ -1,6 +1,6 @@
 package db
 
-import "github.com/awbw/2040/models/terrains"
+import "github.com/awbw/2040/models"
 
 type terrainFactory struct {
 	Terrain models.Terrain
