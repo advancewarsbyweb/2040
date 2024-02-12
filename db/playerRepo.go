@@ -92,16 +92,16 @@ func (r *PlayerRepository) FindPlayersByGame(gameId int) ([]models.Player, error
 
 func (r *PlayerRepository) FindPlayersRelationsByGame(gameId int) ([]models.Player, error) {
 	var playerModels []models.Player
-	query := fmt.Sprintf(`SELECT awbw_players.*, %s FROM awbw_players, ofua_users
-        INNER JOIN ofua_users
-            ON ofua_users.users_id = awbw_players.players_users_id
-        WHERE awbw_players.players_games_id = ?`,
+	query := fmt.Sprintf(`SELECT p.*, %s FROM awbw_players AS p
+        INNER JOIN ofua_users AS u
+            ON u.users_id = p.players_users_id
+        WHERE p.players_games_id = ?`,
 		strings.Join(UserRepo.Columns, ","),
 	)
 
 	err := DB.Select(&playerModels, query, gameId)
 	if err != nil {
-		return nil, errors.New("Failed to find players with given game ID")
+		return nil, errors.New("Failed to find players relations with given game ID")
 	}
 
 	return playerModels, nil

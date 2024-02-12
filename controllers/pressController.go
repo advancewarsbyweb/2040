@@ -31,11 +31,13 @@ func init() {
 	Press = NewPressController()
 }
 
-func (pc *PressController) Get(c *gin.Context) {
-	_, err := strconv.Atoi(c.Param("id"))
+func (pc *PressController) GetAll(c *gin.Context) {
+	_, err := strconv.Atoi(c.Param("playerId"))
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, err)
+		return
 	}
+	// Get every Press that the playerID sent and received
 }
 
 func (pc *PressController) Create(c *gin.Context) {
@@ -45,13 +47,14 @@ func (pc *PressController) Create(c *gin.Context) {
 	err := c.Bind(&body)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, err)
+		return
 	}
 
 	p, _ := c.Get("PlayerUser")
 	playerUser := p.(models.Player)
-	playersInGame, err := db.PlayerRepo.FindPlayersByGame(playerUser.GameID)
+	playersInGame, err := db.PlayerRepo.FindPlayersRelationsByGame(playerUser.GameID)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, err)
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
 

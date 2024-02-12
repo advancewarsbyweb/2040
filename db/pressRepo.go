@@ -12,7 +12,21 @@ import (
 
 type PressRepository struct{}
 
-var PressRepo PressRepository
+var (
+	PressRepo PressRepository
+
+	pressSelect = `
+        SELECT p.*, GROUP_CONCAT(r.users_username SEPARATOR ',') AS recipients FROM awbw_press AS p
+        INNER JOIN (
+            SELECT pt.press_to_press_id, u.users_username FROM awbw_press_to AS pt
+            INNER JOIN awbw_players AS pl
+                ON pl.players_id = pt.press_to_players_id
+            INNER JOIN ofua_users AS u
+                ON u.users_id = pl.players_users_id
+        ) AS r
+            ON r.press_to_press_id = p.press_id
+    `
+)
 
 func NewPressRepo() PressRepository {
 	return PressRepository{}
@@ -24,17 +38,12 @@ func init() {
 
 func (r *PressRepository) FindPress(id int) (*models.Press, error) {
 	var pressModel models.Press
-	query := `SELECT p.*, GROUP_CONCAT(r.users_username SEPARATOR ',') AS recipients FROM awbw_press AS p
-        INNER JOIN (
-            SELECT pt.press_to_press_id, u.users_username FROM awbw_press_to AS pt
-            INNER JOIN awbw_players AS pl
-                ON pl.players_id = pt.press_to_players_id
-            INNER JOIN ofua_users AS u
-                ON u.users_id = pl.players_users_id
-        ) AS r
-            ON r.press_to_press_id = p.press_id
+	query := fmt.Sprintf(`
+        %s
         WHERE p.press_id = ?
-        GROUP BY p.press_id`
+        GROUP BY p.press_id`,
+		pressSelect,
+	)
 	err := DB.Get(&pressModel, query, id)
 	if err != nil {
 		return nil, errors.New(fmt.Sprintf("Failed to find press with given ID: %s", err.Error()))
@@ -58,18 +67,28 @@ func (r *PressRepository) FindRecipients(pressId int) ([]models.PressTo, error) 
 
 func (r *PressRepository) FindAllPress(playerId int) ([]models.Press, error) {
 	var pressModels []models.Press
-	query := `SELECT p.*, GROUP_CONCAT(r.users_username SEPARATOR ',') AS recipients FROM awbw_press AS p
-        INNER JOIN (
-            SELECT pt.press_to_press_id, u.users_username FROM awbw_press_to AS pt
-            INNER JOIN awbw_players AS pl
-                ON pl.players_id = pt.press_to_players_id
-            INNER JOIN ofua_users AS u
-                ON u.users_id = pl.players_users_id
-        ) AS r
-            ON r.press_to_press_id = p.press_id
+	query := fmt.Sprintf(`
+        %s
         WHERE p.press_players_id = ?
-        GROUP BY p.press_id`
+        GROUP BY p.press_id`,
+		pressSelect,
+	)
 
+	err := DB.Select(&pressModels, query, playerId)
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("Failed to find player's press with given Player ID (%d): %s", playerId, err.Error()))
+	}
+	return pressModels, nil
+}
+
+func (r *PressRepository) FindAllReceivedPress(playerId int) ([]models.Press, error) {
+	var pressModels []models.Press
+	query := fmt.Sprintf(`
+        %s
+        WHERE r.press_to_players_id = ?
+        GROUP BY p.press_id`,
+		pressSelect,
+	)
 	err := DB.Select(&pressModels, query, playerId)
 	if err != nil {
 		return nil, errors.New(fmt.Sprintf("Failed to find player's press with given Player ID (%d): %s", playerId, err.Error()))
