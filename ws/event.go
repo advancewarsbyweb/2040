@@ -1,26 +1,17 @@
 package ws
 
 import (
-	"encoding/json"
+	"time"
+
+	"github.com/awbw/2040/models"
+	eventtypes "github.com/awbw/2040/ws/events/types"
 )
 
 type Event struct {
-	Type    EventType       `json:"type"`
-	Payload json.RawMessage `json:"payload"`
+	Type      eventtypes.EventType `json:"type"`
+	Timestamp time.Time            `json:"timestamp"`
+	Users     []models.User        `json:"-"`
+	Data      interface{}          `json:"data"`
 }
 
-type EventHandler func(event Event, c *Client) error
-
-type EventType string
-
-// Event names received from the client
-const (
-	MoveRequest         EventType = "move_request"
-	NotificationRequest EventType = "notification_request"
-)
-
-// Event names sent back to the client
-const (
-	MoveResponse         EventType = "move_response"
-	NotificationResponse EventType = "notification_response"
-)
+type EventHandler func(event Event) error

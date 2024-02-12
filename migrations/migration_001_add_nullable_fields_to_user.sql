@@ -1,0 +1,12 @@
+ALTER TABLE ofua_users
+    MODIFY COLUMN pn_uname VARCHAR(60),
+    MODIFY COLUMN pn_email VARCHAR(60),
+    MODIFY COLUMN pn_femail VARCHAR(60),
+    MODIFY COLUMN pn_url VARCHAR(254),
+    MODIFY COLUMN pn_user_regdate VARCHAR(20),
+    MODIFY COLUMN pn_pass VARCHAR(40),
+    MODIFY COLUMN pn_umode VARCHAR(10),
+    MODIFY COLUMN pn_bio TINYTEXT,
+    MODIFY COLUMN pn_ublock TEXT,
+    MODIFY COLUMN pn_theme VARCHAR(255),
+    MODIFY COLUMN pn_uid INT

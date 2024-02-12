@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"strings"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
@@ -27,6 +28,9 @@ func ConnectDatabase(dsn string) *sqlx.DB {
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %s", err.Error())
 	}
+	db.SetMaxIdleConns(50)
+	db.SetMaxOpenConns(50)
+	db.SetConnMaxLifetime(time.Minute * 4) // <-- this
 	return db
 }
 

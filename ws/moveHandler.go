@@ -1,19 +1,20 @@
 package ws
 
 import (
-	"encoding/json"
+	"time"
 
 	"github.com/awbw/2040/db"
-	"github.com/awbw/2040/ws/events"
+	eventdata "github.com/awbw/2040/ws/events/data"
+	eventtypes "github.com/awbw/2040/ws/events/types"
 )
 
-func MoveHandler(moveRequest events.MoveRequest, c *Client) error {
+func MoveHandler(event Event) error {
 	// Validate action
 
 	// Format response
 	// MoveResponse would be the response regardless of vision for individual players
 	// This would be saved in the database
-	_ = events.MoveUnformated{}
+	_ = eventdata.MoveUnformated{}
 
 	// Here we format a new MoveResponse for individual users if they are connected to the game
 	playerModels, err := db.PlayerRepo.FindPlayersByGame(1)
@@ -22,21 +23,17 @@ func MoveHandler(moveRequest events.MoveRequest, c *Client) error {
 	}
 
 	for _, playerModel := range playerModels {
-		connectedUser := c.Manager.Clients[playerModel.UserID]
+		connectedUser := ClientManager.Clients[playerModel.UserID]
 		if connectedUser == nil {
 			continue
 		}
 
 		// For each user we format the response. Utils function to format to each specific user
 
-		jsonResponse, err := json.Marshal(events.MoveResponse{})
-		if err != nil {
-			return err
-		}
-
 		_ = Event{
-			Payload: jsonResponse,
-			Type:    MoveResponse,
+			Type:      eventtypes.MoveResponse,
+			Timestamp: time.Now(),
+			Data:      eventdata.MoveResponse{},
 		}
 
 	}

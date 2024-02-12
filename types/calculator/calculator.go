@@ -149,6 +149,7 @@ func NewCalculator(a models.IUnit, d models.IUnit) Calculator {
 }
 
 func NewCalculatorInput(u models.IUnit) *CalculatorInput {
+	// Com Towers
 	return &CalculatorInput{
 		Damage:  0,
 		Preview: []damageRange{{}, {}},

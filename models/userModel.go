@@ -39,5 +39,6 @@ type User struct {
 	LastVacation   null.Time   `db:"users_last_vacation"`
 	MapCommittee   int         `db:"users_map_committee"`
 	DorFC          null.String `db:"users_dor_fc"`
-	GameAnimations string      `db:"users_game_animations"`
+	GameAnimations bool        `db:"users_game_animations"`
+	UserUnusedFields
 }

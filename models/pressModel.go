@@ -14,6 +14,7 @@ type Press struct {
 	Subject    null.String `db:"press_subject" json:"subject" validate:"required"`
 	Type       string      `db:"press_type"`
 	Recipients null.String `db:"recipients"`
+	Player     *Player     `db:"-"`
 }
 
 func (p *Press) GetText() string {

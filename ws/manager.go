@@ -7,6 +7,7 @@ import (
 	"sync"
 
 	"github.com/awbw/2040/utils/auth"
+	eventtypes "github.com/awbw/2040/ws/events/types"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 )
@@ -24,7 +25,7 @@ var (
 type Manager struct {
 	Clients ClientList
 	sync.RWMutex
-	Handlers map[EventType]EventHandler
+	Handlers map[eventtypes.EventType]EventHandler
 }
 
 func init() {
@@ -34,7 +35,7 @@ func init() {
 func NewManager() *Manager {
 	m := &Manager{
 		Clients:  make(ClientList),
-		Handlers: make(map[EventType]EventHandler),
+		Handlers: make(map[eventtypes.EventType]EventHandler),
 	}
 	m.SetupEventHandlers()
 	return m
@@ -42,13 +43,13 @@ func NewManager() *Manager {
 
 // Add every event Handler to the Manager
 func (m *Manager) SetupEventHandlers() {
-	//m.Handlers[NotificationResponse] = NotificationHandler
+	m.Handlers[eventtypes.NotificationResponse] = NotificationHandler
 }
 
 // Make sure the event sent by the client is routed to the proper event handler
 func (m *Manager) RouteEvent(e Event, c *Client) error {
 	if eventHandler, ok := m.Handlers[e.Type]; ok {
-		if err := eventHandler(e, c); err != nil {
+		if err := eventHandler(e); err != nil {
 			return nil
 		}
 
@@ -72,10 +73,10 @@ func (m *Manager) ServeWS(c *gin.Context) {
 	}
 
 	client := NewClient(conn, m, loggedUser.ID)
-	m.AddClient(client)
+	m.Subscribe(client)
 }
 
-func (m *Manager) AddClient(client *Client) {
+func (m *Manager) Subscribe(client *Client) {
 	m.Lock()
 	defer m.Unlock()
 
@@ -84,12 +85,20 @@ func (m *Manager) AddClient(client *Client) {
 	m.Clients[client.UserID] = client
 }
 
-func (m *Manager) RemoveClient(client *Client) {
+func (m *Manager) Delete(client *Client) {
 	m.Lock()
 	defer m.Unlock()
 
 	if _, ok := m.Clients[client.UserID]; ok {
 		client.Connection.Close()
 		delete(m.Clients, client.UserID)
+	}
+}
+
+func (m *Manager) Publish(event Event) {
+	for _, u := range event.Users {
+		if connectedClient := ClientManager.Clients[u.ID]; connectedClient != nil {
+			connectedClient.Egress <- event
+		}
 	}
 }

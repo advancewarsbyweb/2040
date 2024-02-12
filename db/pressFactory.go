@@ -12,14 +12,14 @@ type pressFactory struct {
 	Press models.Press
 }
 
-var Press pressFactory
+var PressFactory pressFactory
 
 func NewPressFactory() pressFactory {
 	return pressFactory{}
 }
 
 func init() {
-	Press = NewPressFactory()
+	PressFactory = NewPressFactory()
 }
 
 func (f *pressFactory) Create() *pressFactory {
@@ -42,6 +42,7 @@ func (f *pressFactory) CreateRelations() *pressFactory {
 
 func (f *pressFactory) SetPlayer(p *models.Player) *pressFactory {
 	f.Press.PlayerID = p.ID
+	f.Press.Player = p
 	return f
 }
 
@@ -49,7 +50,7 @@ func (f *pressFactory) Build() models.Press {
 	return f.Press
 }
 
-func (f *pressFactory) BuildAndInsert(sendToIds []int) models.Press {
+func (f *pressFactory) BuildInsert(sendToIds []int) models.Press {
 	pID, _ := PressRepo.CreatePress(f.Press, sendToIds)
 	f.Press.ID = pID
 	return f.Press

@@ -107,7 +107,7 @@ func (r *UserRepository) CreateUser(body models.User) (int, error) {
 
 func (r *UserRepository) FindUsersByGame(gameId int) ([]models.User, error) {
 	var userModels []models.User
-	usersQuery := fmt.Sprintf("SELECT %s FROM awbw_players, ofua_users WHERE players_games_id = ? AND players_users_id = users_id")
+	usersQuery := fmt.Sprintf("SELECT %s FROM awbw_players, ofua_users WHERE players_games_id = ? AND players_users_id = users_id", strings.Join(UserRepo.Columns, ","))
 
 	err := DB.Select(&userModels, usersQuery, gameId)
 	if err != nil {

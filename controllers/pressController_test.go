@@ -23,11 +23,11 @@ func TestCreatePress(t *testing.T) {
 
 	g := db.Game.Create().BuildInsert()
 
-	p1 := db.PlayerFactory.Create().SetGame(&g).BuildInsert()
-	p2 := db.PlayerFactory.Create().SetGame(&g).BuildInsert()
+	p1 := db.PlayerFactory.Create().CreateUser().SetGame(&g).BuildInsert()
+	p2 := db.PlayerFactory.Create().CreateUser().SetGame(&g).BuildInsert()
 	p3 := db.PlayerFactory.Create().CreateUser().SetGame(&g).BuildInsert()
 
-	press := db.Press.Create().SetPlayer(&p3).Build()
+	press := db.PressFactory.Create().SetPlayer(&p3).Build()
 
 	data, _ := json.Marshal(map[string]interface{}{
 		"playerId":   press.PlayerID,
@@ -49,7 +49,9 @@ func TestCreatePress(t *testing.T) {
 	Press.Create(c)
 
 	if w.Result().StatusCode != http.StatusOK {
-		t.Fatalf("Wrong status code returned. Got (%d), want (%d)", w.Result().StatusCode, http.StatusOK)
+		var response interface{}
+		json.Unmarshal(w.Body.Bytes(), &response)
+		t.Fatalf("Wrong status code returned. Got (%d), want (%d). %v", w.Result().StatusCode, http.StatusOK, response)
 	}
 
 	var res models.Press

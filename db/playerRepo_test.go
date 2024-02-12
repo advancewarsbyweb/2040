@@ -29,7 +29,7 @@ func TestCreatePlayer(t *testing.T) {
 func TestFindPlayerUser(t *testing.T) {
 	p := PlayerFactory.Create().CreateUser().BuildInsert()
 
-	r, err := PlayerRepo.FindPlayerUser(p.ID)
+	r, err := PlayerRepo.FindPlayerRelations(p.ID)
 	if err != nil {
 		t.Fatalf("Could not find PlayerUser (%d): %s", p.ID, err.Error())
 	}

@@ -9,7 +9,7 @@ func init() {
 }
 
 func TestCreateUser(t *testing.T) {
-	u := User.Create().Build()
+	u := UserFactory.Create().Build()
 
 	userId, err := UserRepo.CreateUser(u)
 
@@ -25,6 +25,4 @@ func TestCreateUser(t *testing.T) {
 	if newUser.ID != userId {
 		t.Fatalf("ID of user created does not match given User. Got (%d), want (%d)", newUser.ID, userId)
 	}
-
-	t.Logf("Created User (%s)", u.Username)
 }

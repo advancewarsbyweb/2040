@@ -28,7 +28,6 @@ func TestCreateGame(t *testing.T) {
 		t.Errorf("ID of Game created does not match given Game. Got %d, want %d", newGame.ID, gameId)
 		return
 	}
-	t.Logf("Created Game (%s)", newGame.Name)
 }
 
 func TestUpdateGame(t *testing.T) {
@@ -54,7 +53,6 @@ func TestUpdateGame(t *testing.T) {
 	if updatedGame.Name != newName || updatedGame.Funds != newFunds {
 		t.Fatalf("Game not updated properly. Got (%s, %d), want (%s, %d)", updatedGame.Name, updatedGame.Funds, newName, newFunds)
 	}
-	t.Logf("Updated Game succesfully (%s)", g.Name)
 }
 
 func TestDeleteGame(t *testing.T) {
@@ -65,6 +63,4 @@ func TestDeleteGame(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Could not delete Game: %s", err.Error())
 	}
-
-	t.Logf("Deleted Game succesfully (%s)", g.Name)
 }

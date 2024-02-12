@@ -3,11 +3,11 @@ package db
 import (
 	"errors"
 	"fmt"
+	"time"
 
 	"github.com/awbw/2040/models"
 	presscolumns "github.com/awbw/2040/models/columnNames/press"
 	presstocolumns "github.com/awbw/2040/models/columnNames/pressTo"
-	"github.com/awbw/2040/types"
 )
 
 type PressRepository struct{}
@@ -22,22 +22,27 @@ func init() {
 	PressRepo = NewPressRepo()
 }
 
-func (r *PressRepository) FindPress(id int) (*types.Press, error) {
+func (r *PressRepository) FindPress(id int) (*models.Press, error) {
 	var pressModel models.Press
-	findQuery := `SELECT awbw_press.*, GROUP_CONCAT(users_username) AS recipients FROM awbw_press, awbw_press_to, awbw_players, ofua_users
-		WHERE press_id = ?
-		AND press_to_press_id = press_id
-		AND press_to_players_id = players_id
-		AND users_id = players_users_id`
-	err := DB.Get(&pressModel, findQuery, id)
+	query := `SELECT p.*, GROUP_CONCAT(r.users_username SEPARATOR ',') AS recipients FROM awbw_press AS p
+        INNER JOIN (
+            SELECT pt.press_to_press_id, u.users_username FROM awbw_press_to AS pt
+            INNER JOIN awbw_players AS pl
+                ON pl.players_id = pt.press_to_players_id
+            INNER JOIN ofua_users AS u
+                ON u.users_id = pl.players_users_id
+        ) AS r
+            ON r.press_to_press_id = p.press_id
+        WHERE p.press_id = ?
+        GROUP BY p.press_id`
+	err := DB.Get(&pressModel, query, id)
 	if err != nil {
 		return nil, errors.New(fmt.Sprintf("Failed to find press with given ID: %s", err.Error()))
 	}
-	pressType := types.NewPress(pressModel)
-	return &pressType, nil
+	return &pressModel, nil
 }
 
-func (r *PressRepository) FindRecipients(pressId int) ([]types.PressTo, error) {
+func (r *PressRepository) FindRecipients(pressId int) ([]models.PressTo, error) {
 	var pressToModels []models.PressTo
 	findQuery := `SELECT pt.* FROM awbw_press AS p, awbw_press_to AS pt, awbw_players AS pl, ofua_users as u
 		WHERE p.press_id = ?
@@ -48,12 +53,28 @@ func (r *PressRepository) FindRecipients(pressId int) ([]types.PressTo, error) {
 	if err != nil {
 		return nil, errors.New(fmt.Sprintf("Failed to find press recipients with given Press ID (%d): %s", pressId, err.Error()))
 	}
-	var pressToTypes []types.PressTo
-	for _, p := range pressToModels {
-		pressToTypes = append(pressToTypes, types.NewPressTo(p))
-	}
+	return pressToModels, nil
+}
 
-	return pressToTypes, nil
+func (r *PressRepository) FindAllPress(playerId int) ([]models.Press, error) {
+	var pressModels []models.Press
+	query := `SELECT p.*, GROUP_CONCAT(r.users_username SEPARATOR ',') AS recipients FROM awbw_press AS p
+        INNER JOIN (
+            SELECT pt.press_to_press_id, u.users_username FROM awbw_press_to AS pt
+            INNER JOIN awbw_players AS pl
+                ON pl.players_id = pt.press_to_players_id
+            INNER JOIN ofua_users AS u
+                ON u.users_id = pl.players_users_id
+        ) AS r
+            ON r.press_to_press_id = p.press_id
+        WHERE p.press_players_id = ?
+        GROUP BY p.press_id`
+
+	err := DB.Select(&pressModels, query, playerId)
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("Failed to find player's press with given Player ID (%d): %s", playerId, err.Error()))
+	}
+	return pressModels, nil
 }
 
 func (r *PressRepository) CreatePress(body models.Press, recipients []int) (int, error) {
@@ -71,11 +92,17 @@ func (r *PressRepository) CreatePress(body models.Press, recipients []int) (int,
 	pressQuery := FormatCreateQuery("awbw_press", pressColumns)
 	pressToQuery := FormatCreateQuery("awbw_press_to", pressToColumns)
 
+	body.Date = time.Now()
 	tx, err := DB.Beginx()
 	pressRes, err := tx.NamedExec(pressQuery, body)
+	if err != nil {
+		fmt.Printf("%v", err)
+		return -1, errors.New(fmt.Sprintf("Could not create Press: %s", err.Error()))
+	}
 	pressId, err := pressRes.LastInsertId()
 
 	if err != nil {
+		fmt.Printf("%v", err)
 		return -1, errors.New(fmt.Sprintf("Could not get last inserted ID: %s", err.Error()))
 	}
 
@@ -85,6 +112,7 @@ func (r *PressRepository) CreatePress(body models.Press, recipients []int) (int,
 			presstocolumns.PlayerID: recipientId,
 		})
 		if err != nil {
+			fmt.Printf("%v", err)
 			return -1, errors.New(fmt.Sprintf("Could not create Press To: %s", err.Error()))
 		}
 	}
@@ -92,7 +120,7 @@ func (r *PressRepository) CreatePress(body models.Press, recipients []int) (int,
 	err = tx.Commit()
 
 	if err != nil {
-		return -1, errors.New(fmt.Sprintf("Could not create new Press: %s", err.Error()))
+		return -1, errors.New(fmt.Sprintf("Could not commit transaction to create new Press: %s", err.Error()))
 	}
 
 	return int(pressId), nil

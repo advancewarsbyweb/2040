@@ -14,7 +14,7 @@ func TestSetGame(t *testing.T) {
 }
 
 func TestSetUser(t *testing.T) {
-	u := User.Build()
+	u := UserFactory.Build()
 	p := PlayerFactory.Create().SetUser(&u).Build()
 
 	if p.User.Username != u.Username {

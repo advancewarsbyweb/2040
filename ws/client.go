@@ -33,7 +33,7 @@ func NewClient(conn *websocket.Conn, manager *Manager, userId int) *Client {
 
 func (c *Client) ReadMessages() {
 	defer func() {
-		c.Manager.RemoveClient(c)
+		c.Manager.Delete(c)
 	}()
 
 	c.Connection.SetReadLimit(512)
@@ -74,7 +74,7 @@ func (c *Client) WriteMessages() {
 	ticker := time.NewTicker(pingInterval)
 	defer func() {
 		ticker.Stop()
-		c.Manager.RemoveClient(c)
+		c.Manager.Delete(c)
 	}()
 
 	for {

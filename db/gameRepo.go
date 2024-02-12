@@ -76,7 +76,7 @@ func (r GameRepository) UpdateGame(id int, updatedFields map[string]interface{})
 	var updateStatements []string
 
 	for column, _ := range updatedFields {
-		updateStatements = append(updateStatements, fmt.Sprintf("games_%s = :%s", column, column))
+		updateStatements = append(updateStatements, fmt.Sprintf("%s = :%s", column, column))
 	}
 	updateQuery := fmt.Sprintf("UPDATE awbw_games SET %s WHERE %s = :%s", strings.Join(updateStatements, ","), gamecolumns.ID, gamecolumns.ID)
 	updatedFields[gamecolumns.ID] = id

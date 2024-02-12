@@ -17,7 +17,7 @@ type Game struct {
 	MapID         int         `db:"games_maps_id" validate:"required"`
 	WeatherType   string      `db:"games_weather_type"`
 	WeatherStart  null.Int    `db:"games_weather_start"`
-	WeatherCode   string      `db:"games_weather_code" validate:"eq=N|eq=R|eq=S"`
+	WeatherCode   string      `db:"games_weather_code" validate:"eq=C|eq=R|eq=S"`
 	Private       null.String `db:"games_private"`
 	TurnID        int         `db:"games_turn"`
 	Day           int         `db:"games_day"`
