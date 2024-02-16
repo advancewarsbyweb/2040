@@ -17,8 +17,10 @@ func TestFindAllPress(t *testing.T) {
 
 	recipients := []int{PlayerFactory.CreateRelations().BuildInsert().ID, PlayerFactory.CreateRelations().BuildInsert().ID}
 	p := PlayerFactory.CreateRelations().BuildInsert()
+	p2 := PlayerFactory.CreateRelations().BuildInsert()
+
 	press1 := PressFactory.Create().SetPlayer(&p).BuildInsert(recipients)
-	press2 := PressFactory.Create().SetPlayer(&p).BuildInsert(recipients)
+	press2 := PressFactory.Create().SetPlayer(&p2).BuildInsert([]int{p.ID})
 
 	allPress, err := PressRepo.FindAllPress(p.ID)
 	if err != nil {

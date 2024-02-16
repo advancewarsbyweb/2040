@@ -63,10 +63,10 @@ func (r *PlayerRepository) FindPlayer(id int) (*models.Player, error) {
 // PlayerModel with non null UserModel in it
 func (r *PlayerRepository) FindPlayerRelations(id int) (*models.Player, error) {
 	var playerModel models.Player
-	query := fmt.Sprintf(`SELECT awbw_players.*, %s FROM awbw_players
-        INNER JOIN ofua_users
-            ON ofua_users.users_id = awbw_players.players_users_id
-        WHERE players_id = ?`,
+	query := fmt.Sprintf(`SELECT p.*, %s FROM awbw_players AS p
+        INNER JOIN ofua_users AS u
+            ON u.users_id = p.players_users_id
+        WHERE p.players_id = ?`,
 		strings.Join(UserRepo.Columns, ","),
 	)
 

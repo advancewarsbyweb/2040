@@ -10,15 +10,19 @@ import (
 	presstocolumns "github.com/awbw/2040/models/columnNames/pressTo"
 )
 
-type PressRepository struct{}
+type PressRepository struct {
+	PressColumns   []string
+	PressToColumns []string
+}
 
 var (
 	PressRepo PressRepository
 
+	// This selects the Press and every recipient's username, separated by commas
 	pressSelect = `
         SELECT p.*, GROUP_CONCAT(r.users_username SEPARATOR ',') AS recipients FROM awbw_press AS p
         INNER JOIN (
-            SELECT pt.press_to_press_id, u.users_username FROM awbw_press_to AS pt
+            SELECT pt.press_to_press_id, pt.press_to_players_id, u.users_username FROM awbw_press_to AS pt
             INNER JOIN awbw_players AS pl
                 ON pl.players_id = pt.press_to_players_id
             INNER JOIN ofua_users AS u
@@ -29,7 +33,19 @@ var (
 )
 
 func NewPressRepo() PressRepository {
-	return PressRepository{}
+	return PressRepository{
+		PressColumns: []string{
+			presscolumns.Text,
+			presscolumns.PlayerID,
+			presscolumns.Subject,
+			presscolumns.Date,
+			presscolumns.Type,
+		},
+		PressToColumns: []string{
+			presstocolumns.PressID,
+			presstocolumns.PlayerID,
+		},
+	}
 }
 
 func init() {
@@ -70,11 +86,13 @@ func (r *PressRepository) FindAllPress(playerId int) ([]models.Press, error) {
 	query := fmt.Sprintf(`
         %s
         WHERE p.press_players_id = ?
-        GROUP BY p.press_id`,
+        OR r.press_to_players_id = ?
+        GROUP BY p.press_id
+        ORDER BY p.press_date`,
 		pressSelect,
 	)
 
-	err := DB.Select(&pressModels, query, playerId)
+	err := DB.Select(&pressModels, query, playerId, playerId)
 	if err != nil {
 		return nil, errors.New(fmt.Sprintf("Failed to find player's press with given Player ID (%d): %s", playerId, err.Error()))
 	}
@@ -97,19 +115,8 @@ func (r *PressRepository) FindAllReceivedPress(playerId int) ([]models.Press, er
 }
 
 func (r *PressRepository) CreatePress(body models.Press, recipients []int) (int, error) {
-	pressColumns := []string{
-		presscolumns.Text,
-		presscolumns.PlayerID,
-		presscolumns.Subject,
-		presscolumns.Date,
-		presscolumns.Type,
-	}
-	pressToColumns := []string{
-		presstocolumns.PressID,
-		presstocolumns.PlayerID,
-	}
-	pressQuery := FormatCreateQuery("awbw_press", pressColumns)
-	pressToQuery := FormatCreateQuery("awbw_press_to", pressToColumns)
+	pressQuery := FormatCreateQuery("awbw_press", PressRepo.PressColumns)
+	pressToQuery := FormatCreateQuery("awbw_press_to", PressRepo.PressToColumns)
 
 	body.Date = time.Now()
 	tx, err := DB.Beginx()

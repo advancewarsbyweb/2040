@@ -32,12 +32,19 @@ func init() {
 }
 
 func (pc *PressController) GetAll(c *gin.Context) {
-	_, err := strconv.Atoi(c.Param("playerId"))
+	playerId, err := strconv.Atoi(c.Param("playerId"))
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, err)
 		return
 	}
-	// Get every Press that the playerID sent and received
+
+	allPress, err := db.PressRepo.FindAllPress(playerId)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, allPress)
 }
 
 func (pc *PressController) Create(c *gin.Context) {
@@ -46,7 +53,7 @@ func (pc *PressController) Create(c *gin.Context) {
 
 	err := c.Bind(&body)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, err)
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
 

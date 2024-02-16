@@ -7,17 +7,12 @@ import (
 )
 
 func PressRoutes(r *gin.Engine) {
-	pressRoutes := r.Group("/press")
+	pressRoutes := r.Group("/press").Use(middleware.RequireAuth, middleware.ValidatePlayer)
 	{
 		pressRoutes.GET("/:id")
 
-		pressRoutes.GET("/game/:id")
+		pressRoutes.GET("/player/:playerId", controllers.Press.GetAll)
 
-		pressRoutes.POST(
-			"/create",
-			middleware.RequireAuth,
-			middleware.ValidatePlayer,
-			controllers.Press.Create,
-		)
+		pressRoutes.POST("/create", controllers.Press.Create)
 	}
 }

@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"strconv"
 	"testing"
 
 	"github.com/awbw/2040/db"
@@ -16,6 +17,46 @@ import (
 
 func init() {
 	db.NewTestDatabase()
+}
+
+func TestGetAll(t *testing.T) {
+	assert := assert.New(t)
+
+	g := db.Game.Create().BuildInsert()
+
+	p1 := db.PlayerFactory.Create().CreateUser().SetGame(&g).BuildInsert()
+	p2 := db.PlayerFactory.Create().CreateUser().SetGame(&g).BuildInsert()
+	p3 := db.PlayerFactory.Create().CreateUser().SetGame(&g).BuildInsert()
+
+	_ = db.PressFactory.Create().SetPlayer(&p1).BuildInsert([]int{p2.ID, p3.ID})
+	_ = db.PressFactory.Create().SetPlayer(&p2).BuildInsert([]int{p1.ID, p3.ID})
+
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
+	c.Request = &http.Request{
+		Method: "GET",
+		Header: http.Header{},
+	}
+	c.Params = []gin.Param{
+		{
+			Key:   "playerId",
+			Value: strconv.Itoa(p1.ID),
+		},
+	}
+	c.Set("PlayerUser", p1)
+
+	Press.GetAll(c)
+
+	if w.Result().StatusCode != http.StatusOK {
+		var response interface{}
+		json.Unmarshal(w.Body.Bytes(), &response)
+		t.Fatalf("Wrong status code returned. Got (%d), want (%d). %v", w.Result().StatusCode, http.StatusOK, response)
+	}
+
+	var response []models.Press
+	json.Unmarshal(w.Body.Bytes(), &response)
+
+	assert.Equal(len(response), 2, "Incorrect amount of Press returned")
 }
 
 func TestCreatePress(t *testing.T) {
