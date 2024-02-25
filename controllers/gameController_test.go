@@ -19,7 +19,7 @@ func init() {
 }
 
 func TestCreateGame(t *testing.T) {
-	g := db.Game.Create().Build()
+	g := db.GameFactory.Create().Build()
 
 	w := httptest.NewRecorder()
 	c, _ := gin.CreateTestContext(w)
@@ -48,7 +48,7 @@ func TestCreateGame(t *testing.T) {
 }
 
 func TestGetGame(t *testing.T) {
-	g := db.Game.Create().BuildInsert()
+	g := db.GameFactory.Create().BuildInsert()
 
 	w := httptest.NewRecorder()
 	c, _ := gin.CreateTestContext(w)

@@ -63,7 +63,7 @@ func TestCreatePress(t *testing.T) {
 
 func TestFindRecipients(t *testing.T) {
 
-	g := Game.Create().BuildInsert()
+	g := GameFactory.Create().BuildInsert()
 
 	p1 := PlayerFactory.Create().CreateUser().SetGame(&g).BuildInsert()
 	p2 := PlayerFactory.Create().CreateUser().SetGame(&g).BuildInsert()

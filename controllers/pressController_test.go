@@ -22,7 +22,7 @@ func init() {
 func TestGetAll(t *testing.T) {
 	assert := assert.New(t)
 
-	g := db.Game.Create().BuildInsert()
+	g := db.GameFactory.Create().BuildInsert()
 
 	p1 := db.PlayerFactory.Create().CreateUser().SetGame(&g).BuildInsert()
 	p2 := db.PlayerFactory.Create().CreateUser().SetGame(&g).BuildInsert()
@@ -62,7 +62,7 @@ func TestGetAll(t *testing.T) {
 func TestCreatePress(t *testing.T) {
 	assert := assert.New(t)
 
-	g := db.Game.Create().BuildInsert()
+	g := db.GameFactory.Create().BuildInsert()
 
 	p1 := db.PlayerFactory.Create().CreateUser().SetGame(&g).BuildInsert()
 	p2 := db.PlayerFactory.Create().CreateUser().SetGame(&g).BuildInsert()

@@ -11,14 +11,14 @@ type gameFactory struct {
 	Game models.Game
 }
 
-var Game gameFactory
+var GameFactory gameFactory
 
 func NewGameFactory() gameFactory {
 	return gameFactory{}
 }
 
 func init() {
-	Game = NewGameFactory()
+	GameFactory = NewGameFactory()
 }
 
 func (f *gameFactory) Create() *gameFactory {

@@ -6,22 +6,83 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"strconv"
 	"testing"
+	"time"
 
 	"github.com/awbw/2040/db"
+	httputils "github.com/awbw/2040/utils/http"
 	"github.com/gin-gonic/gin"
+	"github.com/stretchr/testify/assert"
 )
 
 func init() {
 	db.NewTestDatabase()
 }
 
-func TestValidatePlayer(t *testing.T) {
-	u := db.User.Create().BuildInsert()
-	p := db.Player.Create().SetUser(&u).BuildInsert()
+func TestValidatePlayerSkipValidation(t *testing.T) {
+	assert := assert.New(t)
+	f := db.GameFactory.Create()
+	f.Game.SetEndDate(time.Now())
+
+	g := f.BuildInsert()
+	u := db.UserFactory.Create().BuildInsert()
+	p := db.PlayerFactory.Create().SetGame(&g).SetUser(&u).BuildInsert()
+
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
+	c.Request = &http.Request{
+		Method: "GET",
+		Header: http.Header{},
+	}
+	c.Params = []gin.Param{
+		{
+			Key:   "playerId",
+			Value: strconv.Itoa(p.ID),
+		},
+	}
+	ValidatePlayer(c)
+
+	_, exists := c.Get("ValidationSkip")
+	assert.Equal(exists, true, "Skip validation is not set")
+}
+
+func TestValidatePlayerQueryParam(t *testing.T) {
+	assert := assert.New(t)
+	u := db.UserFactory.Create().BuildInsert()
+	g := db.GameFactory.BuildInsert()
+	p := db.PlayerFactory.Create().SetGame(&g).SetUser(&u).BuildInsert()
+
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
+	c.Request = &http.Request{
+		Method: "GET",
+		Header: http.Header{},
+	}
+	c.Params = []gin.Param{
+		{
+			Key:   "playerId",
+			Value: strconv.Itoa(p.ID),
+		},
+	}
+	c.Set("User", u)
+	ValidatePlayer(c)
+
+	if !httputils.StatusOK(w) {
+		t.Fatalf("Wrong status code returned. Got (%d), want (%d). %v", w.Result().StatusCode, http.StatusOK, httputils.FormatError(w))
+	}
+
+	_, exists := c.Get("PlayerUser")
+	assert.Equal(exists, true, "PlayerUser is not set properly")
+}
+
+func TestValidatePlayerWithBody(t *testing.T) {
+	u := db.UserFactory.Create().BuildInsert()
+	p := db.PlayerFactory.CreateRelations().SetUser(&u).BuildInsert()
 
 	data, _ := json.Marshal(map[string]interface{}{
-		"playerId": p.ID,
+		"playerId":   p.ID,
+		"extrafield": "extratest",
 	})
 
 	w := httptest.NewRecorder()
@@ -34,6 +95,10 @@ func TestValidatePlayer(t *testing.T) {
 	c.Request.Header.Set("Content-Type", "application/json")
 	c.Set("User", u)
 	ValidatePlayer(c)
+
+	if !httputils.StatusOK(w) {
+		t.Fatalf("Wrong status code returned. Got (%d), want (%d). %v", w.Result().StatusCode, http.StatusOK, httputils.FormatError(w))
+	}
 
 	_, exists := c.Get("PlayerUser")
 

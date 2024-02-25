@@ -5,7 +5,7 @@ import (
 )
 
 func TestSetGame(t *testing.T) {
-	g := Game.Build()
+	g := GameFactory.Build()
 	p := PlayerFactory.Create().SetGame(&g).Build()
 
 	if p.Game.Name != g.Name {
