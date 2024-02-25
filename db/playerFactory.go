@@ -10,7 +10,7 @@ import (
 )
 
 type playerFactory struct {
-	Player models.Player
+	Player *models.Player
 }
 
 var PlayerFactory playerFactory
@@ -50,7 +50,7 @@ func (f *playerFactory) Create() *playerFactory {
 		AETCount:     0,
 		TurnFlag:     true,
 	}
-	f.Player = playerType
+	f.Player = &playerType
 	return f
 }
 
@@ -59,7 +59,7 @@ func (f *playerFactory) CreateRelations() *playerFactory {
 	u := UserFactory.Create().BuildInsert()
 	g := GameFactory.Create().BuildInsert()
 
-	p := PlayerFactory.Create().SetGame(&g).SetUser(&u)
+	p := PlayerFactory.Create().SetGame(g).SetUser(&u)
 	f.Player = p.Player
 	return f
 }
@@ -83,12 +83,12 @@ func (f *playerFactory) SetUser(u *models.User) *playerFactory {
 	return f
 }
 
-func (f *playerFactory) Build() models.Player {
+func (f *playerFactory) Build() *models.Player {
 	return f.Player
 }
 
-func (f *playerFactory) BuildInsert() models.Player {
-	pID, _ := PlayerRepo.CreatePlayer(f.Player)
+func (f *playerFactory) BuildInsert() *models.Player {
+	pID, _ := PlayerRepo.CreatePlayer(*f.Player)
 	f.Player.ID = pID
 	return f.Player
 }

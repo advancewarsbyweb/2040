@@ -8,7 +8,7 @@ import (
 )
 
 type gameFactory struct {
-	Game models.Game
+	Game *models.Game
 }
 
 var GameFactory gameFactory
@@ -22,7 +22,7 @@ func init() {
 }
 
 func (f *gameFactory) Create() *gameFactory {
-	f.Game = models.Game{
+	f.Game = &models.Game{
 		Name:          faker.Word(),
 		Password:      "",
 		CreatorID:     1,
@@ -58,12 +58,12 @@ func (f *gameFactory) Create() *gameFactory {
 	return f
 }
 
-func (f *gameFactory) Build() models.Game {
+func (f *gameFactory) Build() *models.Game {
 	return f.Game
 }
 
-func (f *gameFactory) BuildInsert() models.Game {
-	gID, _ := GameRepo.CreateGame(f.Game)
+func (f *gameFactory) BuildInsert() *models.Game {
+	gID, _ := GameRepo.CreateGame(*f.Game)
 	f.Game.ID = gID
 	return f.Game
 }

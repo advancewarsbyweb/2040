@@ -27,7 +27,7 @@ func TestValidatePlayerSkipValidation(t *testing.T) {
 
 	g := f.BuildInsert()
 	u := db.UserFactory.Create().BuildInsert()
-	p := db.PlayerFactory.Create().SetGame(&g).SetUser(&u).BuildInsert()
+	p := db.PlayerFactory.Create().SetGame(g).SetUser(&u).BuildInsert()
 
 	w := httptest.NewRecorder()
 	c, _ := gin.CreateTestContext(w)
@@ -50,8 +50,7 @@ func TestValidatePlayerSkipValidation(t *testing.T) {
 func TestValidatePlayerQueryParam(t *testing.T) {
 	assert := assert.New(t)
 	u := db.UserFactory.Create().BuildInsert()
-	g := db.GameFactory.BuildInsert()
-	p := db.PlayerFactory.Create().SetGame(&g).SetUser(&u).BuildInsert()
+	p := db.PlayerFactory.CreateRelations().SetUser(&u).BuildInsert()
 
 	w := httptest.NewRecorder()
 	c, _ := gin.CreateTestContext(w)

@@ -24,8 +24,8 @@ func init() {
 
 func (f *unitFactory) Create(name unitnames.UnitName) *unitFactory {
 	u := unitmodels.CreateUnitHelper(name)
-	u.SetGame(&GameFactory.Create().Game).
-		SetPlayer(&PlayerFactory.Create().Player).
+	u.SetGame(GameFactory.Create().Game).
+		SetPlayer(PlayerFactory.Create().Player).
 		SetPos(1, 1).
 		SetHp(10).
 		SetMoved(0)
@@ -37,8 +37,8 @@ func (f *unitFactory) CreateRelations() *unitFactory {
 	p := PlayerFactory.Create().BuildInsert()
 	g := GameFactory.Create().BuildInsert()
 
-	f.Unit.SetGame(&g)
-	f.Unit.SetPlayer(&p)
+	f.Unit.SetGame(g)
+	f.Unit.SetPlayer(p)
 
 	return f
 }
